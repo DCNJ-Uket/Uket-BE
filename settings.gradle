@@ -1,0 +1,13 @@
+rootProject.name = "server"
+
+def excludeDirs = [".gradle", "bin"]
+
+def includeSubprojectsIn = { dirName ->
+    file(dirName).listFiles().findAll { it.isDirectory() && !(it.name in excludeDirs) }
+            .each { include "${dirName}:${it.name}" }
+}
+
+include "core"
+
+includeSubprojectsIn("domain")
+includeSubprojectsIn("application")
