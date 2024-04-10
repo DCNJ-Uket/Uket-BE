@@ -20,6 +20,8 @@ dependencies {
 
 	implementation project(":core")
 	implementation project(":domain:auth-domain")
+	implementation project(":domain:user-domain")
+	implementation project(":modules:jwt-provider")
 }
 
 tasks.named('test') {
