@@ -11,3 +11,4 @@ include "core"
 
 includeSubprojectsIn("domain")
 includeSubprojectsIn("application")
+includeSubprojectsIn("modules")
