@@ -1,0 +1,95 @@
+package com.uket.jwtprovider.auth;
+
+import com.uket.jwtprovider.auth.properties.TokenProperties;
+import io.jsonwebtoken.Jwts;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import org.springframework.stereotype.Component;
+
+@Component
+public class JwtAuthTokenUtil {
+
+    private static final String JWT_PAYLOAD_KEY_CATEGORY = "category";
+    private static final String JWT_PAYLOAD_KEY_ID = "id";
+    private static final String JWT_PAYLOAD_KEY_ROLE = "role";
+    private static final String JWT_PAYLOAD_VALUE_ACCESS = "access";
+    private static final String JWT_PAYLOAD_VALUE_REFRESH = "refresh";
+
+    private final TokenProperties tokenProperties;
+    private final SecretKey secretKey;
+
+    public JwtAuthTokenUtil(TokenProperties tokenProperties) {
+        this.tokenProperties = tokenProperties;
+
+        this.secretKey = new SecretKeySpec(
+                tokenProperties.secretKey().getBytes(StandardCharsets.UTF_8),
+                Jwts.SIG.HS256.key().build().getAlgorithm());
+    }
+
+    public String getCategory(String token) {
+
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+                .get(JWT_PAYLOAD_KEY_CATEGORY, String.class);
+    }
+
+    public String getId(String token) {
+
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+                .get(JWT_PAYLOAD_KEY_ID, String.class);
+    }
+
+    public String getRole(String token) {
+
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+                .get(JWT_PAYLOAD_KEY_ROLE, String.class);
+    }
+
+    public Boolean isExpired(String token) {
+        long now = System.currentTimeMillis();
+
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+                .getExpiration().before(new Date(now));
+    }
+
+    public String createAccessToken(Long userId, String role) {
+        long now = System.currentTimeMillis();
+
+        return Jwts.builder()
+                .claim(JWT_PAYLOAD_KEY_CATEGORY, JWT_PAYLOAD_VALUE_ACCESS)
+                .claim(JWT_PAYLOAD_KEY_ID, userId)
+                .claim(JWT_PAYLOAD_KEY_ROLE, role)
+                .issuedAt(new Date(now))
+                .expiration(getAccessTokenExpiration(now))
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String createRefreshToken(Long userId, String role) {
+        long now = System.currentTimeMillis();
+
+        return Jwts.builder()
+                .claim(JWT_PAYLOAD_KEY_CATEGORY, JWT_PAYLOAD_VALUE_REFRESH)
+                .claim(JWT_PAYLOAD_KEY_ID, userId)
+                .claim(JWT_PAYLOAD_KEY_ROLE, role)
+                .issuedAt(new Date(now))
+                .expiration(getRefreshTokenExpiration(now))
+                .signWith(secretKey)
+                .compact();
+    }
+
+    private Date getAccessTokenExpiration(long now) {
+        long accessTokenExpiration = Long.parseLong(
+                tokenProperties.expiration().accessTokenExpiration());
+
+        return new Date(now + accessTokenExpiration);
+    }
+
+    private Date getRefreshTokenExpiration(long now) {
+        long accessTokenExpiration = Long.parseLong(
+                tokenProperties.expiration().refreshTokenExpiration());
+
+        return new Date(now + accessTokenExpiration);
+    }
+}
