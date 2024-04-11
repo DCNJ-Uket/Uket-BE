@@ -3,6 +3,7 @@ package com.uket.jwtprovider.auth;
 import static com.uket.jwtprovider.auth.constants.JwtValues.*;
 
 import com.uket.jwtprovider.auth.properties.TokenProperties;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -50,9 +51,14 @@ public class JwtAuthTokenUtil {
 
     public Boolean isExpired(String token) {
         long now = System.currentTimeMillis();
-
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-                .getExpiration().before(new Date(now));
+        try {
+            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token)
+                    .getPayload()
+                    .getExpiration().before(new Date(now));
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
+        return false;
     }
 
     public String createAccessToken(Long userId, String name, String role) {

@@ -3,6 +3,7 @@ package com.uket.app.ticket.api.config;
 import com.uket.app.ticket.api.filter.JwtFilter;
 import com.uket.app.ticket.api.handler.CustomSuccessHandler;
 import com.uket.domain.auth.service.CustomOAuth2UserService;
+import com.uket.domain.auth.validator.TokenValidator;
 import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
+    private final TokenValidator tokenValidator;
     private final CustomSuccessHandler customSuccessHandler;
 
     @Bean
@@ -69,7 +71,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
 
-                .addFilterAfter(new JwtFilter(jwtAuthTokenUtil), OAuth2LoginAuthenticationFilter.class)
+                .addFilterAfter(new JwtFilter(jwtAuthTokenUtil, tokenValidator), OAuth2LoginAuthenticationFilter.class)
 
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
