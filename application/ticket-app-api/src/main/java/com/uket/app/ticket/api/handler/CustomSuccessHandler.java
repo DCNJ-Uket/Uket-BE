@@ -3,6 +3,7 @@ package com.uket.app.ticket.api.handler;
 import static com.uket.app.ticket.api.util.CookieGenerator.createCookie;
 import static com.uket.jwtprovider.auth.constants.JwtValues.*;
 
+import com.uket.app.ticket.api.properties.AppProperties;
 import com.uket.domain.auth.domain.CustomOAuth2User;
 import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
 import com.uket.jwtprovider.auth.properties.TokenProperties;
@@ -24,6 +25,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
     private final TokenProperties tokenProperties;
+    private final AppProperties appProperties;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -47,6 +49,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addCookie(createCookie(JWT_PAYLOAD_VALUE_REFRESH, refreshToken, maxAge));
 
         response.setStatus(HttpStatus.OK.value());
-        response.sendRedirect("http://localhost:8080/swagger-ui/index.html#/");
+        response.sendRedirect(appProperties.redirectUrl());
     }
 }

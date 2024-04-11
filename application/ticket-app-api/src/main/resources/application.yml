@@ -83,6 +83,7 @@ spring:
             client-secret: ${KAKAO_CLIENT_SECRET}
 
 app:
+  redirect-url: "http://localhost:8080/swagger-ui/index.html#/"
   token:
     secret-key: testestsetsetsetsetsetsetsetsetestset
     expiration:
