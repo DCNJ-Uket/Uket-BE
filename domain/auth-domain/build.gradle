@@ -3,6 +3,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     implementation project(":domain:core-domain")
+    implementation project(":modules:jwt-provider")
     implementation project(":domain:user-domain")
 }
 

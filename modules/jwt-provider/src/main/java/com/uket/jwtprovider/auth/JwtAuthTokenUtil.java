@@ -1,5 +1,7 @@
 package com.uket.jwtprovider.auth;
 
+import static com.uket.jwtprovider.auth.constants.JwtValues.*;
+
 import com.uket.jwtprovider.auth.properties.TokenProperties;
 import io.jsonwebtoken.Jwts;
 import java.nio.charset.StandardCharsets;
@@ -10,12 +12,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtAuthTokenUtil {
-
-    private static final String JWT_PAYLOAD_KEY_CATEGORY = "category";
-    private static final String JWT_PAYLOAD_KEY_ID = "id";
-    private static final String JWT_PAYLOAD_KEY_ROLE = "role";
-    private static final String JWT_PAYLOAD_VALUE_ACCESS = "access";
-    private static final String JWT_PAYLOAD_VALUE_REFRESH = "refresh";
 
     private final TokenProperties tokenProperties;
     private final SecretKey secretKey;
@@ -34,10 +30,16 @@ public class JwtAuthTokenUtil {
                 .get(JWT_PAYLOAD_KEY_CATEGORY, String.class);
     }
 
-    public String getId(String token) {
+    public Long getId(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-                .get(JWT_PAYLOAD_KEY_ID, String.class);
+                .get(JWT_PAYLOAD_KEY_ID, Long.class);
+    }
+
+    public String getName(String token) {
+
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+                .get(JWT_PAYLOAD_KEY_NAME, String.class);
     }
 
     public String getRole(String token) {
@@ -53,12 +55,13 @@ public class JwtAuthTokenUtil {
                 .getExpiration().before(new Date(now));
     }
 
-    public String createAccessToken(Long userId, String role) {
+    public String createAccessToken(Long userId, String name, String role) {
         long now = System.currentTimeMillis();
 
         return Jwts.builder()
                 .claim(JWT_PAYLOAD_KEY_CATEGORY, JWT_PAYLOAD_VALUE_ACCESS)
                 .claim(JWT_PAYLOAD_KEY_ID, userId)
+                .claim(JWT_PAYLOAD_KEY_NAME, name)
                 .claim(JWT_PAYLOAD_KEY_ROLE, role)
                 .issuedAt(new Date(now))
                 .expiration(getAccessTokenExpiration(now))
@@ -66,12 +69,13 @@ public class JwtAuthTokenUtil {
                 .compact();
     }
 
-    public String createRefreshToken(Long userId, String role) {
+    public String createRefreshToken(Long userId, String name, String role) {
         long now = System.currentTimeMillis();
 
         return Jwts.builder()
                 .claim(JWT_PAYLOAD_KEY_CATEGORY, JWT_PAYLOAD_VALUE_REFRESH)
                 .claim(JWT_PAYLOAD_KEY_ID, userId)
+                .claim(JWT_PAYLOAD_KEY_NAME, name)
                 .claim(JWT_PAYLOAD_KEY_ROLE, role)
                 .issuedAt(new Date(now))
                 .expiration(getRefreshTokenExpiration(now))
