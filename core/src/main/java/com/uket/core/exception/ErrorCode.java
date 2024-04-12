@@ -27,6 +27,7 @@ public enum ErrorCode {
     BLANK_TOKEN("AU0008", "토큰이 비어있습니다."),
     MISMATCH_PASSWORD("AU0009", "비밀번호가 맞지 않습니다."),
     INVALID_PLATFORM("AU0010", "유효하지 않은 플랫폼입니다."),
+    NOT_MATCH_CATEGORY("AU0011", "올바르지 않은 유형의 토큰입니다."),
     /**
      * Member Errors
      */

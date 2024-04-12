@@ -34,6 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         accessToken = accessToken.replace(JWT_AUTHORIZATION_VALUE_PREFIX, "");
 
+        tokenValidator.validateTokenSignature(accessToken);
         tokenValidator.validateExpiredToken(accessToken);
         tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_ACCESS, accessToken);
 

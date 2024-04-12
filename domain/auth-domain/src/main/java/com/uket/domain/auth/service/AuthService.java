@@ -24,6 +24,7 @@ public class AuthService {
     public AuthToken reissue(Cookie[] cookies) {
         String refreshToken = findRefreshToken(cookies);
 
+        tokenValidator.validateTokenSignature(refreshToken);
         tokenValidator.validateExpiredToken(refreshToken);
         tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_REFRESH, refreshToken);
 

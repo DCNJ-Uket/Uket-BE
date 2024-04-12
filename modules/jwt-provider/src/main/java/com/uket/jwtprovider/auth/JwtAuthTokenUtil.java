@@ -61,6 +61,15 @@ public class JwtAuthTokenUtil {
         return false;
     }
 
+    public Boolean isValidToken(String token) {
+        try {
+            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     public String createAccessToken(Long userId, String name, String role) {
         long now = System.currentTimeMillis();
 
