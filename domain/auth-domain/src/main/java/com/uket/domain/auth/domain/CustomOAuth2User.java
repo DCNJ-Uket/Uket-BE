@@ -30,6 +30,8 @@ public class CustomOAuth2User implements OAuth2User {
         return userDto.memberId();
     }
 
+    public Boolean isRegistered() {return userDto.isRegistered();}
+
     @Override
     @Deprecated
     public Map<String, Object> getAttributes() {

@@ -6,7 +6,8 @@ import lombok.Builder;
 public record UserDto(
         Long memberId,
         String name,
-        String role
+        String role,
+        Boolean isRegistered
 ) {
 
 }

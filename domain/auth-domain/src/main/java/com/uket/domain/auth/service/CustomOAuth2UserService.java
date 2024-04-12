@@ -43,13 +43,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         Users savedUser = userService.saveUser(generateCreateUserDto(oAuth2Response));
 
-        return new CustomOAuth2User(generateUserDto(oAuth2Response, savedUser.getId()));
+        return new CustomOAuth2User(generateUserDto(oAuth2Response, savedUser.getId(),savedUser.getIsRegistered()));
     }
 
-    private static UserDto generateUserDto(OAuth2Response oAuth2Response, Long memberId) {
+    private static UserDto generateUserDto(OAuth2Response oAuth2Response, Long memberId, Boolean isRegistered) {
         return UserDto.builder()
                 .role(String.valueOf(UserRole.ROLE_USER))
                 .name(oAuth2Response.getName())
+                .isRegistered(isRegistered)
                 .memberId(memberId)
                 .build();
     }

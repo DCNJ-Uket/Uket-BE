@@ -32,6 +32,7 @@ public class UserService {
                 .platform(createUserDto.platform())
                 .platformId(createUserDto.platformId())
                 .role(createUserDto.role())
+                .isRegistered(false)
                 .build();
 
         return userRepository.save(newUser);

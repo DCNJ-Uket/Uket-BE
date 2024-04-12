@@ -35,6 +35,7 @@ public class Users extends BaseEntity {
     private String platformId;
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    private Boolean isRegistered;
 
     private String phoneNumber;
 
