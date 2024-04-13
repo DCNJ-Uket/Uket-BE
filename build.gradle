@@ -52,4 +52,8 @@ subprojects {
     tasks.named('test') {
         useJUnitPlatform()
     }
+
+    bootJar {
+        mainClass = 'com.uket.TicketApiApplication'
+    }
 }

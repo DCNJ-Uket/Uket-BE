@@ -4,12 +4,14 @@ on:
   push:
     branches:
       - main
+      - dev
   pull_request:
     branches:
       - main
+      - dev
 
 jobs:
-  build-docker-image:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -32,3 +34,6 @@ jobs:
 
       - name: Grant execute permisson for gradlew
         run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build
