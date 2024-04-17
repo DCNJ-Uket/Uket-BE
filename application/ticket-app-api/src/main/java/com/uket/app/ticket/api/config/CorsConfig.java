@@ -12,10 +12,13 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .exposedHeaders("Set-Cookie")
-                .allowedOrigins("*")
+                .allowedOriginPatterns("https://localhost:5173",
+                        "https://accounts.kakao.com",
+                        "https://dev.api.uket.site")
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","))
-                .exposedHeaders(HttpHeaders.LOCATION)
+                .exposedHeaders(HttpHeaders.SET_COOKIE)
+                .exposedHeaders(HttpHeaders.AUTHORIZATION)
+                .allowCredentials(true)
                 .maxAge(5000);
     }
 }
