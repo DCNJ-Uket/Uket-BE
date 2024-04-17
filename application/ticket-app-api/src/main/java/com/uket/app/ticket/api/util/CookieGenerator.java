@@ -1,18 +1,26 @@
 package com.uket.app.ticket.api.util;
 
-import jakarta.servlet.http.Cookie;
+import com.uket.jwtprovider.auth.constants.JwtValues;
+import com.uket.jwtprovider.auth.properties.TokenProperties;
+import java.time.Duration;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class CookieGenerator {
 
-    public static Cookie createCookie(String key, String value, int maxAge) {
+    private final TokenProperties tokenProperties;
 
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(maxAge);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        //TODO: https 설정 이후 활성화
-        //cookie.setSecure(true);
+    public ResponseCookie createCookie(String key, String value, int maxAge) {
 
-        return cookie;
+        return ResponseCookie.from(key,value)
+                .maxAge(Duration.ofMillis(maxAge))
+                .domain(tokenProperties.domain())
+                .path("/")
+                .httpOnly(key.equals(JwtValues.JWT_PAYLOAD_VALUE_REFRESH))
+                .secure(true)
+                .build();
     }
 }
