@@ -59,10 +59,10 @@ spring:
     console:
       enabled: true
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://localhost/~/uket;MODE=MySQL;
-    username: sa
-    password: sa
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/uket?useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DEV_MYSQL_USERNAME}
+    password: ${DEV_MYSQL_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: create
@@ -85,6 +85,7 @@ spring:
 app:
   redirect-url: "http://localhost:8080/swagger-ui/index.html#/"
   token:
+    domain: "localhost"
     secret-key: testestsetsetsetsetsetsetsetsetestset
     expiration:
       access-token-expiration: 3600000
@@ -96,12 +97,34 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DEV_MYSQL_URL}
+    url: jdbc:mysql://mysql:3306/uket?useSSL=false&allowPublicKeyRetrieval=true
     username: ${DEV_MYSQL_USERNAME}
     password: ${DEV_MYSQL_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            redirect-uri: https://dev.api.uket.site/login/oauth2/code/google
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+          kakao:
+            redirect-uri: https://dev.api.uket.site/login/oauth2/code/kakao
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+
+app:
+  redirect-url: "https://localhost:5173/signup"
+  token:
+    domain: "uket.site"
+    secret-key: ${JWT_SECRET_KEY}
+    expiration:
+      access-token-expiration: 3600000
+      refresh-token-expiration: 86400000
 ---
 spring:
   config:
