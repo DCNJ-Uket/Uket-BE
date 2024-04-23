@@ -5,12 +5,12 @@ import com.uket.app.ticket.api.handler.CustomSuccessHandler;
 import com.uket.domain.auth.service.CustomOAuth2UserService;
 import com.uket.domain.auth.validator.TokenValidator;
 import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,17 +55,14 @@ public class SecurityConfig {
 
                     CorsConfiguration configuration = new CorsConfiguration();
 
-                    configuration.setAllowedOriginPatterns(Arrays.asList(
-                            "https://localhost:5173",    // 로컬 개발 서버
-                            "https://dev.api.uket.site",  // 개발 서버
-                            "https://accounts.kakao.com"  // 카카오 로그인
-                    ));
                     configuration.setAllowedMethods(List.of(ALLOWED_METHOD_NAMES.split(",")));
-                    configuration.setAllowCredentials(true);
+                    configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
                     configuration.setAllowedHeaders(Collections.singletonList("*"));
                     configuration.setMaxAge(3600L);
 
-                    configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
+                    configuration.setExposedHeaders(List.of(
+                            HttpHeaders.AUTHORIZATION
+                    ));
 
                     return configuration;
                 }))
@@ -81,8 +78,7 @@ public class SecurityConfig {
                         .successHandler(customSuccessHandler)
                 )
                 .authorizeHttpRequests(registry ->
-                        registry.requestMatchers("/h2/**").permitAll()
-                                .requestMatchers("/favicon.ico").permitAll()
+                        registry.requestMatchers("/favicon.ico").permitAll()
                                 .requestMatchers("/error").permitAll()
 
                 )
@@ -96,7 +92,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                 )
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(registry -> registry
                         .anyRequest().authenticated())
 
                 .sessionManagement(session -> session
