@@ -1,0 +1,83 @@
+name: Java CI/CD with Gradle
+
+on:
+  push:
+    branches:
+      - dev
+
+env:
+  DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
+  DOCKER_IMAGE_NAME: dev-uket
+  DOCKER_CONTAINER_NAME: dev-uket
+
+jobs:
+  build-and-push-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Caching Gradle dependencies to speed up the build process
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Setting up JDK 17 for building the Java application
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      # Ensuring the Gradle wrapper script is executable
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # Building the application with Gradle
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+      # Configuring AWS credentials for accessing AWS services
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      # Logging in to Amazon ECR
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Building and pushing Docker image to ECR
+      - name: Docker build and push
+        run: |
+          cd ./subprojects/api
+          docker build --platform linux/amd64 -t ${{ env.DOCKER_IMAGE_NAME }} .
+          docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+          docker push ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest
+          echo "::set-output name=image::${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest"
+
+  deploy:
+    needs: build-and-push-docker-image
+    runs-on: ubuntu-latest
+    steps:
+      # Deploying the Docker container via SSH
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ env.DOCKER_REGISTRY_URL }}
+            docker-compose down
+            docker pull ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}
+            docker-compose up
+            # Cleaning up unused Docker images
+            docker image prune -f

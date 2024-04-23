@@ -21,13 +21,14 @@ public enum ErrorCode {
     TOKEN_AUTHENTICATION_FAILED("AU0002", "토큰 인증에 실패하였습니다."),
     AUTHORIZATION_FAILED("AU0003", "접근 권한이 없습니다."),
     REFRESH_TOKEN_INVALID("AU0004", "유효하지 않은 리프레시 토큰입니다."),
-    NOT_FOUND_REFRESH_TOKEN("AU0005", "리프레시 토큰이 존재하지 않습니다."),
-    TOKEN_EXPIRED("AU0006", "만료된 토큰입니다."),
-    INVALID_TOKEN("AU0007", "유효하지 않은 토큰입니다."),
-    BLANK_TOKEN("AU0008", "토큰이 비어있습니다."),
-    MISMATCH_PASSWORD("AU0009", "비밀번호가 맞지 않습니다."),
-    INVALID_PLATFORM("AU0010", "유효하지 않은 플랫폼입니다."),
-    NOT_MATCH_CATEGORY("AU0011", "올바르지 않은 유형의 토큰입니다."),
+    NOT_FOUND_ACCESS_TOKEN("AU0005", "엑세스 토큰이 존재하지 않습니다."),
+    NOT_FOUND_REFRESH_TOKEN("AU0006", "리프레시 토큰이 존재하지 않습니다."),
+    TOKEN_EXPIRED("AU0007", "만료된 토큰입니다."),
+    INVALID_TOKEN("AU0008", "유효하지 않은 토큰입니다."),
+    BLANK_TOKEN("AU0009", "토큰이 비어있습니다."),
+    MISMATCH_PASSWORD("AU0010", "비밀번호가 맞지 않습니다."),
+    INVALID_PLATFORM("AU0011", "유효하지 않은 플랫폼입니다."),
+    NOT_MATCH_CATEGORY("AU0012", "올바르지 않은 유형의 토큰입니다."),
     /**
      * Member Errors
      */

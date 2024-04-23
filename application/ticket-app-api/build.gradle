@@ -27,3 +27,9 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.named("bootBuildImage") {
+	imageName = ""
+	tags = ['latest', '0.0.1']
+	environment["platform"] = 'linux/amd64'
+}

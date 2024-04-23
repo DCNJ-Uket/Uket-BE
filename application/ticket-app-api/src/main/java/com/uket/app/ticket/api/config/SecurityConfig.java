@@ -6,10 +6,11 @@ import com.uket.domain.auth.service.CustomOAuth2UserService;
 import com.uket.domain.auth.validator.TokenValidator;
 import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
 import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,6 +28,7 @@ import org.springframework.web.cors.CorsConfiguration;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private static final String ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,TRACE,OPTIONS,PATCH";
     private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
     private final TokenValidator tokenValidator;
@@ -53,21 +55,18 @@ public class SecurityConfig {
 
                     CorsConfiguration configuration = new CorsConfiguration();
 
-                    configuration.setAllowedOrigins(Collections.singletonList("*"));
-                    configuration.setAllowedMethods(Collections.singletonList("*"));
-                    configuration.setAllowCredentials(true);
+                    configuration.setAllowedMethods(List.of(ALLOWED_METHOD_NAMES.split(",")));
+                    configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
                     configuration.setAllowedHeaders(Collections.singletonList("*"));
                     configuration.setMaxAge(3600L);
 
-                    configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-                    configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                    configuration.setExposedHeaders(List.of(
+                            HttpHeaders.AUTHORIZATION
+                    ));
 
                     return configuration;
                 }))
-                .csrf(auth -> auth
-                        .ignoringRequestMatchers(PathRequest.toH2Console())
-                        .disable()
-                )
+                .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
 
@@ -79,8 +78,7 @@ public class SecurityConfig {
                         .successHandler(customSuccessHandler)
                 )
                 .authorizeHttpRequests(registry ->
-                        registry.requestMatchers("/h2/**").permitAll()
-                                .requestMatchers("/favicon.ico").permitAll()
+                        registry.requestMatchers("/favicon.ico").permitAll()
                                 .requestMatchers("/error").permitAll()
 
                 )
@@ -93,16 +91,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/api/v1/auth").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers(PathRequest.toH2Console()).permitAll()
                 )
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(registry -> registry
                         .anyRequest().authenticated())
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .headers(headers ->
-                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
                 );
 
         return http.build();
