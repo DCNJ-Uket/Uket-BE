@@ -1,10 +1,8 @@
 package com.uket.app.ticket.api.config;
 
+import com.uket.app.ticket.api.filter.JwtAccessDeniedHandler;
+import com.uket.app.ticket.api.filter.JwtAuthenticationEntryPoint;
 import com.uket.app.ticket.api.filter.JwtFilter;
-import com.uket.app.ticket.api.handler.CustomSuccessHandler;
-import com.uket.domain.auth.service.CustomOAuth2UserService;
-import com.uket.domain.auth.validator.TokenValidator;
-import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +27,10 @@ import org.springframework.web.cors.CorsConfiguration;
 public class SecurityConfig {
 
     private static final String ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,TRACE,OPTIONS,PATCH";
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final JwtAuthTokenUtil jwtAuthTokenUtil;
-    private final TokenValidator tokenValidator;
-    private final CustomSuccessHandler customSuccessHandler;
+    private final JwtFilter jwtFilter;
+
+    private final JwtAccessDeniedHandler accessDeniedHandler;
+    private final JwtAuthenticationEntryPoint entryPoint;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
@@ -70,7 +68,11 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
 
-                .addFilterBefore(new JwtFilter(jwtAuthTokenUtil, tokenValidator), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandlerManagement ->
+                        exceptionHandlerManagement
+                                .authenticationEntryPoint(entryPoint)
+                                .accessDeniedHandler(accessDeniedHandler))
 
                 .authorizeHttpRequests(registry ->
                         registry.requestMatchers("/favicon.ico").permitAll()
