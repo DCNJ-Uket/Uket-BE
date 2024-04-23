@@ -19,8 +19,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
@@ -70,13 +70,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
 
-                .addFilterAfter(new JwtFilter(jwtAuthTokenUtil, tokenValidator), OAuth2LoginAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(jwtAuthTokenUtil, tokenValidator), UsernamePasswordAuthenticationFilter.class)
 
-                .oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                                .userService(customOAuth2UserService))
-                        .successHandler(customSuccessHandler)
-                )
                 .authorizeHttpRequests(registry ->
                         registry.requestMatchers("/favicon.ico").permitAll()
                                 .requestMatchers("/error").permitAll()
