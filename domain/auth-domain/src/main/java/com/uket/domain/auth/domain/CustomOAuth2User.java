@@ -1,15 +1,15 @@
 package com.uket.domain.auth.domain;
 
 import com.uket.domain.user.dto.UserDto;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @RequiredArgsConstructor
-public class CustomOAuth2User implements OAuth2User {
+public class CustomOAuth2User implements UserDetails {
 
     private final UserDto userDto;
 
@@ -22,7 +22,11 @@ public class CustomOAuth2User implements OAuth2User {
     }
 
     @Override
-    public String getName() {
+    public String getUsername() {
+        return Long.toString(userDto.memberId());
+    }
+
+    public String getName(){
         return userDto.name();
     }
 
@@ -30,11 +34,32 @@ public class CustomOAuth2User implements OAuth2User {
         return userDto.memberId();
     }
 
-    public Boolean isRegistered() {return userDto.isRegistered();}
+    public Boolean isRegistered() {
+        return userDto.isRegistered();
+    }
 
     @Override
-    @Deprecated
-    public Map<String, Object> getAttributes() {
-        return null;
+    public String getPassword() {
+        return "password";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
