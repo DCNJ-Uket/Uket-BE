@@ -57,7 +57,7 @@ jobs:
       # Building and pushing Docker image to ECR
       - name: Docker build and push
         run: |
-          cd ./subprojects/api
+          cd ./application/ticket-app-api
           docker build --platform linux/amd64 -t ${{ env.DOCKER_IMAGE_NAME }} .
           docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest
           docker push ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest
