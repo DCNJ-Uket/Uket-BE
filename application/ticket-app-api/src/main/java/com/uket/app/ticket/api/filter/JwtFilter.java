@@ -2,7 +2,6 @@ package com.uket.app.ticket.api.filter;
 
 import static com.uket.jwtprovider.auth.constants.JwtValues.*;
 
-import com.uket.domain.auth.domain.CustomOAuth2User;
 import com.uket.domain.auth.validator.TokenValidator;
 import com.uket.domain.user.dto.UserDto;
 import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
@@ -12,11 +11,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -38,9 +38,8 @@ public class JwtFilter extends OncePerRequestFilter {
         tokenValidator.validateExpiredToken(accessToken);
         tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_ACCESS, accessToken);
 
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(generateUserDto(accessToken));
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+        Authentication authentication = new JWTTokenAuthentication(accessToken, generateUserDto(accessToken));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }
