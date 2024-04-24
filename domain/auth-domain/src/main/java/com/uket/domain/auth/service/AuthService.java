@@ -9,19 +9,21 @@ import com.uket.domain.auth.exception.NotFoundRefreshTokenException;
 import com.uket.domain.auth.util.OAuth2TokenManager;
 import com.uket.domain.auth.util.OAuth2UserInfoManager;
 import com.uket.domain.auth.validator.TokenValidator;
+import com.uket.domain.user.dto.CreateUserDto;
 import com.uket.domain.user.dto.UserDto;
+import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
+import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
 import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
 import jakarta.servlet.http.Cookie;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 @Transactional(readOnly = true)
 public class AuthService {
 
@@ -31,13 +33,22 @@ public class AuthService {
     private final OAuth2UserInfoManager oAuth2UserInfoManager;
     private final UserService userService;
 
+    @Transactional
     public AuthToken login(Platform platform, String redirectUri, String code) {
 
         OAuth2TokenResponse tokenResponse = oauth2TokenManager.getAccessToken(platform, redirectUri,
                 code);
         OAuth2UserInfoResponse userInfo = oAuth2UserInfoManager.getUserInfo(platform, tokenResponse);
 
-        return null;
+        Optional<Users> user = userService.findByPlatformAndPlatformId(
+                userInfo.getProvider(), userInfo.getProviderId());
+
+        if (user.isPresent()) {
+            Users existUser = user.get();
+            return generateAuthToken(generateUserDto(existUser));
+        }
+        Users newUser = userService.saveUser(generateCreateUserDto(userInfo));
+        return generateAuthToken(generateUserDto(newUser));
     }
 
     public AuthToken reissue(Cookie[] cookies) {
@@ -55,6 +66,24 @@ public class AuthService {
                 .build());
     }
 
+    private CreateUserDto generateCreateUserDto(OAuth2UserInfoResponse userInfo) {
+        return CreateUserDto.builder()
+                .platform(Platform.fromString(userInfo.getProvider()))
+                .platformId(userInfo.getProviderId())
+                .email(userInfo.getEmail())
+                .name(userInfo.getName())
+                .role(UserRole.ROLE_USER)
+                .build();
+    }
+
+    private UserDto generateUserDto(Users user) {
+        return UserDto.builder()
+                .userId(user.getId())
+                .name(user.getName())
+                .role(String.valueOf(user.getRole()))
+                .isRegistered(user.getIsRegistered())
+                .build();
+    }
 
     private AuthToken generateAuthToken(UserDto userDto) {
         Long userId = userDto.userId();
