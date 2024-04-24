@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 public class DevController implements DevApi {
 
     @Override
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("test");
+    public ResponseEntity<String> test(Long userId) {
+        return ResponseEntity.ok("userId: " + userId);
     }
 }

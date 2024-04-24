@@ -1,5 +1,6 @@
 package com.uket.app.ticket.api.controller;
 
+import com.uket.app.ticket.api.config.userid.LoginUserId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
@@ -14,5 +15,7 @@ public interface DevApi {
     @GetMapping
     @Operation(summary = "테스트용 api", description = "테스트를 진행합니다.")
     @SecurityRequirement(name = "JWT")
-    ResponseEntity<String> test();
+    ResponseEntity<String> test(
+            @LoginUserId Long userId
+    );
 }
