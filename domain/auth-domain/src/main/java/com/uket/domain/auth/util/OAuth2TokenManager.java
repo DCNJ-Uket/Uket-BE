@@ -15,7 +15,7 @@ import org.springframework.web.util.UriBuilder;
 
 @Component
 @RequiredArgsConstructor
-public class OAuth2TokenManager extends OAuth2Manager{
+public class OAuth2TokenManager extends OAuth2Manager {
 
     private final AppProperties appProperties;
 

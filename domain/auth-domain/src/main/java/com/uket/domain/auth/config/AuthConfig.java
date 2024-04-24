@@ -1,6 +1,6 @@
-package com.uket.app.ticket.api.config;
+package com.uket.domain.auth.config;
 
-import com.uket.app.ticket.api.config.userid.LoginUserArgumentResolver;
+import com.uket.domain.auth.config.userid.LoginUserArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

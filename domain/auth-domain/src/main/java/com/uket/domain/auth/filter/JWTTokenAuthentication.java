@@ -1,4 +1,4 @@
-package com.uket.app.ticket.api.filter;
+package com.uket.domain.auth.filter;
 
 import com.uket.domain.user.dto.UserDto;
 import java.util.ArrayList;

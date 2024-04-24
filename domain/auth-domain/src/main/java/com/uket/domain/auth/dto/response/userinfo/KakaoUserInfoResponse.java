@@ -3,6 +3,7 @@ package com.uket.domain.auth.dto.response.userinfo;
 import java.util.Map;
 
 public class KakaoUserInfoResponse implements OAuth2UserInfoResponse {
+
     private final Map<String, Object> attribute;
     private final Map<String, Object> account;
 

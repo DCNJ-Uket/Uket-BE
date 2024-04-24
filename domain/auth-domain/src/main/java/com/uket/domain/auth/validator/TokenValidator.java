@@ -13,7 +13,7 @@ public class TokenValidator {
 
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
 
-    public void validateTokenSignature(String token){
+    public void validateTokenSignature(String token) {
         if (Boolean.FALSE.equals(jwtAuthTokenUtil.isValidToken(token))) {
             throw new AuthException(ErrorCode.INVALID_TOKEN);
         }

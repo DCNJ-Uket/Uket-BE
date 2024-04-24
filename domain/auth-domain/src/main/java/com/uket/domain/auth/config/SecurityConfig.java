@@ -1,8 +1,8 @@
-package com.uket.app.ticket.api.config;
+package com.uket.domain.auth.config;
 
-import com.uket.app.ticket.api.filter.JwtAccessDeniedHandler;
-import com.uket.app.ticket.api.filter.JwtAuthenticationEntryPoint;
-import com.uket.app.ticket.api.filter.JwtFilter;
+import com.uket.domain.auth.filter.JwtAccessDeniedHandler;
+import com.uket.domain.auth.filter.JwtAuthenticationEntryPoint;
+import com.uket.domain.auth.filter.JwtFilter;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

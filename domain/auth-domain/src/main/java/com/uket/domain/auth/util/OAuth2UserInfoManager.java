@@ -43,8 +43,7 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
         throw new AuthException(ErrorCode.FAIL_REQUEST_TO_OAUTH2);
     }
 
-    private Map<String, Object> requestUserInfoToKakao(RestClient restClient,
-            String authorization) {
+    private Map<String, Object> requestUserInfoToKakao(RestClient restClient, String authorization) {
         return restClient
                 .post()
                 .uri(this::getKakaoUserInfoUri)

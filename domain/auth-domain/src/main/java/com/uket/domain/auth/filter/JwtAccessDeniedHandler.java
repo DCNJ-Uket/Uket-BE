@@ -1,4 +1,4 @@
-package com.uket.app.ticket.api.filter;
+package com.uket.domain.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uket.core.dto.response.ErrorResponse;
@@ -10,28 +10,28 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+
     private final ObjectMapper objectMapper;
 
     @Override
-    public void commence(
-            HttpServletRequest request, HttpServletResponse response, AuthenticationException authException
-    ) throws IOException {
-        writeErrorResponse(response, authException);
+    public void handle(HttpServletRequest request, HttpServletResponse response,
+            AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        writeErrorResponse(response, accessDeniedException);
     }
 
     private void writeErrorResponse(
-            HttpServletResponse response, AuthenticationException authException
+            HttpServletResponse response, AccessDeniedException accessDeniedException
     ) throws IOException {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write(objectMapper.writeValueAsString(ErrorResponse.of(ErrorCode.TOKEN_AUTHENTICATION_FAILED)));
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.getWriter().write(objectMapper.writeValueAsString(ErrorResponse.of(ErrorCode.AUTHORIZATION_FAILED)));
     }
 }

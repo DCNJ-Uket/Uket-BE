@@ -1,4 +1,4 @@
-package com.uket.app.ticket.api.filter;
+package com.uket.domain.auth.filter;
 
 import static com.uket.modules.jwt.auth.constants.JwtValues.*;
 

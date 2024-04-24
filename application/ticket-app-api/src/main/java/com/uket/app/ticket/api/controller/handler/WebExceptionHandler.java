@@ -1,4 +1,4 @@
-package com.uket.app.ticket.api.handler;
+package com.uket.app.ticket.api.controller.handler;
 
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.core.exception.BaseException;
@@ -130,8 +130,10 @@ public class WebExceptionHandler {
         }
 
         dump.append("\n  Body       : ");
-        if (request.getContentType() != null && request.getContentType().contains("application/x-www-form-urlencoded")) {
-            dump.append("\n    ").append("Body is not readable for 'application/x-www-form-urlencoded' type or has been read");
+        if (request.getContentType() != null && request.getContentType()
+                .contains("application/x-www-form-urlencoded")) {
+            dump.append("\n    ")
+                    .append("Body is not readable for 'application/x-www-form-urlencoded' type or has been read");
         } else {
             try {
                 dump.append("\n    ").append(readableToString(request.getReader()));

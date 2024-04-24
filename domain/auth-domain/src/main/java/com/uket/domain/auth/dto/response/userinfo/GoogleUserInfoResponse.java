@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class GoogleUserInfoResponse implements OAuth2UserInfoResponse {
+
     private final Map<String, Object> attribute;
 
     @Override
