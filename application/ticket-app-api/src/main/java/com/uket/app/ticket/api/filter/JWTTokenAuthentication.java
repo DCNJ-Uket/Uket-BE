@@ -23,7 +23,7 @@ public class JWTTokenAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return userDto.name() + userDto.memberId();
+        return userDto.name() + userDto.userId();
     }
 
     @Override

@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record UserDto(
-        Long memberId,
+        Long userId,
         String name,
         String role,
         Boolean isRegistered
