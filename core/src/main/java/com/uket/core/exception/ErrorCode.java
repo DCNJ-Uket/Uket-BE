@@ -29,6 +29,7 @@ public enum ErrorCode {
     MISMATCH_PASSWORD("AU0010", "비밀번호가 맞지 않습니다."),
     INVALID_PLATFORM("AU0011", "유효하지 않은 플랫폼입니다."),
     NOT_MATCH_CATEGORY("AU0012", "올바르지 않은 유형의 토큰입니다."),
+    FAIL_REQUEST_TO_OAUTH2("AU0013", "OAuth2 요청이 실패했습니다.."),
     /**
      * Member Errors
      */

@@ -45,12 +45,12 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private UserDto generateUserDto(String accessToken) {
-        Long memberId = jwtAuthTokenUtil.getId(accessToken);
+        Long userId = jwtAuthTokenUtil.getId(accessToken);
         String name = jwtAuthTokenUtil.getName(accessToken);
         String role = jwtAuthTokenUtil.getRole(accessToken);
 
         return UserDto.builder()
-                .memberId(memberId)
+                .userId(userId)
                 .name(name)
                 .role(role)
                 .build();

@@ -1,12 +1,12 @@
-package com.uket.domain.auth.dto.response;
+package com.uket.domain.auth.dto.response.userinfo;
 
 import java.util.Map;
 
-public class KakaoResponse implements OAuth2Response{
+public class KakaoUserInfoResponse implements OAuth2UserInfoResponse {
     private final Map<String, Object> attribute;
     private final Map<String, Object> account;
 
-    public KakaoResponse(Map<String, Object> attribute) {
+    public KakaoUserInfoResponse(Map<String, Object> attribute) {
         this.attribute = attribute;
         this.account = (Map<String, Object>) attribute.get("kakao_account");
     }

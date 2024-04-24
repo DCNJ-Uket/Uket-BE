@@ -1,10 +1,10 @@
-package com.uket.domain.auth.dto.response;
+package com.uket.domain.auth.dto.response.userinfo;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class GoogleResponse implements OAuth2Response{
+public class GoogleUserInfoResponse implements OAuth2UserInfoResponse {
     private final Map<String, Object> attribute;
 
     @Override

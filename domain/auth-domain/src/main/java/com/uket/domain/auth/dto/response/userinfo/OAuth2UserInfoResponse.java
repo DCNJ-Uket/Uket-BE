@@ -1,6 +1,6 @@
-package com.uket.domain.auth.dto.response;
+package com.uket.domain.auth.dto.response.userinfo;
 
-public interface OAuth2Response {
+public interface OAuth2UserInfoResponse {
     String getProvider();
     String getProviderId();
     String getEmail();
