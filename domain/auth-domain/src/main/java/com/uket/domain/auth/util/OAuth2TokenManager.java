@@ -1,7 +1,9 @@
 package com.uket.domain.auth.util;
 
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.dto.response.token.KakaoTokenResponse;
 import com.uket.domain.auth.dto.response.token.OAuth2TokenResponse;
+import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.properties.AppProperties;
 import com.uket.domain.user.enums.Platform;
 import java.net.URI;
@@ -22,7 +24,7 @@ public class OAuth2TokenManager extends OAuth2Manager{
         if (platform == Platform.KAKAO) {
             return getKakaoTokenResponse(redirectUri, code);
         }
-        return null;
+        throw new AuthException(ErrorCode.INVALID_PLATFORM);
     }
 
     private OAuth2TokenResponse getKakaoTokenResponse(String redirectUri, String code) {

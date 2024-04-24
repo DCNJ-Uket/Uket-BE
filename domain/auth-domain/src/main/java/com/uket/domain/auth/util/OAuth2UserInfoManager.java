@@ -27,7 +27,7 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
         if (platform == Platform.KAKAO) {
             return getKakaoUserInfoResponse(tokenResponse);
         }
-        return null;
+        throw new AuthException(ErrorCode.INVALID_PLATFORM);
     }
 
     private OAuth2UserInfoResponse getKakaoUserInfoResponse(OAuth2TokenResponse tokenResponse) {
