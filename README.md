@@ -1,9 +1,7 @@
 # UKet
 
 ## 바로가기
-> [API 명세서](http://localhost:8080/swagger-ui/index.html#/)  
-> [카카오 로그인](http://localhost:8080/oauth2/authorization/kakao)  
-> [구글 로그인](http://localhost:8080/oauth2/authorization/google)  
+> [API 명세서](https://dev.api.uket.site/swagger-ui/index.html#/)
 
 ## 개발환경
 | 구분 | 종류                             |
@@ -17,10 +15,15 @@
 | Test | JUnit 5                        |
 
 ## 환경변수
-| 변수                   | 설명                       |
-|----------------------|--------------------------|
-| GOOGLE_CLIENT_ID     | 구글 로그인을 위한 client_id     |
-| GOOGLE_CLIENT_SECRET | 구글 로그인을 위한 client_secret |
-| KAKAO_CLIENT_ID      | 카카오 로그인을 위한 client_id    |
-| KAKAO_CLIENT_SECRET  | 카카오 로그인을 위한 client_secret|
+**서버 측에 문의주세요**  
+
+| 변수                   | 설명                        |
+|----------------------|---------------------------|
+| GOOGLE_CLIENT_ID     | 구글 로그인을 위한 client_id      |
+| GOOGLE_CLIENT_SECRET | 구글 로그인을 위한 client_secret  |
+| KAKAO_CLIENT_ID      | 카카오 로그인을 위한 client_id     |
+| KAKAO_CLIENT_SECRET  | 카카오 로그인을 위한 client_secret |
+| JWT_SECRET_KEY       | JWT 토큰 시그티처 키 값           |
+| DEV_MYSQL_USERNAME   | 개발 서버 MySQL 사용자 명         |
+| DEV_MYSQL_PASSWORD   | 개발 서버 MySQL 비밀번호          |
 
