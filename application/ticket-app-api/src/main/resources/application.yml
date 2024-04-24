@@ -43,9 +43,6 @@ spring:
     redis:
       host: localhost
       port: 6379
-  h2:
-    console:
-      enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/uket?useSSL=false&allowPublicKeyRetrieval=true
@@ -62,8 +59,8 @@ app:
   token:
     secret-key: testestsetsetsetsetsetsetsetsetestset
     expiration:
-      access-token-expiration: 3600000
-      refresh-token-expiration: 86400000
+      access-token-expiration: 3_600_000
+      refresh-token-expiration: 7_200_000
 ---
 spring:
   config:
@@ -83,8 +80,12 @@ app:
   token:
     secret-key: ${JWT_SECRET_KEY}
     expiration:
-      access-token-expiration: 3600000
-      refresh-token-expiration: 86400000
+      access-token-expiration: 600_000
+      refresh-token-expiration: 7_200_000
+
+logging:
+  level:
+    root: warn
 ---
 spring:
   config:
@@ -98,3 +99,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+logging:
+  level:
+    root: warn
