@@ -2,6 +2,8 @@ package com.uket.domain.auth.filter;
 
 import static com.uket.modules.jwt.auth.constants.JwtValues.*;
 
+import com.uket.core.exception.ErrorCode;
+import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.validator.TokenValidator;
 import com.uket.domain.user.dto.UserDto;
 import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
@@ -11,17 +13,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    public final JwtAuthTokenUtil jwtAuthTokenUtil;
-    public final TokenValidator tokenValidator;
+    private final JwtAuthTokenUtil jwtAuthTokenUtil;
+    private final TokenValidator tokenValidator;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -34,14 +38,24 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         accessToken = accessToken.replace(JWT_AUTHORIZATION_VALUE_PREFIX, "");
 
-        tokenValidator.validateTokenSignature(accessToken);
-        tokenValidator.validateExpiredToken(accessToken);
-        tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_ACCESS, accessToken);
-
-        Authentication authentication = new JWTTokenAuthentication(accessToken, generateUserDto(accessToken));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        if (validateAccessToken(accessToken)) {
+            Authentication authentication = new JWTTokenAuthentication(accessToken, generateUserDto(accessToken));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean validateAccessToken(String accessToken) {
+        try {
+            tokenValidator.validateExpiredToken(accessToken);
+            tokenValidator.validateTokenSignature(accessToken);
+            tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_ACCESS, accessToken);
+        } catch (AuthException exception) {
+            ErrorCode errorCode =  exception.getErrorCode();
+            log.warn("[AuthException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
+            return false;
+        }
+        return true;
     }
 
     private UserDto generateUserDto(String accessToken) {
