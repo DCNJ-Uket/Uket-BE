@@ -1,6 +1,7 @@
 package com.uket.app.ticket.api.controller;
 
 import com.uket.app.ticket.api.config.userid.LoginUserId;
+import com.uket.app.ticket.api.dto.response.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
@@ -18,4 +19,8 @@ public interface DevApi {
     ResponseEntity<String> test(
             @LoginUserId Long userId
     );
+
+    @GetMapping("/token")
+    @Operation(summary = "토큰 강제 발행", description = "토큰을 발급합니다.")
+    ResponseEntity<TokenResponse> getToken();
 }

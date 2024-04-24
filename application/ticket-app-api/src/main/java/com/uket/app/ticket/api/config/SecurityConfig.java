@@ -90,6 +90,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                 )
                 .authorizeHttpRequests(registry -> registry
+                        .requestMatchers("/api/v1/dev/token").permitAll()
+                )
+                .authorizeHttpRequests(registry -> registry
                         .anyRequest().authenticated())
 
                 .sessionManagement(session -> session

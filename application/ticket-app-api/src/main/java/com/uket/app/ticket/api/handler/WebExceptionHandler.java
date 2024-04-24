@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 @RestControllerAdvice
 public class WebExceptionHandler {
 
@@ -156,5 +156,4 @@ public class WebExceptionHandler {
         }
         return stringBuilder.toString();
     }
-
 }
