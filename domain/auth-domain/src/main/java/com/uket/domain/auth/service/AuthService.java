@@ -63,7 +63,7 @@ public class AuthService {
                 .userId(jwtAuthTokenUtil.getId(refreshToken))
                 .name(jwtAuthTokenUtil.getName(refreshToken))
                 .role(jwtAuthTokenUtil.getRole(refreshToken))
-                .isRegistered(true)
+                .isRegistered(jwtAuthTokenUtil.isRegistered(refreshToken))
                 .build());
     }
 
@@ -92,8 +92,8 @@ public class AuthService {
         String role = userDto.role();
         Boolean isRegistered = userDto.isRegistered();
 
-        String newAccessToken = jwtAuthTokenUtil.createAccessToken(userId, name, role);
-        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken(userId, name, role);
+        String newAccessToken = jwtAuthTokenUtil.createAccessToken(userId, name, role, isRegistered);
+        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken();
 
         return AuthToken.of(newAccessToken, newRefreshToken, isRegistered);
     }

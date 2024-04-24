@@ -7,6 +7,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.stereotype.Component;
@@ -49,6 +50,11 @@ public class JwtAuthTokenUtil {
                 .get(JWT_PAYLOAD_KEY_ROLE, String.class);
     }
 
+    public Boolean isRegistered(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+                .get(JWT_PAYLOAD_KEY_REGISTERED, Boolean.class);
+    }
+
     public Boolean isExpired(String token) {
         long now = System.currentTimeMillis();
         try {
@@ -70,7 +76,7 @@ public class JwtAuthTokenUtil {
         return true;
     }
 
-    public String createAccessToken(Long userId, String name, String role) {
+    public String createAccessToken(Long userId, String name, String role, Boolean isRegistered) {
         long now = System.currentTimeMillis();
 
         return Jwts.builder()
@@ -78,20 +84,20 @@ public class JwtAuthTokenUtil {
                 .claim(JWT_PAYLOAD_KEY_ID, userId)
                 .claim(JWT_PAYLOAD_KEY_NAME, name)
                 .claim(JWT_PAYLOAD_KEY_ROLE, role)
+                .claim(JWT_PAYLOAD_KEY_REGISTERED, isRegistered)
                 .issuedAt(new Date(now))
                 .expiration(getAccessTokenExpiration(now))
                 .signWith(secretKey)
                 .compact();
     }
 
-    public String createRefreshToken(Long userId, String name, String role) {
+    public String createRefreshToken() {
         long now = System.currentTimeMillis();
+        UUID uuid = UUID.randomUUID();
 
         return Jwts.builder()
                 .claim(JWT_PAYLOAD_KEY_CATEGORY, JWT_PAYLOAD_VALUE_REFRESH)
-                .claim(JWT_PAYLOAD_KEY_ID, userId)
-                .claim(JWT_PAYLOAD_KEY_NAME, name)
-                .claim(JWT_PAYLOAD_KEY_ROLE, role)
+                .claim(JWT_PAYLOAD_KEY_UUID, uuid)
                 .issuedAt(new Date(now))
                 .expiration(getRefreshTokenExpiration(now))
                 .signWith(secretKey)
