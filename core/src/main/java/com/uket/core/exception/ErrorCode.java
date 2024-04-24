@@ -20,21 +20,17 @@ public enum ErrorCode {
     AUTHENTICATION_FAILED("AU0001", "인증에 실패하였습니다."),
     TOKEN_AUTHENTICATION_FAILED("AU0002", "토큰 인증에 실패하였습니다."),
     AUTHORIZATION_FAILED("AU0003", "접근 권한이 없습니다."),
-    REFRESH_TOKEN_INVALID("AU0004", "유효하지 않은 리프레시 토큰입니다."),
-    NOT_FOUND_ACCESS_TOKEN("AU0005", "엑세스 토큰이 존재하지 않습니다."),
-    NOT_FOUND_REFRESH_TOKEN("AU0006", "리프레시 토큰이 존재하지 않습니다."),
-    TOKEN_EXPIRED("AU0007", "만료된 토큰입니다."),
-    INVALID_TOKEN("AU0008", "유효하지 않은 토큰입니다."),
-    BLANK_TOKEN("AU0009", "토큰이 비어있습니다."),
-    MISMATCH_PASSWORD("AU0010", "비밀번호가 맞지 않습니다."),
-    INVALID_PLATFORM("AU0011", "유효하지 않은 플랫폼입니다."),
-    NOT_MATCH_CATEGORY("AU0012", "올바르지 않은 유형의 토큰입니다."),
-    FAIL_REQUEST_TO_OAUTH2("AU0013", "OAuth2 요청이 실패했습니다.."),
+    TOKEN_EXPIRED("AU0004", "만료된 토큰입니다."),
+    TOKEN_NOT_EXPIRED("AU0005", "아직 토큰이 만료되지 않았습니다."),
+    INVALID_TOKEN("AU0006", "유효하지 않은 토큰입니다."),
+    INVALID_PLATFORM("AU0007", "유효하지 않은 플랫폼입니다."),
+    NOT_MATCH_CATEGORY("AU0008", "올바르지 않은 유형의 토큰입니다."),
+    FAIL_REQUEST_TO_OAUTH2("AU0009", "OAuth2 요청이 실패했습니다."),
     /**
      * Member Errors
      */
     NOT_FOUND_MEMBER("ME0001", "해당 사용자를 찾을 수 없습니다."),
-    ALREADY_EXIST_MEMBER("ME0002", "이미 존재하는 사용자입니다.");
+    ALREADY_EXIST_MEMBER("ME0002", "이미 가입된 사용자입니다.");
 
     private final String code;
     private final String message;

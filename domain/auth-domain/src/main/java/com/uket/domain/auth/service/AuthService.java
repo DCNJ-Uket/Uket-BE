@@ -1,12 +1,11 @@
 package com.uket.domain.auth.service;
 
+import static com.uket.jwtprovider.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_ACCESS;
 import static com.uket.jwtprovider.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_REFRESH;
 
-import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.auth.dto.response.userinfo.OAuth2UserInfoResponse;
 import com.uket.domain.auth.dto.response.token.OAuth2TokenResponse;
-import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.util.OAuth2TokenManager;
 import com.uket.domain.auth.util.OAuth2UserInfoManager;
 import com.uket.domain.auth.validator.TokenValidator;
@@ -17,7 +16,6 @@ import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
 import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
-import jakarta.servlet.http.Cookie;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,18 +50,21 @@ public class AuthService {
         return generateAuthToken(generateUserDto(newUser));
     }
 
-    public AuthToken reissue(Cookie[] cookies) {
-        String refreshToken = findRefreshToken(cookies);
+    public AuthToken reissue(String accessToken, String refreshToken) {
+
+        tokenValidator.validateTokenSignature(accessToken);
+        tokenValidator.checkNotExpiredToken(accessToken);
+        tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_ACCESS, accessToken);
 
         tokenValidator.validateTokenSignature(refreshToken);
         tokenValidator.validateExpiredToken(refreshToken);
         tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_REFRESH, refreshToken);
 
         return generateAuthToken(UserDto.builder()
-                .userId(jwtAuthTokenUtil.getId(refreshToken))
-                .name(jwtAuthTokenUtil.getName(refreshToken))
-                .role(jwtAuthTokenUtil.getRole(refreshToken))
-                .isRegistered(jwtAuthTokenUtil.isRegistered(refreshToken))
+                .userId(jwtAuthTokenUtil.getId(accessToken))
+                .name(jwtAuthTokenUtil.getName(accessToken))
+                .role(jwtAuthTokenUtil.getRole(accessToken))
+                .isRegistered(jwtAuthTokenUtil.isRegistered(accessToken))
                 .build());
     }
 
@@ -96,14 +97,5 @@ public class AuthService {
         String newRefreshToken = jwtAuthTokenUtil.createRefreshToken();
 
         return AuthToken.of(newAccessToken, newRefreshToken, isRegistered);
-    }
-
-    private String findRefreshToken(Cookie[] cookies) {
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(JWT_PAYLOAD_VALUE_REFRESH)) {
-                return cookie.getValue();
-            }
-        }
-        throw new AuthException(ErrorCode.NOT_FOUND_REFRESH_TOKEN);
     }
 }
