@@ -4,6 +4,7 @@ import com.uket.core.dto.response.ErrorResponse;
 import com.uket.core.exception.BaseException;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.exception.AuthException;
+import com.uket.domain.user.exception.UserException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
@@ -45,6 +46,20 @@ public class WebExceptionHandler {
         log.warn("[AuthException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
+                .body(ErrorResponse.of(errorCode));
+    }
+
+    @ExceptionHandler(UserException.class)
+    ResponseEntity<ErrorResponse> handleAuthException(HttpServletRequest request,
+            UserException exception) {
+        ErrorCode errorCode = exception.getErrorCode();
+        if (errorCode == ErrorCode.UNKNOWN_SERVER_ERROR) {
+            return handleUnhandledException(request, exception);
+        }
+
+        log.warn("[UserException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.of(errorCode));
     }
 
