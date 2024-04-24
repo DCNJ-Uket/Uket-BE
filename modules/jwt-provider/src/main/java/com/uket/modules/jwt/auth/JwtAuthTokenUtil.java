@@ -4,9 +4,9 @@ import com.uket.modules.jwt.auth.constants.JwtValues;
 import com.uket.modules.jwt.auth.properties.TokenProperties;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.SignatureException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.UUID;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.stereotype.Component;
@@ -55,11 +55,10 @@ public class JwtAuthTokenUtil {
     }
 
     public Boolean isExpired(String token) {
-        long now = System.currentTimeMillis();
         try {
             Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token)
                     .getPayload()
-                    .getExpiration().before(new Date(now));
+                    .getExpiration();
         } catch (ExpiredJwtException e) {
             return true;
         }
@@ -69,7 +68,7 @@ public class JwtAuthTokenUtil {
     public Boolean isValidToken(String token) {
         try {
             Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
-        } catch (Exception e) {
+        } catch (SignatureException e) {
             return false;
         }
         return true;
@@ -90,15 +89,41 @@ public class JwtAuthTokenUtil {
                 .compact();
     }
 
-    public String createRefreshToken() {
+    public String createAccessToken(Long userId, String name, String role, Boolean isRegistered, Long expiration) {
         long now = System.currentTimeMillis();
-        UUID uuid = UUID.randomUUID();
+
+        return Jwts.builder()
+                .claim(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, JwtValues.JWT_PAYLOAD_VALUE_ACCESS)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_ID, userId)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_NAME, name)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_ROLE, role)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_REGISTERED, isRegistered)
+                .issuedAt(new Date(now))
+                .expiration(new Date(expiration))
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String createRefreshToken(Long userId) {
+        long now = System.currentTimeMillis();
 
         return Jwts.builder()
                 .claim(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, JwtValues.JWT_PAYLOAD_VALUE_REFRESH)
-                .claim(JwtValues.JWT_PAYLOAD_KEY_UUID, uuid)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_ID, userId)
                 .issuedAt(new Date(now))
                 .expiration(getRefreshTokenExpiration(now))
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String createRefreshToken(Long userId, Long expiration) {
+        long now = System.currentTimeMillis();
+
+        return Jwts.builder()
+                .claim(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, JwtValues.JWT_PAYLOAD_VALUE_REFRESH)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_ID, userId)
+                .issuedAt(new Date(now))
+                .expiration(new Date(expiration))
                 .signWith(secretKey)
                 .compact();
     }

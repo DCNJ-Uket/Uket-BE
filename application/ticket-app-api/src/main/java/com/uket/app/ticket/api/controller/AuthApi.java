@@ -29,6 +29,6 @@ public interface AuthApi {
     @Operation(summary = "토큰 재발행", description = "리프레시 토큰으로 새로은 토큰을 발행합니다.")
     @PostMapping(value = "/reissue")
     ResponseEntity<TokenResponse> reissue(
-            TokenReissueRequest request
+            @RequestBody TokenReissueRequest request
     );
 }

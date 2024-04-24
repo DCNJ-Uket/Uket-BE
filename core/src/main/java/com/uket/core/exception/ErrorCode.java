@@ -27,10 +27,10 @@ public enum ErrorCode {
     NOT_MATCH_CATEGORY("AU0008", "올바르지 않은 유형의 토큰입니다."),
     FAIL_REQUEST_TO_OAUTH2("AU0009", "OAuth2 요청이 실패했습니다."),
     /**
-     * Member Errors
+     * User Errors
      */
-    NOT_FOUND_MEMBER("ME0001", "해당 사용자를 찾을 수 없습니다."),
-    ALREADY_EXIST_MEMBER("ME0002", "이미 가입된 사용자입니다.");
+    NOT_FOUND_USER("US0001", "해당 사용자를 찾을 수 없습니다."),
+    ALREADY_EXIST_USER("US0002", "이미 가입된 사용자입니다.");
 
     private final String code;
     private final String message;

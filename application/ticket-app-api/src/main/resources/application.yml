@@ -59,7 +59,7 @@ app:
   token:
     secret-key: testestsetsetsetsetsetsetsetsetestset
     expiration:
-      access-token-expiration: 3_600_000
+      access-token-expiration: 10
       refresh-token-expiration: 7_200_000
 ---
 spring:

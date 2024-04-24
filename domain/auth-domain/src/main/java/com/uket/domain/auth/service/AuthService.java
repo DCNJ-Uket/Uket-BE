@@ -1,6 +1,5 @@
 package com.uket.domain.auth.service;
 
-import static com.uket.modules.jwt.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_ACCESS;
 import static com.uket.modules.jwt.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_REFRESH;
 
 import com.uket.domain.auth.dto.response.AuthToken;
@@ -52,19 +51,19 @@ public class AuthService {
 
     public AuthToken reissue(String accessToken, String refreshToken) {
 
-        tokenValidator.validateTokenSignature(accessToken);
         tokenValidator.checkNotExpiredToken(accessToken);
-        tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_ACCESS, accessToken);
 
-        tokenValidator.validateTokenSignature(refreshToken);
         tokenValidator.validateExpiredToken(refreshToken);
         tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_REFRESH, refreshToken);
+        tokenValidator.validateTokenSignature(refreshToken);
+
+        Users findUser = userService.findById(jwtAuthTokenUtil.getId(refreshToken));
 
         return generateAuthToken(UserDto.builder()
-                .userId(jwtAuthTokenUtil.getId(accessToken))
-                .name(jwtAuthTokenUtil.getName(accessToken))
-                .role(jwtAuthTokenUtil.getRole(accessToken))
-                .isRegistered(jwtAuthTokenUtil.isRegistered(accessToken))
+                .userId(findUser.getId())
+                .name(findUser.getName())
+                .role(String.valueOf(findUser.getRole()))
+                .isRegistered(findUser.getIsRegistered())
                 .build());
     }
 
@@ -94,7 +93,7 @@ public class AuthService {
         Boolean isRegistered = userDto.isRegistered();
 
         String newAccessToken = jwtAuthTokenUtil.createAccessToken(userId, name, role, isRegistered);
-        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken();
+        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken(userId);
 
         return AuthToken.of(newAccessToken, newRefreshToken, isRegistered);
     }

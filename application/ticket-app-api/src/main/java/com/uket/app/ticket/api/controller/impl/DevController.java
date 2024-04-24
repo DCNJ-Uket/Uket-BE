@@ -39,7 +39,7 @@ public class DevController implements DevApi {
                 userDto.name(),
                 userDto.role(),
                 isRegistered);
-        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken();
+        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken(userDto.userId());
 
         AuthToken authToken = AuthToken.of(newAccessToken, newRefreshToken, isRegistered);
         return ResponseEntity.ok(TokenResponse.from(authToken));
