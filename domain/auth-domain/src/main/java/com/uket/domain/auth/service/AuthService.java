@@ -34,8 +34,7 @@ public class AuthService {
     @Transactional
     public AuthToken login(Platform platform, String redirectUri, String code) {
 
-        OAuth2TokenResponse tokenResponse = oauth2TokenManager.getAccessToken(platform, redirectUri,
-                code);
+        OAuth2TokenResponse tokenResponse = oauth2TokenManager.getAccessToken(platform, redirectUri, code);
         OAuth2UserInfoResponse userInfo = oAuth2UserInfoManager.getUserInfo(platform, tokenResponse);
 
         Optional<Users> user = userService.findByPlatformAndPlatformId(

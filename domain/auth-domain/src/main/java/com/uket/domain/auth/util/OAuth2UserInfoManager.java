@@ -32,8 +32,7 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
 
     private OAuth2UserInfoResponse getKakaoUserInfoResponse(OAuth2TokenResponse tokenResponse) {
         RestClient restClient = createRestClient(appProperties.kakao().userInfoUri());
-        String authorization = String.join(" ", tokenResponse.getTokenType(),
-                tokenResponse.getAccessToken());
+        String authorization = String.join(" ", tokenResponse.getTokenType(), tokenResponse.getAccessToken());
 
         Map<String, Object> response = requestUserInfoToKakao(restClient, authorization);
 
