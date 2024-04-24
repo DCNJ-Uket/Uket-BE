@@ -1,4 +1,4 @@
-package com.uket.jwtprovider.auth.constants;
+package com.uket.modules.jwt.auth.constants;
 
 public class JwtValues {
     public static final String JWT_PAYLOAD_KEY_CATEGORY = "category";

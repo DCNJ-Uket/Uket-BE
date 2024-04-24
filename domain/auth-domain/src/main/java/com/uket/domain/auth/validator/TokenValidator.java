@@ -3,7 +3,7 @@ package com.uket.domain.auth.validator;
 
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.exception.AuthException;
-import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
+import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,10 +1,10 @@
 package com.uket.app.ticket.api.filter;
 
-import static com.uket.jwtprovider.auth.constants.JwtValues.*;
+import static com.uket.modules.jwt.auth.constants.JwtValues.*;
 
 import com.uket.domain.auth.validator.TokenValidator;
 import com.uket.domain.user.dto.UserDto;
-import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
+import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

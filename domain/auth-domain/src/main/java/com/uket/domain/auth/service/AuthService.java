@@ -1,7 +1,7 @@
 package com.uket.domain.auth.service;
 
-import static com.uket.jwtprovider.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_ACCESS;
-import static com.uket.jwtprovider.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_REFRESH;
+import static com.uket.modules.jwt.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_ACCESS;
+import static com.uket.modules.jwt.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_REFRESH;
 
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.auth.dto.response.userinfo.OAuth2UserInfoResponse;
@@ -15,7 +15,7 @@ import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
-import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
+import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

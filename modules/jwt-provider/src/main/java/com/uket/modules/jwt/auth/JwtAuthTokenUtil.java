@@ -1,8 +1,7 @@
-package com.uket.jwtprovider.auth;
+package com.uket.modules.jwt.auth;
 
-import static com.uket.jwtprovider.auth.constants.JwtValues.*;
-
-import com.uket.jwtprovider.auth.properties.TokenProperties;
+import com.uket.modules.jwt.auth.constants.JwtValues;
+import com.uket.modules.jwt.auth.properties.TokenProperties;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import java.nio.charset.StandardCharsets;
@@ -29,30 +28,30 @@ public class JwtAuthTokenUtil {
     public String getCategory(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-                .get(JWT_PAYLOAD_KEY_CATEGORY, String.class);
+                .get(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, String.class);
     }
 
     public Long getId(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-                .get(JWT_PAYLOAD_KEY_ID, Long.class);
+                .get(JwtValues.JWT_PAYLOAD_KEY_ID, Long.class);
     }
 
     public String getName(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-                .get(JWT_PAYLOAD_KEY_NAME, String.class);
+                .get(JwtValues.JWT_PAYLOAD_KEY_NAME, String.class);
     }
 
     public String getRole(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-                .get(JWT_PAYLOAD_KEY_ROLE, String.class);
+                .get(JwtValues.JWT_PAYLOAD_KEY_ROLE, String.class);
     }
 
     public Boolean isRegistered(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-                .get(JWT_PAYLOAD_KEY_REGISTERED, Boolean.class);
+                .get(JwtValues.JWT_PAYLOAD_KEY_REGISTERED, Boolean.class);
     }
 
     public Boolean isExpired(String token) {
@@ -80,11 +79,11 @@ public class JwtAuthTokenUtil {
         long now = System.currentTimeMillis();
 
         return Jwts.builder()
-                .claim(JWT_PAYLOAD_KEY_CATEGORY, JWT_PAYLOAD_VALUE_ACCESS)
-                .claim(JWT_PAYLOAD_KEY_ID, userId)
-                .claim(JWT_PAYLOAD_KEY_NAME, name)
-                .claim(JWT_PAYLOAD_KEY_ROLE, role)
-                .claim(JWT_PAYLOAD_KEY_REGISTERED, isRegistered)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, JwtValues.JWT_PAYLOAD_VALUE_ACCESS)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_ID, userId)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_NAME, name)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_ROLE, role)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_REGISTERED, isRegistered)
                 .issuedAt(new Date(now))
                 .expiration(getAccessTokenExpiration(now))
                 .signWith(secretKey)
@@ -96,8 +95,8 @@ public class JwtAuthTokenUtil {
         UUID uuid = UUID.randomUUID();
 
         return Jwts.builder()
-                .claim(JWT_PAYLOAD_KEY_CATEGORY, JWT_PAYLOAD_VALUE_REFRESH)
-                .claim(JWT_PAYLOAD_KEY_UUID, uuid)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, JwtValues.JWT_PAYLOAD_VALUE_REFRESH)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_UUID, uuid)
                 .issuedAt(new Date(now))
                 .expiration(getRefreshTokenExpiration(now))
                 .signWith(secretKey)
