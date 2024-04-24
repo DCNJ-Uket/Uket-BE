@@ -2,10 +2,11 @@ package com.uket.domain.auth.service;
 
 import static com.uket.jwtprovider.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_REFRESH;
 
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.auth.dto.response.userinfo.OAuth2UserInfoResponse;
 import com.uket.domain.auth.dto.response.token.OAuth2TokenResponse;
-import com.uket.domain.auth.exception.NotFoundRefreshTokenException;
+import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.util.OAuth2TokenManager;
 import com.uket.domain.auth.util.OAuth2UserInfoManager;
 import com.uket.domain.auth.validator.TokenValidator;
@@ -103,6 +104,6 @@ public class AuthService {
                 return cookie.getValue();
             }
         }
-        throw new NotFoundRefreshTokenException();
+        throw new AuthException(ErrorCode.NOT_FOUND_REFRESH_TOKEN);
     }
 }
