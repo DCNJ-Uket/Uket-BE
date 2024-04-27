@@ -45,7 +45,7 @@ public class WebExceptionHandler {
 
         log.warn("[AuthException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(HttpStatus.valueOf(errorCode.getStatus()))
                 .body(ErrorResponse.of(errorCode));
     }
 
@@ -59,12 +59,12 @@ public class WebExceptionHandler {
 
         log.warn("[UserException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.valueOf(errorCode.getStatus()))
                 .body(ErrorResponse.of(errorCode));
     }
 
     @ExceptionHandler(BaseException.class)
-    ResponseEntity<ErrorResponse> handleDomainException(HttpServletRequest request,
+    ResponseEntity<ErrorResponse> handleBaseException(HttpServletRequest request,
             BaseException exception) {
         ErrorCode errorCode = exception.getErrorCode();
         if (errorCode == ErrorCode.UNKNOWN_SERVER_ERROR) {
@@ -73,7 +73,7 @@ public class WebExceptionHandler {
 
         log.warn("[BaseException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
         return ResponseEntity
-                .badRequest()
+                .status(HttpStatus.valueOf(errorCode.getStatus()))
                 .body(ErrorResponse.of(errorCode));
     }
 
@@ -83,10 +83,10 @@ public class WebExceptionHandler {
 
         StringBuilder dump = dumpRequest(request).append("\n ")
                 .append(getStackTraceAsString(exception));
-        log.error("[UnhandledException] {} \n", dump);
 
+        log.error("[UnhandledException] {} \n", dump);
         return ResponseEntity
-                .badRequest()
+                .internalServerError()
                 .body(ErrorResponse.of(ErrorCode.UNKNOWN_SERVER_ERROR));
     }
 
@@ -102,7 +102,6 @@ public class WebExceptionHandler {
             Exception exception) {
 
         log.warn("[InvalidParameterException]", exception);
-
         return ResponseEntity
                 .badRequest()
                 .body(ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE));
