@@ -1,53 +1,99 @@
 package com.uket.domain.auth.service;
 
-import static com.uket.jwtprovider.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_REFRESH;
+import static com.uket.modules.jwt.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_REFRESH;
 
 import com.uket.domain.auth.dto.response.AuthToken;
-import com.uket.domain.auth.exception.NotFoundRefreshTokenException;
+import com.uket.domain.auth.dto.response.userinfo.OAuth2UserInfoResponse;
+import com.uket.domain.auth.dto.response.token.OAuth2TokenResponse;
+import com.uket.domain.auth.util.OAuth2TokenManager;
+import com.uket.domain.auth.util.OAuth2UserInfoManager;
 import com.uket.domain.auth.validator.TokenValidator;
-import com.uket.jwtprovider.auth.JwtAuthTokenUtil;
-import jakarta.servlet.http.Cookie;
+import com.uket.domain.user.dto.CreateUserDto;
+import com.uket.domain.user.dto.UserDto;
+import com.uket.domain.user.entity.Users;
+import com.uket.domain.user.enums.Platform;
+import com.uket.domain.user.enums.UserRole;
+import com.uket.domain.user.service.UserService;
+import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 @Transactional(readOnly = true)
 public class AuthService {
 
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
     private final TokenValidator tokenValidator;
+    private final OAuth2TokenManager oauth2TokenManager;
+    private final OAuth2UserInfoManager oAuth2UserInfoManager;
+    private final UserService userService;
 
-    public AuthToken reissue(Cookie[] cookies) {
-        String refreshToken = findRefreshToken(cookies);
+    @Transactional
+    public AuthToken login(Platform platform, String redirectUri, String code) {
 
-        tokenValidator.validateTokenSignature(refreshToken);
+        OAuth2TokenResponse tokenResponse = oauth2TokenManager.getAccessToken(platform, redirectUri, code);
+        OAuth2UserInfoResponse userInfo = oAuth2UserInfoManager.getUserInfo(platform, tokenResponse);
+
+        Optional<Users> user = userService.findByPlatformAndPlatformId(
+                userInfo.getProvider(), userInfo.getProviderId());
+
+        if (user.isPresent()) {
+            Users existUser = user.get();
+            return generateAuthToken(generateUserDto(existUser));
+        }
+        Users newUser = userService.saveUser(generateCreateUserDto(userInfo));
+        return generateAuthToken(generateUserDto(newUser));
+    }
+
+    public AuthToken reissue(String accessToken, String refreshToken) {
+
+        tokenValidator.checkNotExpiredToken(accessToken);
+
         tokenValidator.validateExpiredToken(refreshToken);
         tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_REFRESH, refreshToken);
+        tokenValidator.validateTokenSignature(refreshToken);
 
-        return generateAuthToken(refreshToken);
+        Users findUser = userService.findById(jwtAuthTokenUtil.getId(refreshToken));
+
+        return generateAuthToken(UserDto.builder()
+                .userId(findUser.getId())
+                .name(findUser.getName())
+                .role(String.valueOf(findUser.getRole()))
+                .isRegistered(findUser.getIsRegistered())
+                .build());
     }
 
-    private AuthToken generateAuthToken(String refreshToken) {
-        Long userId = jwtAuthTokenUtil.getId(refreshToken);
-        String name = jwtAuthTokenUtil.getName(refreshToken);
-        String role = jwtAuthTokenUtil.getRole(refreshToken);
-
-        String newAccessToken = jwtAuthTokenUtil.createAccessToken(userId, name, role);
-        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken(userId, name, role);
-
-        return AuthToken.of(newAccessToken, newRefreshToken);
+    private CreateUserDto generateCreateUserDto(OAuth2UserInfoResponse userInfo) {
+        return CreateUserDto.builder()
+                .platform(Platform.fromString(userInfo.getProvider()))
+                .platformId(userInfo.getProviderId())
+                .email(userInfo.getEmail())
+                .name(userInfo.getName())
+                .role(UserRole.ROLE_USER)
+                .build();
     }
 
-    private String findRefreshToken(Cookie[] cookies) {
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(JWT_PAYLOAD_VALUE_REFRESH)) {
-                return cookie.getValue();
-            }
-        }
-        throw new NotFoundRefreshTokenException();
+    private UserDto generateUserDto(Users user) {
+        return UserDto.builder()
+                .userId(user.getId())
+                .name(user.getName())
+                .role(String.valueOf(user.getRole()))
+                .isRegistered(user.getIsRegistered())
+                .build();
+    }
+
+    private AuthToken generateAuthToken(UserDto userDto) {
+        Long userId = userDto.userId();
+        String name = userDto.name();
+        String role = userDto.role();
+        Boolean isRegistered = userDto.isRegistered();
+
+        String newAccessToken = jwtAuthTokenUtil.createAccessToken(userId, name, role, isRegistered);
+        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken(userId);
+
+        return AuthToken.of(newAccessToken, newRefreshToken, isRegistered);
     }
 }

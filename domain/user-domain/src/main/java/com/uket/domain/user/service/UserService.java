@@ -1,7 +1,10 @@
 package com.uket.domain.user.service;
 
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.user.dto.CreateUserDto;
 import com.uket.domain.user.entity.Users;
+import com.uket.domain.user.enums.Platform;
+import com.uket.domain.user.exception.UserException;
 import com.uket.domain.user.repository.UserRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,16 @@ public class UserService {
                 .build();
 
         return userRepository.save(newUser);
+    }
+
+    public Optional<Users> findByPlatformAndPlatformId(String provider, String platformId) {
+        Platform platform = Platform.fromString(provider);
+        return userRepository.findByPlatformAndPlatformId(platform,platformId);
+    }
+
+    public Users findById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
     }
 
     private Users updateEmailAndNameOfExistUser(CreateUserDto createUserDto, Users existUser) {

@@ -1,0 +1,40 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    open-in-view: false
+    properties:
+      hibernate:
+        create_empty_composites:
+          enabled: true
+        format_sql: true
+        jdbc:
+          batch_size: 100
+        order_inserts: true
+        order_updates: true
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=MySQL
+    username: sa
+    password:
+
+app:
+  kakao:
+    token_uri: https://kauth.kakao.com/oauth/token
+    user-info-uri: https://kapi.kakao.com/v2/user/me
+    client-id: test
+    client-secret: test
+  google:
+    token_uri: https://oauth2.googleapis.com/token
+    user-info-uri: https://www.googleapis.com/oauth2/v1/userinfo
+    client-id: test
+    client-secret: test
+  token:
+    secret-key: testestsetsetsetsetsetsetsetsetestset
+    expiration:
+      access-token-expiration: 3_600_000
+      refresh-token-expiration: 7_200_000
+
+
+
+
