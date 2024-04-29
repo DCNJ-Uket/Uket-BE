@@ -10,7 +10,7 @@ public record UserRegisterRequest(
         @Schema(description = "전화번호", example = "01012341234")
         @NotNull(message = "phoneNumber 는 null 일 수 없습니다.")
         String phoneNumber,
-        @Schema(description = "대학 이름", example = "konkuk")
+        @Schema(description = "대학 이름", example = "건국대학교")
         String university,
         @Schema(description = "학과", example = "컴퓨터공학부")
         String studentMajor,

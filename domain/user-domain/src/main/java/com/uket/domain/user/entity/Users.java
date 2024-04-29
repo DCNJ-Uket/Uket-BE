@@ -1,6 +1,7 @@
 package com.uket.domain.user.entity;
 
 import com.uket.domain.core.entity.BaseEntity;
+import com.uket.domain.university.entity.University;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import jakarta.persistence.CascadeType;
@@ -36,6 +37,10 @@ public class Users extends BaseEntity {
     @JoinColumn(name = "user_details_id")
     private UserDetails userDetails;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_id")
+    private University university;
+
     private String name;
     private String email;
     @Enumerated(EnumType.STRING)
@@ -50,8 +55,9 @@ public class Users extends BaseEntity {
         this.name = name;
     }
 
-    public void register(UserDetails userDetails) {
-        this.userDetails = userDetails;
+    public void register(UserDetails userDetails, University university) {
         this.isRegistered = true;
+        this.userDetails = userDetails;
+        this.university = university;
     }
 }

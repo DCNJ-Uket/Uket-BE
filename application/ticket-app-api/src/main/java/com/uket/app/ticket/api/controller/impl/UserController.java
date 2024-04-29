@@ -21,14 +21,14 @@ public class UserController implements UserApi {
     @Override
     public ResponseEntity<TokenResponse> register(Long userId, Boolean isRegistered, UserRegisterRequest request) {
 
-        CreateUserDetailsDto createUserDetailsDto = getCreateUserDetailsDto(request);
+        CreateUserDetailsDto createUserDetailsDto = generateCreateUserDetailsDto(request);
 
-        AuthToken authToken = userRegisterService.register(userId, createUserDetailsDto);
+        AuthToken authToken = userRegisterService.register(userId, createUserDetailsDto, request.university());
         TokenResponse response = TokenResponse.from(authToken);
         return ResponseEntity.ok(response);
     }
 
-    private CreateUserDetailsDto getCreateUserDetailsDto(UserRegisterRequest request) {
+    private CreateUserDetailsDto generateCreateUserDetailsDto(UserRegisterRequest request) {
         return CreateUserDetailsDto.builder()
                 .depositorName(request.depositorName())
                 .phoneNumber(request.phoneNumber())

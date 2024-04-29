@@ -32,7 +32,13 @@ public enum ErrorCode {
      * User Errors
      */
     NOT_FOUND_USER(404,"US0001", "해당 사용자를 찾을 수 없습니다."),
-    ALREADY_EXIST_USER(409,"US0002", "이미 가입된 사용자입니다.");
+    ALREADY_EXIST_USER(409,"US0002", "이미 가입된 사용자입니다."),
+
+    /**
+     * University Errors
+     */
+    NOT_FOUND_UNIVERSITY(404,"UN0001", "해당 대학을 찾을 수 없습니다.");
+
 
     private final int status;
     private final String code;
