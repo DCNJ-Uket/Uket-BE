@@ -1,6 +1,7 @@
 package com.uket.domain.auth.util;
 
 import com.uket.core.exception.ErrorCode;
+import com.uket.domain.auth.dto.response.userinfo.GoogleUserInfoResponse;
 import com.uket.domain.auth.dto.response.userinfo.KakaoUserInfoResponse;
 import com.uket.domain.auth.dto.response.userinfo.OAuth2UserInfoResponse;
 import com.uket.domain.auth.dto.response.token.OAuth2TokenResponse;
@@ -8,13 +9,20 @@ import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.properties.AppProperties;
 import com.uket.domain.user.enums.Platform;
 import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Optional;
+import javax.security.auth.login.LoginException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
@@ -27,6 +35,11 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
         if (platform == Platform.KAKAO) {
             return getKakaoUserInfoResponse(tokenResponse);
         }
+
+        if (platform == Platform.GOOGLE) {
+            return getGoogleUserInfoResponse(tokenResponse);
+        }
+
         throw new AuthException(ErrorCode.INVALID_PLATFORM);
     }
 
@@ -60,5 +73,32 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
                 .queryParam("client_secret", appProperties.kakao().clientSecret())
                 .queryParam("property_keys", "[\"kakao_account.email\", \"kakao_account.name\"]")
                 .build();
+    }
+
+    private OAuth2UserInfoResponse getGoogleUserInfoResponse(OAuth2TokenResponse tokenResponse) {
+        RestClient restClient = createRestClient(appProperties.google().userInfoUri());
+        String authorization = String.join(" ", tokenResponse.getTokenType(), tokenResponse.getAccessToken());
+
+        Map<String, Object> response = requestUserInfoToGoogle(restClient, authorization);
+
+        if (response != null) {
+            return new GoogleUserInfoResponse(response);
+        }
+        throw new AuthException(ErrorCode.FAIL_REQUEST_TO_OAUTH2);
+    }
+
+    private Map<String, Object> requestUserInfoToGoogle(RestClient restClient, String authorization) {
+        return restClient
+            .get()
+            .uri(getGoogleUserInfoUri())
+            .header(HttpHeaders.AUTHORIZATION, authorization)
+            .retrieve()
+            .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+    }
+
+    private URI getGoogleUserInfoUri() {
+        String baseUrl = appProperties.google().userInfoUri();
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl);
+        return uriBuilder.build().toUri();
     }
 }

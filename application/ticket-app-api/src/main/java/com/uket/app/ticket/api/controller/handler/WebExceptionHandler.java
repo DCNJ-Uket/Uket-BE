@@ -31,13 +31,13 @@ public class WebExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> unKnownException(HttpServletRequest request,
-            Exception exception) {
+        Exception exception) {
         return handleUnhandledException(request, exception);
     }
 
     @ExceptionHandler(AuthException.class)
     ResponseEntity<ErrorResponse> handleAuthException(HttpServletRequest request,
-            AuthException exception) {
+        AuthException exception) {
         ErrorCode errorCode = exception.getErrorCode();
         if (errorCode == ErrorCode.UNKNOWN_SERVER_ERROR) {
             return handleUnhandledException(request, exception);
@@ -45,13 +45,13 @@ public class WebExceptionHandler {
 
         log.warn("[AuthException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
         return ResponseEntity
-                .status(HttpStatus.valueOf(errorCode.getStatus()))
-                .body(ErrorResponse.of(errorCode));
+            .status(HttpStatus.valueOf(errorCode.getStatus()))
+            .body(ErrorResponse.of(errorCode));
     }
 
     @ExceptionHandler(UserException.class)
     ResponseEntity<ErrorResponse> handleAuthException(HttpServletRequest request,
-            UserException exception) {
+        UserException exception) {
         ErrorCode errorCode = exception.getErrorCode();
         if (errorCode == ErrorCode.UNKNOWN_SERVER_ERROR) {
             return handleUnhandledException(request, exception);
@@ -59,13 +59,13 @@ public class WebExceptionHandler {
 
         log.warn("[UserException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
         return ResponseEntity
-                .status(HttpStatus.valueOf(errorCode.getStatus()))
-                .body(ErrorResponse.of(errorCode));
+            .status(HttpStatus.valueOf(errorCode.getStatus()))
+            .body(ErrorResponse.of(errorCode));
     }
 
     @ExceptionHandler(BaseException.class)
     ResponseEntity<ErrorResponse> handleBaseException(HttpServletRequest request,
-            BaseException exception) {
+        BaseException exception) {
         ErrorCode errorCode = exception.getErrorCode();
         if (errorCode == ErrorCode.UNKNOWN_SERVER_ERROR) {
             return handleUnhandledException(request, exception);
@@ -73,38 +73,38 @@ public class WebExceptionHandler {
 
         log.warn("[BaseException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
         return ResponseEntity
-                .status(HttpStatus.valueOf(errorCode.getStatus()))
-                .body(ErrorResponse.of(errorCode));
+            .status(HttpStatus.valueOf(errorCode.getStatus()))
+            .body(ErrorResponse.of(errorCode));
     }
 
     @ExceptionHandler(Throwable.class)
     ResponseEntity<ErrorResponse> handleUnhandledException(HttpServletRequest request,
-            Throwable exception) {
+        Throwable exception) {
 
         StringBuilder dump = dumpRequest(request).append("\n ")
-                .append(getStackTraceAsString(exception));
+            .append(getStackTraceAsString(exception));
 
         log.error("[UnhandledException] {} \n", dump);
         return ResponseEntity
-                .internalServerError()
-                .body(ErrorResponse.of(ErrorCode.UNKNOWN_SERVER_ERROR));
+            .internalServerError()
+            .body(ErrorResponse.of(ErrorCode.UNKNOWN_SERVER_ERROR));
     }
 
     @ExceptionHandler(value = {
-            HttpMessageNotReadableException.class,
-            InvalidParameterException.class,
-            ServletRequestBindingException.class,
-            MethodArgumentNotValidException.class,
-            ConstraintViolationException.class,
-            MethodArgumentTypeMismatchException.class,
+        HttpMessageNotReadableException.class,
+        InvalidParameterException.class,
+        ServletRequestBindingException.class,
+        MethodArgumentNotValidException.class,
+        ConstraintViolationException.class,
+        MethodArgumentTypeMismatchException.class,
     })
     ResponseEntity<ErrorResponse> handleValidateException(HttpServletRequest request,
-            Exception exception) {
+        Exception exception) {
 
         log.warn("[InvalidParameterException]", exception);
         return ResponseEntity
-                .badRequest()
-                .body(ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE));
+            .badRequest()
+            .body(ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE));
     }
 
     private String getStackTraceAsString(Throwable throwable) {
@@ -115,12 +115,12 @@ public class WebExceptionHandler {
 
     private StringBuilder dumpRequest(HttpServletRequest request) {
         StringBuilder dump = new StringBuilder("HttpRequest Dump:")
-                .append("\n  Remote Addr   : ").append(request.getRemoteAddr())
-                .append("\n  Protocol      : ").append(request.getProtocol())
-                .append("\n  Request Method: ").append(request.getMethod())
-                .append("\n  Request URI   : ").append(request.getRequestURI())
-                .append("\n  Query String  : ").append(request.getQueryString())
-                .append("\n  Parameters    : ");
+            .append("\n  Remote Addr   : ").append(request.getRemoteAddr())
+            .append("\n  Protocol      : ").append(request.getProtocol())
+            .append("\n  Request Method: ").append(request.getMethod())
+            .append("\n  Request URI   : ").append(request.getRequestURI())
+            .append("\n  Query String  : ").append(request.getQueryString())
+            .append("\n  Parameters    : ");
 
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
@@ -145,9 +145,9 @@ public class WebExceptionHandler {
 
         dump.append("\n  Body       : ");
         if (request.getContentType() != null && request.getContentType()
-                .contains("application/x-www-form-urlencoded")) {
+            .contains("application/x-www-form-urlencoded")) {
             dump.append("\n    ")
-                    .append("Body is not readable for 'application/x-www-form-urlencoded' type or has been read");
+                .append("Body is not readable for 'application/x-www-form-urlencoded' type or has been read");
         } else {
             try {
                 dump.append("\n    ").append(readableToString(request.getReader()));

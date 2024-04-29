@@ -3,7 +3,7 @@ package com.uket.domain.auth.dto.response.token;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.ToString;
 
-public class KakaoTokenResponse implements OAuth2TokenResponse {
+public class GoogleTokenResponse implements OAuth2TokenResponse{
 
     @JsonProperty("token_type")
     String tokenType;
@@ -11,10 +11,9 @@ public class KakaoTokenResponse implements OAuth2TokenResponse {
     String accessToken;
     @JsonProperty("expires_in")
     Long expiredIn;
-    @JsonProperty("refresh_token")
+    @JsonProperty("id_token")
     String refreshToken;
-    @JsonProperty("refresh_token_expires_in")
-    Long refreshTokenExpiresIn;
+
     @JsonProperty("scope")
     String scope;
 
