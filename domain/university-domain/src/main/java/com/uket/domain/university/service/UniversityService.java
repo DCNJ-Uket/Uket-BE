@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UniversityService {
 
+    private static final String DEFAULT_UNIVERSITY_NAME = "외부인";
+
     private final UniversityRepository universityRepository;
 
     public Optional<University> findByName(String name) {
@@ -21,7 +23,7 @@ public class UniversityService {
     }
 
     public University getDefault(){
-        return universityRepository.findByName("외부인")
+        return universityRepository.findByName(DEFAULT_UNIVERSITY_NAME)
                 .orElseThrow(()-> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
     }
 }
