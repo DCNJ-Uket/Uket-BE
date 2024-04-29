@@ -4,6 +4,7 @@ import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.dto.response.token.GoogleTokenResponse;
 import com.uket.domain.auth.dto.response.token.KakaoTokenResponse;
 import com.uket.domain.auth.dto.response.token.OAuth2TokenResponse;
+import com.uket.domain.auth.dto.response.userinfo.GoogleUserInfoResponse;
 import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.properties.AppProperties;
 import com.uket.domain.user.enums.Platform;
@@ -39,12 +40,17 @@ public class OAuth2TokenManager extends OAuth2Manager {
     private OAuth2TokenResponse getKakaoTokenResponse(String redirectUri, String code) {
         RestClient restClient = createRestClient(appProperties.kakao().tokenUri());
 
-        return restClient
+        OAuth2TokenResponse response = restClient
                 .post()
                 .uri(uriBuilder -> getKakaoTokenUri(redirectUri, code, uriBuilder))
                 .header(HttpHeaders.CONTENT_TYPE, MEDIA_TYPE)
                 .retrieve()
                 .body(KakaoTokenResponse.class);
+
+        if (response != null) {
+            return response;
+        }
+        throw new AuthException(ErrorCode.FAIL_REQUEST_TO_OAUTH2);
     }
 
     private URI getKakaoTokenUri(String redirectUri, String code, UriBuilder uriBuilder) {
@@ -62,12 +68,17 @@ public class OAuth2TokenManager extends OAuth2Manager {
 
         String decode = URLDecoder.decode(code, StandardCharsets.UTF_8);
 
-        return restClient
+        OAuth2TokenResponse response = restClient
             .post()
             .uri(uriBuilder -> getGoogleTokenUri(redirectUri, decode, uriBuilder))
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
             .retrieve()
             .body(GoogleTokenResponse.class);
+
+        if (response != null) {
+            return response;
+        }
+        throw new AuthException(ErrorCode.FAIL_REQUEST_TO_OAUTH2);
     }
     private URI getGoogleTokenUri(String redirectUri, String code, UriBuilder uriBuilder) {
         return uriBuilder
