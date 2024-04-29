@@ -56,7 +56,7 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
     }
 
     private Map<String, Object> requestUserInfoToKakao(RestClient restClient, String authorization) {
-        return restClient
+        Map<String, Object> response = restClient
                 .post()
                 .uri(this::getKakaoUserInfoUri)
                 .header(HttpHeaders.AUTHORIZATION, authorization)
@@ -64,6 +64,11 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {
                 });
+
+        if (response != null) {
+            return response;
+        }
+        throw new AuthException(ErrorCode.FAIL_REQUEST_TO_OAUTH2);
     }
 
     private URI getKakaoUserInfoUri(UriBuilder uriBuilder) {
@@ -88,12 +93,17 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
     }
 
     private Map<String, Object> requestUserInfoToGoogle(RestClient restClient, String authorization) {
-        return restClient
+        Map<String, Object> response = restClient
             .get()
             .uri(getGoogleUserInfoUri())
             .header(HttpHeaders.AUTHORIZATION, authorization)
             .retrieve()
             .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+
+        if (response != null) {
+            return response;
+        }
+        throw new AuthException(ErrorCode.FAIL_REQUEST_TO_OAUTH2);
     }
 
     private URI getGoogleUserInfoUri() {
