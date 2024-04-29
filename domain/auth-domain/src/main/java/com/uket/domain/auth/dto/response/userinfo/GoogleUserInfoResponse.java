@@ -3,10 +3,14 @@ package com.uket.domain.auth.dto.response.userinfo;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+
 public class GoogleUserInfoResponse implements OAuth2UserInfoResponse {
 
     private final Map<String, Object> attribute;
+
+    public GoogleUserInfoResponse(Map<String, Object> attribute) {
+        this.attribute = attribute;
+    }
 
     @Override
     public String getProvider() {
@@ -15,7 +19,7 @@ public class GoogleUserInfoResponse implements OAuth2UserInfoResponse {
 
     @Override
     public String getProviderId() {
-        return attribute.get("sub").toString();
+        return attribute.get("id").toString();
     }
 
     @Override
