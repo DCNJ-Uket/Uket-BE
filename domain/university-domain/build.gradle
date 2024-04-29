@@ -1,0 +1,15 @@
+dependencies {
+    implementation project(":domain:core-domain")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.named('bootJar') {
+    enabled = false
+}
+
+tasks.named('jar') {
+    enabled = true
+}
