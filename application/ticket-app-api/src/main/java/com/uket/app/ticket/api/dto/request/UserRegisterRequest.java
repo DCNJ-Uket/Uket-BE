@@ -2,7 +2,9 @@ package com.uket.app.ticket.api.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
+@Builder
 public record UserRegisterRequest(
         @Schema(description = "입금자명", example = "홍길동")
         @NotNull(message = "depositorName 은 null 일 수 없습니다.")
