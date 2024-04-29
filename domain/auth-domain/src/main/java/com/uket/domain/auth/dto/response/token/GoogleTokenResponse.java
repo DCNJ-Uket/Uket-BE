@@ -3,7 +3,6 @@ package com.uket.domain.auth.dto.response.token;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.ToString;
 
-@ToString(of = {"tokenType", "accessToken", "scope"})
 public class GoogleTokenResponse implements OAuth2TokenResponse{
 
     @JsonProperty("token_type")
