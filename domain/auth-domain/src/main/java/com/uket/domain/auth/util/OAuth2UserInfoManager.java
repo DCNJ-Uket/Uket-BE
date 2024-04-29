@@ -91,9 +91,7 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
         return restClient
             .get()
             .uri(getGoogleUserInfoUri())
-            .headers(headers -> {
-                headers.set("Authorization", authorization);
-            })
+            .header(HttpHeaders.AUTHORIZATION, authorization)
             .retrieve()
             .body(new ParameterizedTypeReference<Map<String, Object>>() {});
     }
