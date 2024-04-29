@@ -1,9 +1,8 @@
-package com.uket.app.ticket.api.dto.request;
+package com.uket.domain.user.dto;
 
-public record UserRegisterRequest(
+public record CreateUserDetailsDto(
         String depositorName,
         String phoneNumber,
-        String university,
         String studentMajor,
         String studentCode
 ) {
