@@ -41,11 +41,11 @@ public class OAuth2TokenManager extends OAuth2Manager {
         RestClient restClient = createRestClient(appProperties.kakao().tokenUri());
 
         OAuth2TokenResponse response = restClient
-                .post()
-                .uri(uriBuilder -> getKakaoTokenUri(redirectUri, code, uriBuilder))
-                .header(HttpHeaders.CONTENT_TYPE, MEDIA_TYPE)
-                .retrieve()
-                .body(KakaoTokenResponse.class);
+            .post()
+            .uri(uriBuilder -> getKakaoTokenUri(redirectUri, code, uriBuilder))
+            .header(HttpHeaders.CONTENT_TYPE, MEDIA_TYPE)
+            .retrieve()
+            .body(KakaoTokenResponse.class);
 
         if (response != null) {
             return response;
@@ -55,12 +55,12 @@ public class OAuth2TokenManager extends OAuth2Manager {
 
     private URI getKakaoTokenUri(String redirectUri, String code, UriBuilder uriBuilder) {
         return uriBuilder
-                .queryParam("grant_type", "authorization_code")
-                .queryParam("redirect_uri", redirectUri)
-                .queryParam("client_id", appProperties.kakao().clientId())
-                .queryParam("client_secret", appProperties.kakao().clientSecret())
-                .queryParam("code", code)
-                .build();
+            .queryParam("grant_type", "authorization_code")
+            .queryParam("redirect_uri", redirectUri)
+            .queryParam("client_id", appProperties.kakao().clientId())
+            .queryParam("client_secret", appProperties.kakao().clientSecret())
+            .queryParam("code", code)
+            .build();
     }
 
     private OAuth2TokenResponse getGoogleTokenResponse(String redirectUri, String code) {
@@ -80,6 +80,7 @@ public class OAuth2TokenManager extends OAuth2Manager {
         }
         throw new AuthException(ErrorCode.FAIL_REQUEST_TO_OAUTH2);
     }
+
     private URI getGoogleTokenUri(String redirectUri, String code, UriBuilder uriBuilder) {
         return uriBuilder
             .queryParam("grant_type", "authorization_code")
