@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,15 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 public interface UserApi {
 
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
-    @PostMapping("/register/{type}")
+    @PostMapping("/register")
     ResponseEntity<TokenResponse> register(
             @Parameter(hidden = true)
             @LoginUserId Long userId,
 
             @Parameter(hidden = true)
             @IsRegistered Boolean isRegistered,
-
-            @PathVariable("type") String type,
 
             @RequestBody UserRegisterRequest request
     );

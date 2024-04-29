@@ -3,6 +3,7 @@ package com.uket.domain.user.entity;
 import com.uket.domain.core.entity.BaseEntity;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -31,7 +32,7 @@ public class Users extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_details_id")
     private UserDetails userDetails;
 
@@ -47,5 +48,10 @@ public class Users extends BaseEntity {
     public void updateEmailAndName(String email, String name) {
         this.email = email;
         this.name = name;
+    }
+
+    public void register(UserDetails userDetails) {
+        this.userDetails = userDetails;
+        this.isRegistered = true;
     }
 }
