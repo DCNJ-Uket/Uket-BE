@@ -5,7 +5,7 @@ import com.uket.app.ticket.api.dto.request.LoginRequest;
 import com.uket.app.ticket.api.dto.request.TokenReissueRequest;
 import com.uket.app.ticket.api.dto.response.TokenResponse;
 import com.uket.domain.auth.dto.response.AuthToken;
-import com.uket.domain.auth.service.AuthService;
+import com.uket.app.ticket.api.service.AuthService;
 import com.uket.domain.user.enums.Platform;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
