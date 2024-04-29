@@ -1,7 +1,8 @@
-package com.uket.domain.auth.service;
+package com.uket.app.ticket.api.service;
 
 import static com.uket.modules.jwt.auth.constants.JwtValues.JWT_PAYLOAD_VALUE_REFRESH;
 
+import com.uket.app.ticket.api.util.AuthTokenGenerator;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.auth.dto.response.userinfo.OAuth2UserInfoResponse;
 import com.uket.domain.auth.dto.response.token.OAuth2TokenResponse;
@@ -9,7 +10,6 @@ import com.uket.domain.auth.util.OAuth2TokenManager;
 import com.uket.domain.auth.util.OAuth2UserInfoManager;
 import com.uket.domain.auth.validator.TokenValidator;
 import com.uket.domain.user.dto.CreateUserDto;
-import com.uket.domain.user.dto.UserDto;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
@@ -30,6 +30,7 @@ public class AuthService {
     private final OAuth2TokenManager oauth2TokenManager;
     private final OAuth2UserInfoManager oAuth2UserInfoManager;
     private final UserService userService;
+    private final AuthTokenGenerator authTokenGenerator;
 
     @Transactional
     public AuthToken login(Platform platform, String redirectUri, String code) {
@@ -42,10 +43,10 @@ public class AuthService {
 
         if (user.isPresent()) {
             Users existUser = user.get();
-            return generateAuthToken(generateUserDto(existUser));
+            return authTokenGenerator.generateAuthToken(existUser);
         }
         Users newUser = userService.saveUser(generateCreateUserDto(userInfo));
-        return generateAuthToken(generateUserDto(newUser));
+        return authTokenGenerator.generateAuthToken(newUser);
     }
 
     public AuthToken reissue(String accessToken, String refreshToken) {
@@ -58,12 +59,7 @@ public class AuthService {
 
         Users findUser = userService.findById(jwtAuthTokenUtil.getId(refreshToken));
 
-        return generateAuthToken(UserDto.builder()
-                .userId(findUser.getId())
-                .name(findUser.getName())
-                .role(String.valueOf(findUser.getRole()))
-                .isRegistered(findUser.getIsRegistered())
-                .build());
+        return authTokenGenerator.generateAuthToken(findUser);
     }
 
     private CreateUserDto generateCreateUserDto(OAuth2UserInfoResponse userInfo) {
@@ -74,26 +70,5 @@ public class AuthService {
                 .name(userInfo.getName())
                 .role(UserRole.ROLE_USER)
                 .build();
-    }
-
-    private UserDto generateUserDto(Users user) {
-        return UserDto.builder()
-                .userId(user.getId())
-                .name(user.getName())
-                .role(String.valueOf(user.getRole()))
-                .isRegistered(user.getIsRegistered())
-                .build();
-    }
-
-    private AuthToken generateAuthToken(UserDto userDto) {
-        Long userId = userDto.userId();
-        String name = userDto.name();
-        String role = userDto.role();
-        Boolean isRegistered = userDto.isRegistered();
-
-        String newAccessToken = jwtAuthTokenUtil.createAccessToken(userId, name, role, isRegistered);
-        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken(userId);
-
-        return AuthToken.of(newAccessToken, newRefreshToken, isRegistered);
     }
 }
