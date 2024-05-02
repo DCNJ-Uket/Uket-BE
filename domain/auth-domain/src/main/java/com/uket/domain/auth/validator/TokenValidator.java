@@ -37,4 +37,10 @@ public class TokenValidator {
             throw new AuthException(ErrorCode.TOKEN_NOT_EXPIRED);
         }
     }
+
+    public void validateRegistered(String accessToken) {
+        if (Boolean.FALSE.equals(jwtAuthTokenUtil.isRegistered(accessToken))) {
+            throw new AuthException(ErrorCode.NOT_REGISTERED_USER);
+        }
+    }
 }
