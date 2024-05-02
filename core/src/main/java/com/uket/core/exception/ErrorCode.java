@@ -33,11 +33,18 @@ public enum ErrorCode {
      */
     NOT_FOUND_USER(404,"US0001", "해당 사용자를 찾을 수 없습니다."),
     ALREADY_EXIST_USER(409,"US0002", "이미 가입된 사용자입니다."),
+    NOT_REGISTERED_USER(400,"US0003", "가입되지 않은 사용자입니다. 회원가입 후 이용해주세요"),
 
     /**
      * University Errors
      */
-    NOT_FOUND_UNIVERSITY(404,"UN0001", "해당 대학을 찾을 수 없습니다.");
+    NOT_FOUND_UNIVERSITY(404,"UN0001", "해당 대학을 찾을 수 없습니다."),
+
+    /**
+     * Events Errors
+     */
+    NOT_FOUND_EVENT(404,"EV0001", "해당 축제를 찾을 수 없습니다.");
+
 
     private final int status;
     private final String code;

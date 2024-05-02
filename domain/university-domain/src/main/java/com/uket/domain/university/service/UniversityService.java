@@ -28,6 +28,10 @@ public class UniversityService {
     }
 
     public Optional<Long> getCurrentEvent(String name) {
+
+        if (name.equals(DEFAULT_UNIVERSITY_NAME)) {
+            throw new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY);
+        }
         University university = universityRepository.findByName(name)
                 .orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
 
