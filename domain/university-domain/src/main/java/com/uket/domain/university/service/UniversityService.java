@@ -19,6 +19,9 @@ public class UniversityService {
     private final UniversityRepository universityRepository;
 
     public Optional<University> findByName(String name) {
+        if (DEFAULT_UNIVERSITY_NAME.equals(name)) {
+            return Optional.empty();
+        }
         return universityRepository.findByName(name);
     }
 
