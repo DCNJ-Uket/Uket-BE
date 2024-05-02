@@ -2,6 +2,7 @@ package com.uket.app.ticket.api.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.repository.UniversityRepository;
@@ -11,8 +12,10 @@ import com.uket.domain.user.entity.UserDetails;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
+import com.uket.domain.user.exception.UserException;
 import com.uket.domain.user.service.UserService;
 import jakarta.transaction.Transactional;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +69,7 @@ class UserRegisterServiceTest {
     }
 
     @Test
-    void 대학을_입력하지_않을_시_외부인으로_처리된다() {
+    void 대학을_입력할_시_해당_대학으로_처리된다() {
         CreateUserDetailsDto createUserDetailsDto = CreateUserDetailsDto.builder()
                 .depositorName("홍길동")
                 .phoneNumber("01012341234")
@@ -82,7 +85,7 @@ class UserRegisterServiceTest {
     }
 
     @Test
-    void 대학을_입력할_시_해당_대학으로_처리된다() {
+    void 대학을_입력하지_않을_시_외부인으로_처리된다() {
         CreateUserDetailsDto createUserDetailsDto = CreateUserDetailsDto.builder()
                 .depositorName("홍길동")
                 .phoneNumber("01012341234")
@@ -136,7 +139,18 @@ class UserRegisterServiceTest {
 
     @Test
     void 대학_이메일과_대학이_다를_경우_예외를_반환한다() {
+        CreateUserDetailsDto createUserDetailsDto = CreateUserDetailsDto.builder()
+                .depositorName("홍길동")
+                .phoneNumber("01012341234")
+                .universityEmail("abc123@naver.com")
+                .studentMajor("컴퓨터 공학부")
+                .studentCode("1234")
+                .build();
 
-
+        Long userId = user.getId();
+        Assertions.assertThatThrownBy(
+                        () -> userRegisterService.register(userId, createUserDetailsDto, UNIVERSITY_KONKUK))
+                .isInstanceOf(UserException.class)
+                .hasMessage(ErrorCode.NOT_MATCH_UNIVERSITY_EMAIL.getMessage());
     }
 }
