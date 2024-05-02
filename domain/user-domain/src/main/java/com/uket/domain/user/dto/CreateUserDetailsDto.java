@@ -6,6 +6,7 @@ import lombok.Builder;
 public record CreateUserDetailsDto(
         String depositorName,
         String phoneNumber,
+        String universityEmail,
         String studentMajor,
         String studentCode
 ) {

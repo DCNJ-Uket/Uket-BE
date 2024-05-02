@@ -26,5 +26,6 @@ public class University {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String emailPostFix;
     private String logoUrl;
 }

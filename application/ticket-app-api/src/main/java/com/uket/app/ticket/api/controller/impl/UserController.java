@@ -32,6 +32,7 @@ public class UserController implements UserApi {
         return CreateUserDetailsDto.builder()
                 .depositorName(request.depositorName())
                 .phoneNumber(request.phoneNumber())
+                .universityEmail(request.universityEmail())
                 .studentMajor(request.studentMajor())
                 .studentCode(request.studentCode())
                 .build();
