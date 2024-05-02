@@ -29,6 +29,6 @@ public class EventController implements EventApi {
             CurrentEventResponse response = CurrentEventResponse.from(event);
             return ResponseEntity.ok(response);
         }
-        throw new EventException(ErrorCode.NOT_FOUND_EVENT);
+        throw new EventException(ErrorCode.NOT_FOUND_CURRENT_EVENT);
     }
 }
