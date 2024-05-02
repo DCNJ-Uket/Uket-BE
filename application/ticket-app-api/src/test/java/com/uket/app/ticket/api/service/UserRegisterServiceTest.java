@@ -47,7 +47,7 @@ class UserRegisterServiceTest {
         user = userService.saveUser(createUserDto);
 
         universityRepository.save(University.builder().name(UNIVERSITY_OUTSIDER).build());
-        universityRepository.save(University.builder().name(UNIVERSITY_KONKUK).build());
+        universityRepository.save(University.builder().name(UNIVERSITY_KONKUK).emailPostFix("@konkuk.ac.kr").build());
     }
 
     @Test
@@ -56,8 +56,6 @@ class UserRegisterServiceTest {
         CreateUserDetailsDto createUserDetailsDto = CreateUserDetailsDto.builder()
                 .depositorName("홍길동")
                 .phoneNumber("01012341234")
-                .studentMajor("컴퓨터 공학부")
-                .studentCode("1234")
                 .build();
 
         AuthToken authToken = userRegisterService.register(user.getId(), createUserDetailsDto, null);
@@ -72,6 +70,7 @@ class UserRegisterServiceTest {
         CreateUserDetailsDto createUserDetailsDto = CreateUserDetailsDto.builder()
                 .depositorName("홍길동")
                 .phoneNumber("01012341234")
+                .universityEmail("abc123@konkuk.ac.kr")
                 .studentMajor("컴퓨터 공학부")
                 .studentCode("1234")
                 .build();
@@ -87,8 +86,6 @@ class UserRegisterServiceTest {
         CreateUserDetailsDto createUserDetailsDto = CreateUserDetailsDto.builder()
                 .depositorName("홍길동")
                 .phoneNumber("01012341234")
-                .studentMajor("컴퓨터 공학부")
-                .studentCode("1234")
                 .build();
 
         userRegisterService.register(user.getId(), createUserDetailsDto, null);
@@ -102,8 +99,6 @@ class UserRegisterServiceTest {
         CreateUserDetailsDto createUserDetailsDto = CreateUserDetailsDto.builder()
                 .depositorName("홍길동")
                 .phoneNumber("01012341234")
-                .studentMajor("컴퓨터 공학부")
-                .studentCode("1234")
                 .build();
 
         userRegisterService.register(user.getId(), createUserDetailsDto, null);
@@ -116,23 +111,32 @@ class UserRegisterServiceTest {
     void 회원가입이_완료되면_회원의_세부정보가_저장된다() {
         String depositorName = "홍길동";
         String phoneNumber = "01012341234";
+        String email = "abc123@konkuk.ac.kr";
         String major = "컴퓨터 공학부";
         String code = "1234";
 
         CreateUserDetailsDto createUserDetailsDto = CreateUserDetailsDto.builder()
                 .depositorName(depositorName)
                 .phoneNumber(phoneNumber)
+                .universityEmail(email)
                 .studentMajor(major)
                 .studentCode(code)
                 .build();
 
-        userRegisterService.register(user.getId(), createUserDetailsDto, null);
+        userRegisterService.register(user.getId(), createUserDetailsDto, UNIVERSITY_KONKUK);
         Users findUser = userService.findById(user.getId());
         UserDetails userDetails = findUser.getUserDetails();
 
         assertThat(userDetails.getDepositorName()).isEqualTo(depositorName);
         assertThat(userDetails.getPhoneNumber()).isEqualTo(phoneNumber);
+        assertThat(userDetails.getUniversityEmail()).isEqualTo(email);
         assertThat(userDetails.getStudentMajor()).isEqualTo(major);
         assertThat(userDetails.getStudentCode()).isEqualTo(code);
+    }
+
+    @Test
+    void 대학_이메일과_대학이_다를_경우_예외를_반환한다() {
+
+
     }
 }

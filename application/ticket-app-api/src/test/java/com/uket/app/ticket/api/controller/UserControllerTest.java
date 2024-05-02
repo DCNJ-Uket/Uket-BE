@@ -72,14 +72,14 @@ class UserControllerTest {
         user = userService.saveUser(createUserDto);
 
         universityRepository.save(University.builder().name("외부인").build());
-        universityRepository.save(University.builder().name("건국대학교").build());
+        universityRepository.save(University.builder().name("건국대학교").emailPostFix("@konkuk.ac.kr").build());
     }
 
     @Test
     void 회원가입시_토큰이_재발급된다() throws Exception {
 
         UserRegisterRequest request = new UserRegisterRequest("홍길동",
-                "01012341234", "건국대학교", "컴퓨터공학부", "12341234");
+                "01012341234", "건국대학교", "abc123@konkuk.ac.kr","컴퓨터공학부", "12341234");
         AuthToken authToken = authTokenGenerator.generateAuthToken(user);
         String accessToken = String.join("", JwtValues.JWT_AUTHORIZATION_VALUE_PREFIX, authToken.accessToken());
 
@@ -101,7 +101,7 @@ class UserControllerTest {
     void 재발급된_토큰은_회원가입된_상태여야_한다() throws Exception {
 
         UserRegisterRequest request = new UserRegisterRequest("홍길동",
-                "01012341234", "건국대학교", "컴퓨터공학부", "12341234");
+                "01012341234", "건국대학교", "abc123@konkuk.ac.kr","컴퓨터공학부", "12341234");
         AuthToken authToken = authTokenGenerator.generateAuthToken(user);
         String accessToken = String.join("", JwtValues.JWT_AUTHORIZATION_VALUE_PREFIX, authToken.accessToken());
 
