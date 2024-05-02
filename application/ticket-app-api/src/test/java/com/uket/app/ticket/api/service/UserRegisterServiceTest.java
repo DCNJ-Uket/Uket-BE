@@ -22,7 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Transactional
 class UserRegisterServiceTest {
 
-    private static final String UNIVERSITY_OUTSIDER = "외부인";
+    private static final String UNIVERSITY_OUTSIDER = "일반인";
     private static final String UNIVERSITY_KONKUK = "건국대학교";
 
     @Autowired
