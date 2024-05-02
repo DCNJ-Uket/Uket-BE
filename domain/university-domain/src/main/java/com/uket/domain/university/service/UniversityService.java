@@ -26,4 +26,11 @@ public class UniversityService {
         return universityRepository.findByName(DEFAULT_UNIVERSITY_NAME)
                 .orElseThrow(()-> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
     }
+
+    public Long getCurrentEvent(String name) {
+        University university = universityRepository.findByName(name)
+                .orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
+
+        return university.getCurrentEvent();
+    }
 }
