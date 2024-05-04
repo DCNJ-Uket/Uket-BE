@@ -20,6 +20,7 @@ import com.uket.domain.user.service.UserService;
 import com.uket.modules.jwt.auth.constants.JwtValues;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,11 +77,19 @@ class UniversityControllerTest {
 
         user = userService.saveUser(createUserDto);
 
+        konkuk = universityRepository.save(
+                University.builder()
+                        .name(UNIVERSITY_KONKUK)
+                        .emailPostFix("@konkuk.ac.kr")
+                        .currentEvent(1L)
+                        .build()
+        );
         Events event = eventRepository.save(
                 Events.builder()
                         .name(EVENT_KONKUK)
                         .startDate(LocalDate.now())
                         .endDate(LocalDate.now())
+                        .university(konkuk)
                         .build()
         );
         universityRepository.save(
@@ -88,16 +97,46 @@ class UniversityControllerTest {
                         .name(UNIVERSITY_OUTSIDER)
                         .build()
         );
-        konkuk = universityRepository.save(
-                University.builder()
-                        .name(UNIVERSITY_KONKUK)
-                        .emailPostFix("@konkuk.ac.kr")
-                        .currentEvent(event.getId())
-                        .build()
-        );
 
         AuthToken authToken = userRegisterService.register(user.getId(), createUserDetailsDto, UNIVERSITY_KONKUK);
         accessToken = String.join("", JwtValues.JWT_AUTHORIZATION_VALUE_PREFIX, authToken.accessToken());
+    }
+
+    @Test
+    void 진행중인_축제가_있는_모든_대학을_조회할_수_있다() throws Exception {
+
+        ResultActions perform = mockMvc.perform(
+                get(BASE_URL)
+                        .header(HttpHeaders.AUTHORIZATION, accessToken)
+        );
+
+        perform.andExpect(status().isOk())
+                .andExpect(jsonPath("$.items").isArray())
+                .andExpect(jsonPath("$.items.length()").value(1))
+                .andExpect(jsonPath("$.items[0].id").value(konkuk.getId()))
+                .andExpect(jsonPath("$.items[0].logoUrl").value(konkuk.getLogoUrl()))
+                .andExpect(jsonPath("$.items[0].name").value(konkuk.getName()));
+    }
+
+    @Test
+    void 진행중인_축제가_없다면_대학을_조회할_수_없다() throws Exception {
+        String UNIV_SEJONG = "세종대학교";
+
+        University sejong = universityRepository.save(
+                University.builder()
+                        .name(UNIV_SEJONG)
+                        .emailPostFix("@sejong.ac.kr")
+                        .build()
+        );
+
+        ResultActions perform = mockMvc.perform(
+                get(BASE_URL)
+                        .header(HttpHeaders.AUTHORIZATION, accessToken)
+        );
+
+        perform.andExpect(status().isOk())
+                .andExpect(jsonPath("$.items").isArray())
+                .andExpect(jsonPath("$.items.length()").value(1));
     }
 
     @Test
@@ -136,6 +175,7 @@ class UniversityControllerTest {
         University sejong = universityRepository.save(
                 University.builder()
                         .name(UNIV_SEJONG)
+                        .emailPostFix("@sejong.ac.kr")
                         .build()
         );
 
