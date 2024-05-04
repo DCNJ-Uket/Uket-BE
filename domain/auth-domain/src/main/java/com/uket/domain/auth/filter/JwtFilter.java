@@ -2,6 +2,8 @@ package com.uket.domain.auth.filter;
 
 import static com.uket.modules.jwt.auth.constants.JwtValues.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uket.core.dto.response.ErrorResponse;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.validator.TokenValidator;
@@ -12,8 +14,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -26,6 +30,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
     private final TokenValidator tokenValidator;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -38,24 +43,33 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         accessToken = accessToken.replace(JWT_AUTHORIZATION_VALUE_PREFIX, "");
 
-        if (validateAccessToken(accessToken)) {
+        if (validateAccessToken(response,accessToken)) {
             Authentication authentication = new JWTTokenAuthentication(accessToken, generateUserDto(accessToken));
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
         }
-        filterChain.doFilter(request, response);
     }
 
-    private boolean validateAccessToken(String accessToken) {
+    private boolean validateAccessToken(HttpServletResponse response,String accessToken) throws IOException {
         try {
             tokenValidator.validateExpiredToken(accessToken);
             tokenValidator.validateTokenSignature(accessToken);
             tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_ACCESS, accessToken);
         } catch (AuthException exception) {
             ErrorCode errorCode =  exception.getErrorCode();
+            writeErrorResponse(response, errorCode);
             log.warn("[AuthException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
             return false;
         }
         return true;
+    }
+
+    private void writeErrorResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter()
+                .write(objectMapper.writeValueAsString(ErrorResponse.of(errorCode)));
     }
 
     private UserDto generateUserDto(String accessToken) {

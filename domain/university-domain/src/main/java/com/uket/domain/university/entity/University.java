@@ -27,4 +27,5 @@ public class University {
     private Long id;
     private String name;
     private String logoUrl;
+    private Long currentEvent;
 }
