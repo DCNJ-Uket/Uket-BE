@@ -1,9 +1,12 @@
 package com.uket.domain.university.service;
 
 import com.uket.core.exception.ErrorCode;
+import com.uket.domain.university.dto.UniversityDto;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.exception.UniversityException;
 import com.uket.domain.university.repository.UniversityRepository;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,10 @@ public class UniversityService {
     private static final String DEFAULT_UNIVERSITY_NAME = "일반인";
 
     private final UniversityRepository universityRepository;
+
+    public List<UniversityDto> getUniversities(LocalDate date) {
+        return null;
+    }
 
     public Optional<University> findByName(String name) {
         if (DEFAULT_UNIVERSITY_NAME.equals(name)) {
