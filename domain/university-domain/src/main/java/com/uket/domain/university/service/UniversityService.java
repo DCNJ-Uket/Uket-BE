@@ -1,12 +1,9 @@
 package com.uket.domain.university.service;
 
 import com.uket.core.exception.ErrorCode;
-import com.uket.domain.university.dto.UniversityDto;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.exception.UniversityException;
 import com.uket.domain.university.repository.UniversityRepository;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,10 +18,6 @@ public class UniversityService {
 
     private final UniversityRepository universityRepository;
 
-    public List<UniversityDto> getUniversities(LocalDate date) {
-        return null;
-    }
-
     public Optional<University> findByName(String name) {
         if (DEFAULT_UNIVERSITY_NAME.equals(name)) {
             return Optional.empty();
@@ -32,9 +25,9 @@ public class UniversityService {
         return universityRepository.findByName(name);
     }
 
-    public University getDefault(){
+    public University getDefault() {
         return universityRepository.findByName(DEFAULT_UNIVERSITY_NAME)
-                .orElseThrow(()-> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
+                .orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
     }
 
     public Optional<Long> getCurrentEvent(String name) {

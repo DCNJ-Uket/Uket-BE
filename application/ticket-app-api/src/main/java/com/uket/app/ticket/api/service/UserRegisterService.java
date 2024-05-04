@@ -34,7 +34,7 @@ public class UserRegisterService {
 
         String universityEmail = createUserDetailsDto.universityEmail();
         findUniversity.ifPresent(univ -> {
-            if(!universityEmail.contains(univ.getEmailPostFix())){
+            if(universityEmail == null || !universityEmail.contains(univ.getEmailPostFix())){
                 throw new UserException(ErrorCode.NOT_MATCH_UNIVERSITY_EMAIL);
             }
         });
