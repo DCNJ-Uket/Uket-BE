@@ -7,3 +7,4 @@ WHERE university.name = '건국대학교';
 UPDATE events
     JOIN university ON university.current_event = events.event_id
     SET events.university_id = university.university_id
+WHERE university.current_event = events.event_id;
