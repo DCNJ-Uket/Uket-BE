@@ -28,4 +28,5 @@ public class University {
     private String name;
     private String emailPostFix;
     private String logoUrl;
+    private Long currentEvent;
 }
