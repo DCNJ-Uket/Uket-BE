@@ -1,8 +1,10 @@
 package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.UniversityApi;
+import com.uket.app.ticket.api.dto.response.CurrentEventResponse;
 import com.uket.app.ticket.api.dto.response.ListResponse;
 import com.uket.app.ticket.api.service.UniversityEventService;
+import com.uket.domain.event.entity.Events;
 import com.uket.domain.university.dto.UniversityDto;
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +24,15 @@ public class UniversityController implements UniversityApi {
         List<UniversityDto> universities = universityEventService.getUniversitiesByDate(now);
 
         ListResponse<UniversityDto> response = ListResponse.from(universities);
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<CurrentEventResponse> getCurrentEventOfUniversity(Long universityId) {
+
+        Events event = universityEventService.getCurrentEventOfUniversity(universityId);
+
+        CurrentEventResponse response = CurrentEventResponse.from(event);
         return ResponseEntity.ok(response);
     }
 }

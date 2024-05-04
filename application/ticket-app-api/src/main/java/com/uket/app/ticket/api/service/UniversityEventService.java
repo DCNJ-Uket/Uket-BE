@@ -27,8 +27,8 @@ public class UniversityEventService {
         return eventRepository.searchUniversitiesByDate(date);
     }
 
-    public Events getCurrentEventOfUniversity(String university) {
-        Optional<Long> currentEvent = universityService.getCurrentEvent(university);
+    public Events getCurrentEventOfUniversity(Long universityId) {
+        Optional<Long> currentEvent = universityService.getCurrentEvent(universityId);
 
         if (currentEvent.isPresent()) {
             return eventService.findById(currentEvent.get());
