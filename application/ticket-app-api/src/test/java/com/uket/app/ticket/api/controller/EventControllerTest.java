@@ -67,6 +67,7 @@ class EventControllerTest {
 
         CreateUserDetailsDto createUserDetailsDto = CreateUserDetailsDto.builder()
                 .depositorName("홍길동")
+                .universityEmail("abc@konkuk.ac.kr")
                 .phoneNumber("01012341234")
                 .studentMajor("컴퓨터공학부")
                 .studentCode("202411032")
@@ -89,6 +90,7 @@ class EventControllerTest {
         universityRepository.save(
                 University.builder()
                         .name(UNIVERSITY_KONKUK)
+                        .emailPostFix("@konkuk.ac.kr")
                         .currentEvent(event.getId())
                         .build()
         );
