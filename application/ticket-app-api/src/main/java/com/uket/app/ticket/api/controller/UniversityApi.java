@@ -24,6 +24,7 @@ public interface UniversityApi {
     ResponseEntity<ListResponse<UniversityDto>> getUniversities();
 
     @GetMapping(value = "/{id}/event")
+    @Operation(summary = "대학별 진행중인 축제 조회 API", description = "대학별 진행중인 축제를 조회합니다.")
     ResponseEntity<CurrentEventResponse> getCurrentEventOfUniversity(
             @PathVariable("id")
             @Parameter(description = "대학 id")

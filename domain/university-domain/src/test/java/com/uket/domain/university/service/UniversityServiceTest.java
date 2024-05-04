@@ -47,9 +47,9 @@ class UniversityServiceTest {
     @Test
     void 요청한_대학이_존재하지_않는_경우_예외를_발생시킨다() {
 
-        when(universityRepository.findByName(any())).thenReturn(Optional.empty());
+        when(universityRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> universityService.getCurrentEvent(""))
+        assertThatThrownBy(() -> universityService.getCurrentEvent(1L))
                 .hasMessage(ErrorCode.NOT_FOUND_UNIVERSITY.getMessage())
                 .isInstanceOf(UniversityException.class);
     }
@@ -57,7 +57,7 @@ class UniversityServiceTest {
     @Test
     void 요청한_대학이_일반인인_경우_예외를_발생시킨다() {
 
-        assertThatThrownBy(() -> universityService.getCurrentEvent("일반인"))
+        assertThatThrownBy(() -> universityService.getCurrentEvent(1L))
                 .hasMessage(ErrorCode.NOT_FOUND_UNIVERSITY.getMessage())
                 .isInstanceOf(UniversityException.class);
     }
@@ -65,20 +65,20 @@ class UniversityServiceTest {
     @Test
     void 요청한_대학이_진행중인_축제가_없는_경우_null을_반환한다() {
 
-        when(universityRepository.findByName(any())).thenReturn(
+        when(universityRepository.findById(any())).thenReturn(
                 Optional.of(University.builder().name("건국대학교").build())
         );
 
-        Assertions.assertThat(universityService.getCurrentEvent("건국대학교")).isEmpty();
+        Assertions.assertThat(universityService.getCurrentEvent(1L)).isEmpty();
     }
 
     @Test
     void 요청한_대학이_진행중인_축제가_있는_경우_축제의_id를_반환한다() {
 
-        when(universityRepository.findByName(any())).thenReturn(
+        when(universityRepository.findById(any())).thenReturn(
                 Optional.of(University.builder().name("건국대학교").currentEvent(1L).build())
         );
 
-        Assertions.assertThat(universityService.getCurrentEvent("건국대학교")).isNotEmpty();
+        Assertions.assertThat(universityService.getCurrentEvent(1L)).isNotEmpty();
     }
 }

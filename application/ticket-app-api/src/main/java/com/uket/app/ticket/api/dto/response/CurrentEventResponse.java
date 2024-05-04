@@ -6,11 +6,11 @@ import lombok.Builder;
 
 @Builder
 public record CurrentEventResponse(
-
         String name,
         LocalDate startDate,
         LocalDate endDate
 ) {
+
     public static CurrentEventResponse from(Events event) {
         return CurrentEventResponse.builder()
                 .name(event.getName())
