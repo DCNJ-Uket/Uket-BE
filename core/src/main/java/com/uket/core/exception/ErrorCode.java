@@ -39,13 +39,13 @@ public enum ErrorCode {
      * University Errors
      */
     NOT_FOUND_UNIVERSITY(404,"UN0001", "해당 대학을 찾을 수 없습니다."),
+    NOT_MATCH_UNIVERSITY_EMAIL(400,"UN0002", "대학 이메일 정보가 잘못되었습니다."),
 
     /**
      * Events Errors
      */
     NOT_FOUND_EVENT(404,"EV0001", "해당 축제를 찾을 수 없습니다."),
     NOT_FOUND_CURRENT_EVENT(404,"EV0002", "진행중인 축제를 찾을 수 없습니다.");
-
 
     private final int status;
     private final String code;

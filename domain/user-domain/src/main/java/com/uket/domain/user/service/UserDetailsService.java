@@ -20,6 +20,7 @@ public class UserDetailsService {
         UserDetails userDetails = UserDetails.builder()
                 .depositorName(createUserDetailsDto.depositorName())
                 .phoneNumber(createUserDetailsDto.phoneNumber())
+                .universityEmail(createUserDetailsDto.universityEmail())
                 .studentMajor(createUserDetailsDto.studentMajor())
                 .studentCode(createUserDetailsDto.studentCode())
                 .build();
