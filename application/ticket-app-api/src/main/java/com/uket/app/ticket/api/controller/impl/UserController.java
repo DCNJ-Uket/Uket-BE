@@ -6,7 +6,8 @@ import com.uket.app.ticket.api.dto.response.AuthResponse;
 import com.uket.app.ticket.api.service.UserRegisterService;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.user.dto.CreateUserDetailsDto;
-import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
+import com.uket.domain.user.entity.Users;
+import com.uket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,8 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class UserController implements UserApi {
 
+    private final UserService userService;
     private final UserRegisterService userRegisterService;
-    private final JwtAuthTokenUtil jwtAuthTokenUtil;
 
     @Override
     public ResponseEntity<AuthResponse> register(Long userId, UserRegisterRequest request) {
@@ -26,9 +27,9 @@ public class UserController implements UserApi {
         CreateUserDetailsDto createUserDetailsDto = generateCreateUserDetailsDto(request);
 
         AuthToken authToken = userRegisterService.register(userId, createUserDetailsDto, request.university());
-        String userName = jwtAuthTokenUtil.getName(authToken.accessToken());
+        Users findUser = userService.findById(userId);
 
-        AuthResponse response = AuthResponse.of(userId,userName,authToken);
+        AuthResponse response = AuthResponse.of(findUser,authToken);
         return ResponseEntity.ok(response);
     }
 
