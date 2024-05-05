@@ -8,6 +8,7 @@ import lombok.Builder;
 public record CreateUserDto(
         String name,
         String email,
+        String profileImage,
         Platform platform,
         String platformId,
         UserRole role

@@ -32,6 +32,7 @@ public class UserService {
         Users newUser = Users.builder()
                 .name(createUserDto.name())
                 .email(createUserDto.email())
+                .profileImage(createUserDto.profileImage())
                 .platform(createUserDto.platform())
                 .platformId(createUserDto.platformId())
                 .role(createUserDto.role())

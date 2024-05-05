@@ -68,6 +68,7 @@ public class AuthService {
                 .platformId(userInfo.getProviderId())
                 .email(userInfo.getEmail())
                 .name(userInfo.getName())
+                .profileImage(userInfo.getProfileImage())
                 .role(UserRole.ROLE_USER)
                 .build();
     }

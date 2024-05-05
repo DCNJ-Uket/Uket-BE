@@ -44,6 +44,7 @@ public class Users extends BaseEntity {
 
     private String name;
     private String email;
+    private String profileImage;
     @Enumerated(EnumType.STRING)
     private Platform platform;
     private String platformId;
