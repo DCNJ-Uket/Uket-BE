@@ -2,6 +2,7 @@ package com.uket.app.ticket.api.controller;
 
 import com.uket.app.ticket.api.dto.request.LoginRequest;
 import com.uket.app.ticket.api.dto.request.TokenReissueRequest;
+import com.uket.app.ticket.api.dto.response.AuthResponse;
 import com.uket.app.ticket.api.dto.response.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,7 +22,7 @@ public interface AuthApi {
 
     @Operation(summary = "소셜 로그인", description = "소셜 로그인을 진행합니다.")
     @PostMapping("/login/{provider}")
-    ResponseEntity<TokenResponse> login(
+    ResponseEntity<AuthResponse> login(
             @Valid
             @RequestBody LoginRequest request,
             @Parameter(example = "kakao", description = "oAuth 제공자 이름")
