@@ -52,9 +52,10 @@ public class Users extends BaseEntity {
     private UserRole role;
     private Boolean isRegistered;
 
-    public void updateEmailAndName(String email, String name) {
+    public void updateProfile(String email, String name, String profileImage) {
         this.email = email;
         this.name = name;
+        this.profileImage = profileImage;
     }
 
     public void register(UserDetails userDetails, University university) {

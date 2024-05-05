@@ -15,7 +15,6 @@ import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
 import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,13 +37,6 @@ public class AuthService {
         OAuth2TokenResponse tokenResponse = oauth2TokenManager.getAccessToken(platform, redirectUri, code);
         OAuth2UserInfoResponse userInfo = oAuth2UserInfoManager.getUserInfo(platform, tokenResponse);
 
-        Optional<Users> user = userService.findByPlatformAndPlatformId(
-                userInfo.getProvider(), userInfo.getProviderId());
-
-        if (user.isPresent()) {
-            Users existUser = user.get();
-            return authTokenGenerator.generateAuthToken(existUser);
-        }
         Users newUser = userService.saveUser(generateCreateUserDto(userInfo));
         return authTokenGenerator.generateAuthToken(newUser);
     }

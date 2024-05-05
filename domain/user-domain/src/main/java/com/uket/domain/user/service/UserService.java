@@ -26,7 +26,7 @@ public class UserService {
                 createUserDto.platformId());
 
         if (existUser.isPresent()) {
-            return updateEmailAndNameOfExistUser(createUserDto, existUser.get());
+            return updateProfileOfExistUser(createUserDto, existUser.get());
         }
 
         Users newUser = Users.builder()
@@ -42,18 +42,13 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public Optional<Users> findByPlatformAndPlatformId(String provider, String platformId) {
-        Platform platform = Platform.fromString(provider);
-        return userRepository.findByPlatformAndPlatformId(platform,platformId);
-    }
-
     public Users findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
     }
 
-    private Users updateEmailAndNameOfExistUser(CreateUserDto createUserDto, Users existUser) {
-        existUser.updateEmailAndName(createUserDto.email(), createUserDto.name());
+    private Users updateProfileOfExistUser(CreateUserDto createUserDto, Users existUser) {
+        existUser.updateProfile(createUserDto.email(), createUserDto.name(), createUserDto.profileImage());
         userRepository.save(existUser);
         return existUser;
     }
