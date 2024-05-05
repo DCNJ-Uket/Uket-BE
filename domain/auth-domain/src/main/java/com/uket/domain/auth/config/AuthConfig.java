@@ -1,6 +1,5 @@
 package com.uket.domain.auth.config;
 
-import com.uket.domain.auth.config.register.IsRegisteredArgumentResolver;
 import com.uket.domain.auth.config.userid.LoginUserArgumentResolver;
 import com.uket.domain.auth.interceptor.LoginInterceptor;
 import java.util.List;
@@ -16,7 +15,6 @@ public class AuthConfig implements WebMvcConfigurer {
 
     private final LoginInterceptor loginInterceptor;
     private final LoginUserArgumentResolver loginUserArgumentResolver;
-    private final IsRegisteredArgumentResolver isRegisteredArgumentResolver;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -29,7 +27,6 @@ public class AuthConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(loginUserArgumentResolver);
-        resolvers.add(isRegisteredArgumentResolver);
         WebMvcConfigurer.super.addArgumentResolvers(resolvers);
     }
 }
