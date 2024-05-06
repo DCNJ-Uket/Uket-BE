@@ -25,19 +25,18 @@ public class UniversityService {
         return universityRepository.findByName(name);
     }
 
-    public University getDefault(){
+    public University getDefault() {
         return universityRepository.findByName(DEFAULT_UNIVERSITY_NAME)
-                .orElseThrow(()-> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
+                .orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
     }
 
-    public Optional<Long> getCurrentEvent(String name) {
-
-        if (name.equals(DEFAULT_UNIVERSITY_NAME)) {
-            throw new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY);
-        }
-        University university = universityRepository.findByName(name)
+    public Optional<Long> getCurrentEvent(Long universityId) {
+        University university = universityRepository.findById(universityId)
                 .orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
 
+        if (university.getName().equals(DEFAULT_UNIVERSITY_NAME)) {
+            throw new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY);
+        }
         return Optional.ofNullable(university.getCurrentEvent());
     }
 }

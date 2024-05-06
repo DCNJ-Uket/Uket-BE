@@ -36,4 +36,8 @@ public class Events extends BaseEntity {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    public void updateUniversity(University university) {
+        this.university = university;
+    }
 }
