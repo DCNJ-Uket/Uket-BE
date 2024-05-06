@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,8 +29,10 @@ public class Shows extends BaseEntity {
     private Long id;
 
     private String name;
-    private LocalDate date;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private LocalDateTime ticketingDate;
+    private Integer totalTicketCount;
     private String location;
 
     @ManyToOne(fetch = FetchType.LAZY)

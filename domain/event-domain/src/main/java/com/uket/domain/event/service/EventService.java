@@ -19,4 +19,9 @@ public class EventService {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventException(ErrorCode.NOT_FOUND_EVENT));
     }
+
+    public String getUniversityName(Long eventId) {
+        Events event = findById(eventId);
+        return event.getUniversity().getName();
+    }
 }
