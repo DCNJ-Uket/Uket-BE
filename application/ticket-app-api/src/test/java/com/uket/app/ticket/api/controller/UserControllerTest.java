@@ -8,8 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uket.app.ticket.api.dto.request.UserRegisterRequest;
 import com.uket.app.ticket.api.dto.response.TokenResponse;
 import com.uket.app.ticket.api.util.AuthTokenGenerator;
-import com.uket.core.dto.response.ErrorResponse;
-import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.repository.UniversityRepository;
@@ -34,7 +32,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @SpringBootTest
 @Transactional
@@ -71,15 +68,15 @@ class UserControllerTest {
 
         user = userService.saveUser(createUserDto);
 
-        universityRepository.save(University.builder().name("외부인").build());
-        universityRepository.save(University.builder().name("건국대학교").build());
+        universityRepository.save(University.builder().name("일반인").build());
+        universityRepository.save(University.builder().name("건국대학교").emailPostFix("@konkuk.ac.kr").build());
     }
 
     @Test
     void 회원가입시_토큰이_재발급된다() throws Exception {
 
         UserRegisterRequest request = new UserRegisterRequest("홍길동",
-                "01012341234", "건국대학교", "컴퓨터공학부", "12341234");
+                "01012341234", "건국대학교", "abc123@konkuk.ac.kr","컴퓨터공학부", "12341234");
         AuthToken authToken = authTokenGenerator.generateAuthToken(user);
         String accessToken = String.join("", JwtValues.JWT_AUTHORIZATION_VALUE_PREFIX, authToken.accessToken());
 
@@ -101,7 +98,7 @@ class UserControllerTest {
     void 재발급된_토큰은_회원가입된_상태여야_한다() throws Exception {
 
         UserRegisterRequest request = new UserRegisterRequest("홍길동",
-                "01012341234", "건국대학교", "컴퓨터공학부", "12341234");
+                "01012341234", "건국대학교", "abc123@konkuk.ac.kr","컴퓨터공학부", "12341234");
         AuthToken authToken = authTokenGenerator.generateAuthToken(user);
         String accessToken = String.join("", JwtValues.JWT_AUTHORIZATION_VALUE_PREFIX, authToken.accessToken());
 

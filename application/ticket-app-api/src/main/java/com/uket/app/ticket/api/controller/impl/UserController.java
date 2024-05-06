@@ -2,10 +2,12 @@ package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.UserApi;
 import com.uket.app.ticket.api.dto.request.UserRegisterRequest;
-import com.uket.app.ticket.api.dto.response.TokenResponse;
+import com.uket.app.ticket.api.dto.response.AuthResponse;
 import com.uket.app.ticket.api.service.UserRegisterService;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.user.dto.CreateUserDetailsDto;
+import com.uket.domain.user.entity.Users;
+import com.uket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +18,18 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class UserController implements UserApi {
 
+    private final UserService userService;
     private final UserRegisterService userRegisterService;
 
     @Override
-    public ResponseEntity<TokenResponse> register(Long userId, Boolean isRegistered, UserRegisterRequest request) {
+    public ResponseEntity<AuthResponse> register(Long userId, UserRegisterRequest request) {
 
         CreateUserDetailsDto createUserDetailsDto = generateCreateUserDetailsDto(request);
 
         AuthToken authToken = userRegisterService.register(userId, createUserDetailsDto, request.university());
-        TokenResponse response = TokenResponse.from(authToken);
+        Users findUser = userService.findById(userId);
+
+        AuthResponse response = AuthResponse.of(findUser,authToken);
         return ResponseEntity.ok(response);
     }
 
@@ -32,6 +37,7 @@ public class UserController implements UserApi {
         return CreateUserDetailsDto.builder()
                 .depositorName(request.depositorName())
                 .phoneNumber(request.phoneNumber())
+                .universityEmail(request.universityEmail())
                 .studentMajor(request.studentMajor())
                 .studentCode(request.studentCode())
                 .build();

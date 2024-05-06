@@ -22,8 +22,10 @@ public class UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_details_id")
     private Long id;
-    String depositorName;
-    String phoneNumber;
-    String studentMajor;
-    String studentCode;
+
+    private String depositorName;
+    private String phoneNumber;
+    private String studentMajor;
+    private String studentCode;
+    private String universityEmail;
 }

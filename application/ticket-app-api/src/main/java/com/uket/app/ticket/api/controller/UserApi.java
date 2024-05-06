@@ -1,8 +1,7 @@
 package com.uket.app.ticket.api.controller;
 
 import com.uket.app.ticket.api.dto.request.UserRegisterRequest;
-import com.uket.app.ticket.api.dto.response.TokenResponse;
-import com.uket.domain.auth.config.register.IsRegistered;
+import com.uket.app.ticket.api.dto.response.AuthResponse;
 import com.uket.domain.auth.config.userid.LoginUserId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,12 +22,9 @@ public interface UserApi {
 
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
     @PostMapping("/register")
-    ResponseEntity<TokenResponse> register(
+    ResponseEntity<AuthResponse> register(
             @Parameter(hidden = true)
             @LoginUserId Long userId,
-
-            @Parameter(hidden = true)
-            @IsRegistered Boolean isRegistered,
 
             @Valid
             @RequestBody UserRegisterRequest request

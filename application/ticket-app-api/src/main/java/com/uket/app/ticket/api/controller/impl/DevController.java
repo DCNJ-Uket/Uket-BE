@@ -2,7 +2,9 @@ package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.DevApi;
 import com.uket.app.ticket.api.dto.response.TokenResponse;
+import com.uket.app.ticket.api.service.UserRegisterService;
 import com.uket.domain.auth.dto.response.AuthToken;
+import com.uket.domain.user.dto.CreateUserDetailsDto;
 import com.uket.domain.user.dto.CreateUserDto;
 import com.uket.domain.user.dto.UserDto;
 import com.uket.domain.user.entity.Users;
@@ -20,6 +22,7 @@ public class DevController implements DevApi {
 
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
     private final UserService userService;
+    private final UserRegisterService userRegisterService;
 
     @Override
     public ResponseEntity<String> test(Long userId) {
@@ -30,7 +33,10 @@ public class DevController implements DevApi {
     public ResponseEntity<TokenResponse> getToken() {
 
         Users user = userService.saveUser(generateCreateUserDto());
-        UserDto userDto = generateUserDto(user);
+        userRegisterService.register(user.getId(),generateCreateUserDetailsDto(),"건국대학교");
+
+        Users findUser = userService.findById(user.getId());
+        UserDto userDto = generateUserDto(findUser);
 
         Boolean isRegistered = userDto.isRegistered();
 
@@ -61,6 +67,15 @@ public class DevController implements DevApi {
                 .email("abc@naver.com")
                 .name("테스트")
                 .role(UserRole.ROLE_USER)
+                .build();
+    }
+
+    private CreateUserDetailsDto generateCreateUserDetailsDto() {
+        return CreateUserDetailsDto.builder()
+                .depositorName("홍길동")
+                .phoneNumber("01012341234")
+                .studentMajor("컴퓨터공학부")
+                .studentCode("202411032")
                 .build();
     }
 }

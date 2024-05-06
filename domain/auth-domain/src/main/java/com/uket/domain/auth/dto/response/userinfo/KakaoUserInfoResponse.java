@@ -6,10 +6,12 @@ public class KakaoUserInfoResponse implements OAuth2UserInfoResponse {
 
     private final Map<String, Object> attribute;
     private final Map<String, Object> account;
+    private final Map<String, Object> profile;
 
     public KakaoUserInfoResponse(Map<String, Object> attribute) {
         this.attribute = attribute;
         this.account = (Map<String, Object>) attribute.get("kakao_account");
+        this.profile = (Map<String, Object>) account.get("profile");
     }
 
     @Override
@@ -30,5 +32,10 @@ public class KakaoUserInfoResponse implements OAuth2UserInfoResponse {
     @Override
     public String getName() {
         return account.get("name").toString();
+    }
+
+    @Override
+    public String getProfileImage() {
+        return profile.get("thumbnail_image_url").toString();
     }
 }

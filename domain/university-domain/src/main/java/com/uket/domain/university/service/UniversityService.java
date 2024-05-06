@@ -14,16 +14,30 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UniversityService {
 
-    private static final String DEFAULT_UNIVERSITY_NAME = "외부인";
+    private static final String DEFAULT_UNIVERSITY_NAME = "일반인";
 
     private final UniversityRepository universityRepository;
 
     public Optional<University> findByName(String name) {
+        if (DEFAULT_UNIVERSITY_NAME.equals(name)) {
+            return Optional.empty();
+        }
         return universityRepository.findByName(name);
     }
 
     public University getDefault(){
         return universityRepository.findByName(DEFAULT_UNIVERSITY_NAME)
                 .orElseThrow(()-> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
+    }
+
+    public Optional<Long> getCurrentEvent(String name) {
+
+        if (name.equals(DEFAULT_UNIVERSITY_NAME)) {
+            throw new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY);
+        }
+        University university = universityRepository.findByName(name)
+                .orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
+
+        return Optional.ofNullable(university.getCurrentEvent());
     }
 }

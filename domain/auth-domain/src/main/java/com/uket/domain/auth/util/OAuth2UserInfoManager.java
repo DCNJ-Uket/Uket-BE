@@ -9,16 +9,10 @@ import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.properties.AppProperties;
 import com.uket.domain.user.enums.Platform;
 import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Optional;
-import javax.security.auth.login.LoginException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriBuilder;
@@ -71,7 +65,7 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
                 .queryParam("grant_type", "authorization_code")
                 .queryParam("client_id", appProperties.kakao().clientId())
                 .queryParam("client_secret", appProperties.kakao().clientSecret())
-                .queryParam("property_keys", "[\"kakao_account.email\", \"kakao_account.name\"]")
+                .queryParam("property_keys", "[\"kakao_account.email\", \"kakao_account.name\", \"kakao_account.profile\"]")
                 .build();
     }
 
@@ -93,7 +87,7 @@ public class OAuth2UserInfoManager extends OAuth2Manager {
             .uri(getGoogleUserInfoUri())
             .header(HttpHeaders.AUTHORIZATION, authorization)
             .retrieve()
-            .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+            .body(new ParameterizedTypeReference<>() {});
     }
 
     private URI getGoogleUserInfoUri() {
