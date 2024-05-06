@@ -27,4 +27,9 @@ public class GoogleUserInfoResponse implements OAuth2UserInfoResponse {
     public String getName() {
         return attribute.get("name").toString();
     }
+
+    @Override
+    public String getProfileImage() {
+        return attribute.get("picture").toString();
+    }
 }
