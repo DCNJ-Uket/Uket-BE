@@ -37,6 +37,9 @@ app:
     expiration:
       access-token-expiration: 3_600_000
       refresh-token-expiration: 7_200_000
+  slack:
+    webhook:
+      url: testestest
 
 
 
