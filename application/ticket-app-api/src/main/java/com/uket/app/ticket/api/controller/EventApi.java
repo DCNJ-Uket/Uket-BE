@@ -27,22 +27,17 @@ public interface EventApi {
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
             mediaType = "application/json",
             examples = {
-                    @ExampleObject(
-                    name = "EV0001",
-                    description = "해당 축제를 찾을 수 없습니다.",
+                    @ExampleObject(name = "EV0001", description = "해당 축제를 찾을 수 없습니다.",
                     value = """
                             {"code": "EV0001", "message": "해당 축제를 찾을 수 없습니다."}
                             """
                     ),
-                    @ExampleObject(
-                            name = "UN0001",
-                            description = "해당 대학을 찾을 수 없습니다.",
+                    @ExampleObject(name = "UN0001", description = "해당 대학을 찾을 수 없습니다.",
                             value = """
                             {"code": "UN0001", "message": "해당 대학을 찾을 수 없습니다."}
                             """
                     )
-            },
-            schema = @Schema(implementation = ErrorResponse.class)))
+            }, schema = @Schema(implementation = ErrorResponse.class)))
     ResponseEntity<ShowResponse> getShows(
             @PathVariable("id")
             Long showId
