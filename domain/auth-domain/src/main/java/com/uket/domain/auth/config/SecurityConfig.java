@@ -96,9 +96,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/universities/{id}/event").permitAll()
                 )
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/api/v1/events/{id}/shows").permitAll()
-                )
-                .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/api/v1/dev/token").permitAll()
                 )
                 .authorizeHttpRequests(registry -> registry
