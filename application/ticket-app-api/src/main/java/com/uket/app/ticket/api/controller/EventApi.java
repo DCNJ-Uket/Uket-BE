@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SecurityRequirement(name = "JWT")
 @RequestMapping("/api/v1/events")
+@ApiResponse(responseCode = "200", description = "OK")
 public interface EventApi {
 
     @GetMapping("/{id}/shows")
     @Operation(summary = "공연 조회 API", description = "축제별 공연을 조회할 수 있습니다.")
-    @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
             mediaType = "application/json",
             examples = {
