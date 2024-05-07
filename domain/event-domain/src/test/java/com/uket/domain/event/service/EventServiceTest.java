@@ -12,7 +12,6 @@ import com.uket.domain.event.repository.EventRepository;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.exception.UniversityException;
 import java.util.Optional;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -56,7 +55,6 @@ class EventServiceTest {
 
     @Test
     void 축제가_대학에_속해있지_않다면_예외를_반환한다() {
-        //TODO
         Events event = Events.builder()
                 .id(1L)
                 .build();
