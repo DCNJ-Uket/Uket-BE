@@ -9,7 +9,8 @@ public record CurrentEventResponse(
         Long id,
         String name,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        String location
 ) {
 
     public static CurrentEventResponse from(Events event) {

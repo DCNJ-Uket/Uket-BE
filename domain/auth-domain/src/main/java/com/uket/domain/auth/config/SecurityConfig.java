@@ -89,6 +89,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/universities/**").permitAll()
+                        .requestMatchers("/api/v1/events/{id}/shows").permitAll()
+                )
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers("/api/v1/universities").permitAll()
+                        .requestMatchers("/api/v1/universities/{id}/event").permitAll()
+                )
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers("/api/v1/events/{id}/shows").permitAll()
                 )
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/api/v1/dev/token").permitAll()
