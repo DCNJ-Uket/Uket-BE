@@ -34,6 +34,9 @@ app:
     user-info-uri: https://www.googleapis.com/oauth2/v1/userinfo
     client-id: ${GOOGLE_CLIENT_ID}
     client-secret: ${GOOGLE_CLIENT_SECRET}
+  slack:
+    webhook:
+      url: ${SLACK_WEBHOOK_URL}
 ---
 
 spring:
