@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "인증 API", description = "인증(로그인) 관련 API")
 @RestController
 @RequestMapping("/api/v1/auth")
+@ApiResponse(responseCode = "200", description = "OK")
 public interface AuthApi {
 
     @Operation(summary = "소셜 로그인", description = "소셜 로그인을 진행합니다.")
@@ -54,6 +55,47 @@ public interface AuthApi {
     );
 
     @Operation(summary = "토큰 재발행", description = "리프레시 토큰으로 새로은 토큰을 발행합니다.")
+    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "AU0001", description = "refreshToken의 타입이 refresh가 아닌 경우 발생합니다.",
+                            value = """
+                            {"code": "AU0001", "message": "올바르지 않은 유형의 토큰입니다."}
+                            """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "AU0005", description = "토큰이 유효하지 않은 경우 발생합니다.",
+                            value = """
+                            {"code": "AU0005", "message": "유효하지 않은 토큰입니다."}
+                            """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "403", description = "FORBIDDEN", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "AU0008", description = "refreshToken이 만료된 경우 발생합니다.",
+                            value = """
+                            {"code": "AU0008", "message": "만료된 토큰입니다."}
+                            """
+                    ),
+                    @ExampleObject(name = "AU0009", description = "accessToken이 만료되지 않은 경우 발생합니다.",
+                            value = """
+                            {"code": "AU0009", "message": "아직 토큰이 만료되지 않았습니다."}
+                            """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "US0001", description = "토큰에 담긴 UserId에 대한 사용자를 찾을 수 없을 때 발생합니다.",
+                            value = """
+                            {"code": "US0001", "message": "해당 사용자를 찾을 수 없습니다."}
+                            """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(value = "/reissue")
     ResponseEntity<TokenResponse> reissue(
             @Valid
