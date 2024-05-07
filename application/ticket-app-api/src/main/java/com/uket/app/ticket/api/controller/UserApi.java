@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SecurityRequirement(name = "JWT")
 @RequestMapping("/api/v1/users")
+@ApiResponse(responseCode = "200", description = "OK")
 public interface UserApi {
 
     @PostMapping("/register")
