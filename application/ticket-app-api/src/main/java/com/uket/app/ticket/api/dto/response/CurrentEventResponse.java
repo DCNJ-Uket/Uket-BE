@@ -19,6 +19,7 @@ public record CurrentEventResponse(
                 .name(event.getName())
                 .startDate(event.getStartDate())
                 .endDate(event.getEndDate())
+                .location(event.getLocation())
                 .build();
     }
 }
