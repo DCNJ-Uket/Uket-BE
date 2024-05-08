@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
-import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -25,21 +24,22 @@ public class S3Service {
         if (filename == null || filename.isEmpty()) {
             return null;
         }
+        String url = preSigner
+                .presignGetObject(getObjectPresignRequest(folder, filename))
+                .url()
+                .toString();
 
-        GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
+        preSigner.close();
+        return url;
+    }
+
+    private GetObjectPresignRequest getObjectPresignRequest(String folder, String filename) {
+        return GetObjectPresignRequest.builder()
                 .signatureDuration(Duration.ofMinutes(1))
                 .getObjectRequest(objectRequest ->
                         objectRequest
                                 .bucket(s3Properties.bucket())
                                 .key(String.join("/", folder, filename)))
                 .build();
-
-        PresignedGetObjectRequest presignedGetObjectRequest = preSigner
-                .presignGetObject(getObjectPresignRequest);
-
-        String url = presignedGetObjectRequest.url().toString();
-
-        preSigner.close();
-        return url;
     }
 }
