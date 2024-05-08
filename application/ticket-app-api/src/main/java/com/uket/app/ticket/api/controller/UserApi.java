@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SecurityRequirement(name = "JWT")
 @RequestMapping("/api/v1/users")
+@ApiResponse(responseCode = "200", description = "OK")
 public interface UserApi {
 
     @PostMapping("/register")
@@ -33,8 +34,8 @@ public interface UserApi {
                     @ExampleObject(name = "UN0002",
                             description = "사용자가 선택한 대학의 이메일과 입력한 이메일의 prefix가 맞지 않는 경우 발생합니다.",
                             value = """
-                            {"code": "UN0002", "message": "대학 이메일 정보가 잘못되었습니다."}
-                            """
+                                    {"code": "UN0002", "message": "대학 이메일 정보가 잘못되었습니다."}
+                                    """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
@@ -42,13 +43,13 @@ public interface UserApi {
             examples = {
                     @ExampleObject(name = "UN0001", description = "서버에서 대학 default 값 설정이 잘못된 경우 발생합니다.",
                             value = """
-                            {"code": "UN0001", "message": "해당 대학을 찾을 수 없습니다."}
-                            """
+                                    {"code": "UN0001", "message": "해당 대학을 찾을 수 없습니다."}
+                                    """
                     ),
                     @ExampleObject(name = "US0001", description = "토큰에 담긴 UserId에 대한 사용자를 찾을 수 없을 때 발생합니다.",
                             value = """
-                            {"code": "US0001", "message": "해당 사용자를 찾을 수 없습니다."}
-                            """
+                                    {"code": "US0001", "message": "해당 사용자를 찾을 수 없습니다."}
+                                    """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
     ResponseEntity<AuthResponse> register(

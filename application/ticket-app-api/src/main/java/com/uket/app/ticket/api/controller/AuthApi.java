@@ -32,18 +32,18 @@ public interface AuthApi {
             examples = {
                     @ExampleObject(name = "CM0002", description = "잘못된 플랫폼을 입력할 시 발생합니다.",
                             value = """
-                            {"code": "CM0002", "message": "유효하지 않은 입력입니다."}
-                            """
+                                    {"code": "CM0002", "message": "유효하지 않은 입력입니다."}
+                                    """
                     ),
                     @ExampleObject(name = "AU0006", description = "지원하지 않는 플랫폼을 입력할 시 발생합니다.",
                             value = """
-                            {"code": "AU0006", "message": "유효하지 않은 플랫폼입니다."}
-                            """
+                                    {"code": "AU0006", "message": "유효하지 않은 플랫폼입니다."}
+                                    """
                     ),
                     @ExampleObject(name = "AU0002", description = "OAuth2 서버와 통신이 실패할 경우 발생합니다.",
                             value = """
-                            {"code": "AU0002", "message": "OAuth2 요청이 실패했습니다."}
-                            """
+                                    {"code": "AU0002", "message": "OAuth2 요청이 실패했습니다."}
+                                    """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping("/login/{provider}")
@@ -60,8 +60,8 @@ public interface AuthApi {
             examples = {
                     @ExampleObject(name = "AU0001", description = "refreshToken의 타입이 refresh가 아닌 경우 발생합니다.",
                             value = """
-                            {"code": "AU0001", "message": "올바르지 않은 유형의 토큰입니다."}
-                            """
+                                    {"code": "AU0001", "message": "올바르지 않은 유형의 토큰입니다."}
+                                    """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
@@ -69,8 +69,8 @@ public interface AuthApi {
             examples = {
                     @ExampleObject(name = "AU0005", description = "토큰이 유효하지 않은 경우 발생합니다.",
                             value = """
-                            {"code": "AU0005", "message": "유효하지 않은 토큰입니다."}
-                            """
+                                    {"code": "AU0005", "message": "유효하지 않은 토큰입니다."}
+                                    """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "403", description = "FORBIDDEN", content = @Content(
@@ -78,13 +78,13 @@ public interface AuthApi {
             examples = {
                     @ExampleObject(name = "AU0008", description = "refreshToken이 만료된 경우 발생합니다.",
                             value = """
-                            {"code": "AU0008", "message": "만료된 토큰입니다."}
-                            """
+                                    {"code": "AU0008", "message": "만료된 토큰입니다."}
+                                    """
                     ),
                     @ExampleObject(name = "AU0009", description = "accessToken이 만료되지 않은 경우 발생합니다.",
                             value = """
-                            {"code": "AU0009", "message": "아직 토큰이 만료되지 않았습니다."}
-                            """
+                                    {"code": "AU0009", "message": "아직 토큰이 만료되지 않았습니다."}
+                                    """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
@@ -92,8 +92,8 @@ public interface AuthApi {
             examples = {
                     @ExampleObject(name = "US0001", description = "토큰에 담긴 UserId에 대한 사용자를 찾을 수 없을 때 발생합니다.",
                             value = """
-                            {"code": "US0001", "message": "해당 사용자를 찾을 수 없습니다."}
-                            """
+                                    {"code": "US0001", "message": "해당 사용자를 찾을 수 없습니다."}
+                                    """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(value = "/reissue")

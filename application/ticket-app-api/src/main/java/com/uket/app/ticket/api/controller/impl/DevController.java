@@ -25,15 +25,10 @@ public class DevController implements DevApi {
     private final UserRegisterService userRegisterService;
 
     @Override
-    public ResponseEntity<String> test(Long userId) {
-        return ResponseEntity.ok("userId: " + userId);
-    }
-
-    @Override
     public ResponseEntity<TokenResponse> getToken() {
 
         Users user = userService.saveUser(generateCreateUserDto());
-        userRegisterService.register(user.getId(),generateCreateUserDetailsDto(),"건국대학교");
+        userRegisterService.register(user.getId(), generateCreateUserDetailsDto(), "건국대학교");
 
         Users findUser = userService.findById(user.getId());
         UserDto userDto = generateUserDto(findUser);
