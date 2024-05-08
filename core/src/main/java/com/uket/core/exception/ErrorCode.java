@@ -45,7 +45,8 @@ public enum ErrorCode {
      * Events Errors
      */
     NOT_FOUND_EVENT(404,"EV0001", "해당 축제를 찾을 수 없습니다."),
-    NOT_FOUND_CURRENT_EVENT(404,"EV0002", "진행중인 축제를 찾을 수 없습니다.");
+    NOT_FOUND_CURRENT_EVENT(404,"EV0002", "진행중인 축제를 찾을 수 없습니다."),
+    NOT_FOUND_SHOW(404,"EV0003", "해당 공연을 찾을 수 없습니다.");
 
     private final int status;
     private final String code;
