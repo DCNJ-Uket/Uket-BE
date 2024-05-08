@@ -12,12 +12,16 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 public class S3Service {
 
     private static final String UNIVERSITY_LOGO_FOLDER = "university-logo";
+    private static final String BANNER_IMAGE_FOLDER = "banner";
 
     private final S3Presigner preSigner;
     private final S3Properties s3Properties;
 
     public String getUniversityLogo(String filename) {
         return getPreSignedUrl(UNIVERSITY_LOGO_FOLDER, filename);
+    }
+    public String getBannerImage(String filename) {
+        return getPreSignedUrl(BANNER_IMAGE_FOLDER, filename);
     }
 
     private String getPreSignedUrl(String folder, String filename) {

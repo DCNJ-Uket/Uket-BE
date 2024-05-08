@@ -5,7 +5,10 @@ import com.uket.app.ticket.api.dto.response.CurrentEventResponse;
 import com.uket.app.ticket.api.dto.response.ListResponse;
 import com.uket.app.ticket.api.dto.response.UniversityResponse;
 import com.uket.app.ticket.api.service.UniversityEventService;
+import com.uket.domain.event.dto.BannerDto;
+import com.uket.domain.event.entity.Banner;
 import com.uket.domain.event.entity.Events;
+import com.uket.domain.event.repository.BannerRepository;
 import com.uket.domain.university.dto.UniversityDto;
 import com.uket.modules.aws.s3.service.S3Service;
 import java.time.LocalDate;
@@ -20,6 +23,7 @@ public class UniversityController implements UniversityApi {
 
     private final UniversityEventService universityEventService;
     private final S3Service s3Service;
+    private final BannerRepository bannerRepository;
 
     @Override
     public ResponseEntity<ListResponse<UniversityResponse>> getUniversities() {
@@ -36,9 +40,19 @@ public class UniversityController implements UniversityApi {
     public ResponseEntity<CurrentEventResponse> getCurrentEventOfUniversity(Long universityId) {
 
         Events event = universityEventService.getCurrentEventOfUniversity(universityId);
+        List<Banner> banners = bannerRepository.findByEvent(event);
 
-        CurrentEventResponse response = CurrentEventResponse.from(event);
+        List<BannerDto> bannerDtos = getBannerDtos(banners);
+
+        CurrentEventResponse response = CurrentEventResponse.of(event, bannerDtos);
         return ResponseEntity.ok(response);
+    }
+
+    private List<BannerDto> getBannerDtos(List<Banner> banners) {
+        return banners.stream().map(banner -> {
+            String bannerUrl = s3Service.getBannerImage(banner.getName());
+            return BannerDto.from(bannerUrl);
+        }).toList();
     }
 
     private List<UniversityResponse> getUniversityResponses(List<UniversityDto> universities) {
