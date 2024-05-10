@@ -53,35 +53,27 @@ class UniversityEventServiceTest {
                         .name(EVENT_KONKUK)
                         .build()
         );
-        universityRepository.save(University.builder().name(UNIVERSITY_KONKUK).currentEvent(event.getId()).build());
+        University university = universityRepository.save(
+                University.builder().name(UNIVERSITY_KONKUK).currentEvent(event.getId()).build());
 
-        Assertions.assertThat(universityEventService.getCurrentEventOfUniversity(UNIVERSITY_KONKUK).getId())
+        Long universityId = university.getId();
+        Assertions.assertThat(universityEventService.getCurrentEventOfUniversity(universityId).getId())
                 .isEqualTo(event.getId());
     }
 
     @Test
     void 축제를_진행중이지_않은_대학의_경우_예외를_반환한다() {
-        universityRepository.save(University.builder().name(UNIVERSITY_KONKUK).build());
+        University university = universityRepository.save(University.builder().name(UNIVERSITY_KONKUK).build());
 
-        Assertions.assertThatThrownBy(() -> universityEventService.getCurrentEventOfUniversity(UNIVERSITY_KONKUK))
+        Long universityId = university.getId();
+        Assertions.assertThatThrownBy(() -> universityEventService.getCurrentEventOfUniversity(universityId))
                 .isInstanceOf(EventException.class)
                 .hasMessage(ErrorCode.NOT_FOUND_CURRENT_EVENT.getMessage());
     }
 
     @Test
     void 존재하지_않는_대학의_경우_예외를_반환한다() {
-        universityRepository.save(University.builder().name(UNIVERSITY_KONKUK).build());
-
-        Assertions.assertThatThrownBy(() -> universityEventService.getCurrentEventOfUniversity(""))
-                .isInstanceOf(UniversityException.class)
-                .hasMessage(ErrorCode.NOT_FOUND_UNIVERSITY.getMessage());
-    }
-
-    @Test
-    void 대학이름을_일반인으로_요청한_경우_예외를_반환한다() {
-        universityRepository.save(University.builder().name(UNIVERSITY_KONKUK).build());
-
-        Assertions.assertThatThrownBy(() -> universityEventService.getCurrentEventOfUniversity(UNIVERSITY_OUTSIDER))
+        Assertions.assertThatThrownBy(() -> universityEventService.getCurrentEventOfUniversity(1L))
                 .isInstanceOf(UniversityException.class)
                 .hasMessage(ErrorCode.NOT_FOUND_UNIVERSITY.getMessage());
     }

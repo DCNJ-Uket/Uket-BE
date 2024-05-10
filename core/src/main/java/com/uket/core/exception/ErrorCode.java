@@ -23,7 +23,7 @@ public enum ErrorCode {
     AUTHENTICATION_FAILED(401,"AU0003", "인증에 실패하였습니다."),
     TOKEN_AUTHENTICATION_FAILED(401,"AU0004", "토큰 인증에 실패하였습니다."),
     INVALID_TOKEN(401,"AU0005", "유효하지 않은 토큰입니다."),
-    INVALID_PLATFORM(401,"AU0006", "유효하지 않은 플랫폼입니다."),
+    INVALID_PLATFORM(400,"AU0006", "유효하지 않은 플랫폼입니다."),
     AUTHORIZATION_FAILED(403,"AU0007", "접근 권한이 없습니다."),
     TOKEN_EXPIRED(403,"AU0008", "만료된 토큰입니다."),
     TOKEN_NOT_EXPIRED(403,"AU0009", "아직 토큰이 만료되지 않았습니다."),

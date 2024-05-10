@@ -5,6 +5,7 @@ import com.uket.core.exception.BaseException;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.user.exception.UserException;
+import com.uket.modules.slack.dto.ErrorReportDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.security.InvalidParameterException;
 import java.util.Enumeration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -28,6 +30,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class WebExceptionHandler {
+
+    private final ApplicationEventPublisher eventPublisher;
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> unKnownException(HttpServletRequest request,
@@ -85,6 +89,8 @@ public class WebExceptionHandler {
             .append(getStackTraceAsString(exception));
 
         log.error("[UnhandledException] {} \n", dump);
+
+        eventPublisher.publishEvent(new ErrorReportDto(exception.getMessage(), dump.toString()));
         return ResponseEntity
             .internalServerError()
             .body(ErrorResponse.of(ErrorCode.UNKNOWN_SERVER_ERROR));

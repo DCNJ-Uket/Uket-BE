@@ -21,6 +21,8 @@ dependencies {
 	implementation project(":domain:university-domain")
 	implementation project(":domain:event-domain")
 	implementation project(":modules:jwt-provider")
+	implementation project(":modules:aws-s3")
+	implementation project(":modules:slack")
 }
 
 tasks.named('test') {

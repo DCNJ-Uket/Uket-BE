@@ -10,7 +10,7 @@
 | Framework | Spring boot 3.2.4              |
 | ORM | Spring Data JPA with Querydsl  |
 | Build Tool | Gradle 8.4            |
-| Database | h2 2.2.224, MySQL 8.2.0, redis |
+| Database | MySQL 8.2.0, redis |
 | API Docs | SpringDoc Swagger 3            |
 | Test | JUnit 5                        |
 
@@ -26,4 +26,7 @@
 | JWT_SECRET_KEY       | JWT 토큰 시그티처 키 값           |
 | DEV_MYSQL_USERNAME   | 개발 서버 MySQL 사용자 명         |
 | DEV_MYSQL_PASSWORD   | 개발 서버 MySQL 비밀번호          |
-
+| SLACK_WEBHOOK_URL    | 에러 로깅을 위한 슬랙 Webhook url  |
+| AWS_S3_ACCESS_KEY    | aws s3 IAM access-key     |
+| AWS_S3_SECRET_KEY    | aws s3 IAM secret-key     |
+| AWS_S3_BUCKET_KEY    | aws s3 bucket 이름          |
