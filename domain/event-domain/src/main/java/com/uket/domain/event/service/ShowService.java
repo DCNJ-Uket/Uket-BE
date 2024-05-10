@@ -1,8 +1,10 @@
 package com.uket.domain.event.service;
 
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.dto.ShowDto;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Shows;
+import com.uket.domain.event.exception.EventException;
 import com.uket.domain.event.repository.ShowRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +22,10 @@ public class ShowService {
         List<Shows> shows = showRepository.findByEvent(event);
 
         return shows.stream().map(ShowDto::from).toList();
+    }
+
+    public Shows findById(Long showId) {
+        return showRepository.findById(showId)
+                .orElseThrow(() -> new EventException(ErrorCode.NOT_FOUND_SHOW));
     }
 }
