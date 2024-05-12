@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @ConfigurationPropertiesBinding
 public record TokenProperties(
         String secretKey,
-        String domain,
         @NestedConfigurationProperty TokenExpirationProperties expiration
 ) {
     @ConfigurationPropertiesBinding

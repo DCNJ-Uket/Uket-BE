@@ -1,3 +1,6 @@
+server:
+  port: 8082
+
 spring:
   jpa:
     open-in-view: false
@@ -44,6 +47,16 @@ spring:
     properties:
       hibernate:
         show_sql: true
+app:
+  slack:
+    webhook:
+      url: ${SLACK_WEBHOOK_URL}
+  token:
+    secret-key: testestsetsetsetsetsetsetsetsetestset
+    expiration:
+      ticket-expiration: 300_000
+      access-token-expiration: 3_600_000
+      refresh-token-expiration: 7_200_000
 ---
 spring:
   config:
