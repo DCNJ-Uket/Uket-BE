@@ -14,6 +14,7 @@ public enum ErrorCode {
     INVALID_INPUT_VALUE(400,"CM0002", "유효하지 않은 입력입니다."),
     INVALID_DATE(400,"CM0003", "유효하지 않은 연 또는 월입니다."),
     METHOD_NOT_ALLOWED(405,"CM0004", "허가되지 않은 메서드입니다."),
+    IO_ERROR(500,"CM0005", "I/O 관련 에러입니다. 서버 팀에 문의 부탁드립니다."),
 
     /**
      * Auth Related Errors
@@ -46,7 +47,12 @@ public enum ErrorCode {
      */
     NOT_FOUND_EVENT(404,"EV0001", "해당 축제를 찾을 수 없습니다."),
     NOT_FOUND_CURRENT_EVENT(404,"EV0002", "진행중인 축제를 찾을 수 없습니다."),
-    NOT_FOUND_SHOW(404,"EV0003", "해당 공연을 찾을 수 없습니다.");
+    NOT_FOUND_SHOW(404,"EV0003", "해당 공연을 찾을 수 없습니다."),
+
+    /**
+     * Ticket Errors
+     */
+    FAIL_TO_GENERATE_QRCODE(500,"TI0001","QR CODE 생성을 실패했습니다.");
 
     private final int status;
     private final String code;

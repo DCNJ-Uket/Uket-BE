@@ -43,6 +43,10 @@ app:
   slack:
     webhook:
       url: ${SLACK_WEBHOOK_URL}
+  qr-code:
+    width: 300
+    height: 300
+    type: png
 ---
 
 spring:
@@ -73,6 +77,7 @@ app:
   token:
     secret-key: testestsetsetsetsetsetsetsetsetestset
     expiration:
+      ticket-expiration: 300_000
       access-token-expiration: 3_600_000
       refresh-token-expiration: 7_200_000
 ---
