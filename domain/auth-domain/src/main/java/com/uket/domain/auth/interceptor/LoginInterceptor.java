@@ -5,7 +5,6 @@ import com.uket.core.dto.response.ErrorResponse;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.validator.TokenValidator;
-import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;

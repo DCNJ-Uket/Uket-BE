@@ -3,7 +3,7 @@ package com.uket.app.ticket.api.util;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.user.dto.UserDto;
 import com.uket.domain.user.entity.Users;
-import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
+import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

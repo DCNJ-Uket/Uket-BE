@@ -1,4 +1,4 @@
-package com.uket.modules.jwt.auth.constants;
+package com.uket.modules.jwt.constants;
 
 public class JwtValues {
     public static final String JWT_PAYLOAD_KEY_CATEGORY = "category";
@@ -11,4 +11,5 @@ public class JwtValues {
     public static final String JWT_AUTHORIZATION_VALUE_PREFIX = "Bearer ";
     public static final String JWT_PAYLOAD_VALUE_ACCESS = "access";
     public static final String JWT_PAYLOAD_VALUE_REFRESH = "refresh";
+    public static final String JWT_PAYLOAD_VALUE_TICKET = "ticket";
 }

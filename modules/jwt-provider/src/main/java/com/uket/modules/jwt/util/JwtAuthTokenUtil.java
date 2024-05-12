@@ -1,29 +1,19 @@
-package com.uket.modules.jwt.auth;
+package com.uket.modules.jwt.util;
 
-import com.uket.modules.jwt.auth.constants.JwtValues;
-import com.uket.modules.jwt.auth.properties.TokenProperties;
+import com.uket.modules.jwt.constants.JwtValues;
+import com.uket.modules.jwt.properties.TokenProperties;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.SignatureException;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
-@Component
+@RequiredArgsConstructor
 public class JwtAuthTokenUtil {
 
     private final TokenProperties tokenProperties;
     private final SecretKey secretKey;
-
-    public JwtAuthTokenUtil(TokenProperties tokenProperties) {
-        this.tokenProperties = tokenProperties;
-
-        this.secretKey = new SecretKeySpec(
-                tokenProperties.secretKey().getBytes(StandardCharsets.UTF_8),
-                Jwts.SIG.HS256.key().build().getAlgorithm());
-    }
 
     public String getCategory(String token) {
 
@@ -129,16 +119,10 @@ public class JwtAuthTokenUtil {
     }
 
     private Date getAccessTokenExpiration(long now) {
-        long accessTokenExpiration = Long.parseLong(
-                tokenProperties.expiration().accessTokenExpiration());
-
-        return new Date(now + accessTokenExpiration);
+        return new Date(now + tokenProperties.expiration().accessTokenExpiration());
     }
 
     private Date getRefreshTokenExpiration(long now) {
-        long accessTokenExpiration = Long.parseLong(
-                tokenProperties.expiration().refreshTokenExpiration());
-
-        return new Date(now + accessTokenExpiration);
+        return new Date(now + tokenProperties.expiration().refreshTokenExpiration());
     }
 }

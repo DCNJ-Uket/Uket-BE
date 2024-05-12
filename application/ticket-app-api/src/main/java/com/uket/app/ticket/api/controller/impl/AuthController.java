@@ -10,7 +10,7 @@ import com.uket.app.ticket.api.service.AuthService;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.service.UserService;
-import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
+import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
