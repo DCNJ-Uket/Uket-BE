@@ -2,6 +2,7 @@ package com.uket.app.ticket.api.service;
 
 import com.uket.core.exception.BaseException;
 import com.uket.core.exception.ErrorCode;
+import com.uket.modules.jwt.util.JwtTicketUtil;
 import com.uket.modules.qrcode.ticket.provider.QRCodeProvider;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class QRCodeService {
 
-    private final QRCodeProvider ticketQRProvider;
+    private final QRCodeProvider qrCodeProvider;
+    private final JwtTicketUtil jwtTicketUtil;
 
-    public byte[] generateTicketQRCode(TicketQRDto ticketQRDto) {
+    public byte[] generateTicketQRCode(Long ticketId) {
 
-        try (ByteArrayOutputStream out = ticketQRProvider.generateQRCode(ticketQRDto)) {
+        String ticketToken = jwtTicketUtil.createTicketToken(ticketId);
+
+        try (ByteArrayOutputStream out = qrCodeProvider.generateQRCodeByString(ticketToken)) {
             validateQRCode(out);
             return out.toByteArray();
         } catch (IOException e) {

@@ -1,6 +1,5 @@
 package com.uket.modules.qrcode.ticket.provider;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -18,14 +17,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class QRCodeProvider {
 
-    private final ObjectMapper objectMapper;
     private final QRCodeProperties qrCodeProperties;
 
-    public ByteArrayOutputStream generateQRCode(Object message) throws IOException {
+    public ByteArrayOutputStream generateQRCodeByString(String payload) throws IOException {
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-            String payload = objectMapper.writeValueAsString(message);
             BitMatrix matrix = new MultiFormatWriter().encode(payload, BarcodeFormat.QR_CODE,
                     qrCodeProperties.width(),
                     qrCodeProperties.height());
