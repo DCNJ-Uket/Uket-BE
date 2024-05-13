@@ -27,6 +27,7 @@ dependencies {
 	implementation project(":modules:aws-s3")
 	implementation project(":modules:slack")
 	implementation project(":modules:token-redis")
+	implementation project(":modules:qrcode-provider")
 }
 
 tasks.named('test') {

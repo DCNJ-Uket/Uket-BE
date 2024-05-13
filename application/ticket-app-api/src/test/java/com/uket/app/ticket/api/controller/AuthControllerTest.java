@@ -11,7 +11,7 @@ import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
-import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
+import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
