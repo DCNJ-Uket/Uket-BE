@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@ActiveProfiles("test")
 class TokenServiceTest {
     @Autowired
     private TokenService tokenService;
@@ -54,8 +53,6 @@ class TokenServiceTest {
             .build();
 
         testUser = userService.saveUser(createUserDto);
-
-        Users serviceUser = userService.findById(testUser.getId());
 
         accessToken = jwtAuthTokenUtil.createAccessToken(testUser.getId(),testUser.getName(), testUser.getRole().toString(),testUser.getIsRegistered(), 3_000L);
         refreshToken = jwtAuthTokenUtil.createRefreshToken();

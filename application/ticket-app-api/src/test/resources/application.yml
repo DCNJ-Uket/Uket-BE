@@ -20,69 +20,16 @@ spring:
     url: jdbc:h2:mem:test;MODE=MySQL
     username: sa
     password:
-  cloud:
-    aws:
-      s3:
-        access-key: adsfdasfdsa
-        secret-key: adfsafdsa
-        bucket: adfasfdsaf
-
-app:
-  kakao:
-    token_uri: https://kauth.kakao.com/oauth/token
-    user-info-uri: https://kapi.kakao.com/v2/user/me
-    client-id: test
-    client-secret: test
-  google:
-    token_uri: https://oauth2.googleapis.com/token
-    user-info-uri: https://www.googleapis.com/oauth2/v1/userinfo
-    client-id: test
-    client-secret: test
-  token:
-    secret-key: testestsetsetsetsetsetsetsetsetestset
-    expiration:
-      ticket-expiration: 300_000
-      access-token-expiration: 3_600_000
-      refresh-token-expiration: 7_200_000
-  slack:
-    webhook:
-      url: testestest
----
-spring:
-  config:
-    activate:
-      on-profile: test
-  sql:
-    init:
-      mode: never
-  jpa:
-    hibernate:
-      ddl-auto: create
-    open-in-view: false
-    properties:
-      hibernate:
-        create_empty_composites:
-          enabled: true
-        format_sql: true
-        jdbc:
-          batch_size: 100
-        order_inserts: true
-        order_updates: true
-  datasource:
-    driverClassName: org.h2.Driver
-    url: jdbc:h2:mem:test;MODE=MySQL
-    username: sa
-    password:
-  cloud:
-    aws:
-      s3:
-        access-key: adsfdasfdsa
-        secret-key: adfsafdsa
-        bucket: adfasfdsaf
   data:
     redis:
       host: localhost
       port: 6379
+  cloud:
+    aws:
+      s3:
+        access-key: adsfdasfdsa
+        secret-key: adfsafdsa
+        bucket: adfasfdsaf
 
 app:
   kakao:
