@@ -21,8 +21,8 @@ public class AuthTokenGenerator {
         String role = userDto.role();
         Boolean isRegistered = userDto.isRegistered();
 
-        String newAccessToken = jwtAuthTokenUtil.createAccessToken(userId, name, role, isRegistered);
-        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken(userId);
+        String newAccessToken = jwtAuthTokenUtil.createAccessToken(userId,name, role, isRegistered);
+        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken();
 
         return AuthToken.of(newAccessToken, newRefreshToken, isRegistered);
     }

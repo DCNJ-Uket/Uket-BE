@@ -11,6 +11,7 @@ import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.exception.UserException;
 import com.uket.domain.user.service.UserDetailsService;
 import com.uket.domain.user.service.UserService;
+import com.uket.modules.redis.service.TokenService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class UserRegisterService {
     private final UniversityService universityService;
     private final UserDetailsService userDetailsService;
     private final AuthTokenGenerator authTokenGenerator;
+    private final TokenService tokenService;
 
     @Transactional
     public AuthToken register(Long userId, CreateUserDetailsDto createUserDetailsDto, String university) {
@@ -41,6 +43,9 @@ public class UserRegisterService {
 
         UserDetails userDetails = userDetailsService.saveUserDetails(createUserDetailsDto);
         findUser.register(userDetails, findUniversity.orElse(universityService.getDefault()));
-        return authTokenGenerator.generateAuthToken(findUser);
+        AuthToken authToken = authTokenGenerator.generateAuthToken(findUser);
+
+        tokenService.storeToken(authToken.refreshToken(), authToken.accessToken(), userId);
+        return authToken;
     }
 }

@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.SignatureException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.stereotype.Component;
@@ -104,24 +105,26 @@ public class JwtAuthTokenUtil {
                 .compact();
     }
 
-    public String createRefreshToken(Long userId) {
+    public String createRefreshToken() {
         long now = System.currentTimeMillis();
+        UUID uuid = UUID.randomUUID();
 
         return Jwts.builder()
                 .claim(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, JwtValues.JWT_PAYLOAD_VALUE_REFRESH)
-                .claim(JwtValues.JWT_PAYLOAD_KEY_ID, userId)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_ID, uuid)
                 .issuedAt(new Date(now))
                 .expiration(getRefreshTokenExpiration(now))
                 .signWith(secretKey)
                 .compact();
     }
 
-    public String createRefreshToken(Long userId, Long expiration) {
+    public String createRefreshToken(Long expiration) {
         long now = System.currentTimeMillis();
+        UUID uuid = UUID.randomUUID();
 
         return Jwts.builder()
                 .claim(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, JwtValues.JWT_PAYLOAD_VALUE_REFRESH)
-                .claim(JwtValues.JWT_PAYLOAD_KEY_ID, userId)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_ID, uuid)
                 .issuedAt(new Date(now))
                 .expiration(new Date(expiration))
                 .signWith(secretKey)

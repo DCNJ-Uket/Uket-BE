@@ -26,6 +26,10 @@ spring:
         access-key: adsfdasfdsa
         secret-key: adfsafdsa
         bucket: adfasfdsaf
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 app:
   kakao:

@@ -95,7 +95,7 @@ class AuthControllerTest {
     void refreshToken이_만료된_경우_재발급이_불가능하다() throws Exception {
         String accessToken = jwtAuthTokenUtil.createAccessToken(user.getId(), user.getName(),
                 String.valueOf(user.getRole()), user.getIsRegistered());
-        String refreshToken = jwtAuthTokenUtil.createRefreshToken(user.getId(), System.currentTimeMillis());
+        String refreshToken = jwtAuthTokenUtil.createRefreshToken( System.currentTimeMillis());
         TokenReissueRequest request = new TokenReissueRequest(accessToken, refreshToken);
 
         ResultActions perform = mockMvc.perform(
