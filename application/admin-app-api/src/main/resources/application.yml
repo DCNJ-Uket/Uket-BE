@@ -1,3 +1,6 @@
+server:
+  port: 8082
+
 spring:
   jpa:
     open-in-view: false
@@ -11,12 +14,6 @@ spring:
         order_inserts: true
         order_updates: true
         default_batch_fetch_size: 100
-  cloud:
-    aws:
-      s3:
-        access-key: ${AWS_S3_ACCESS_KEY}
-        secret-key: ${AWS_S3_SECRET_KEY}
-        bucket: ${AWS_S3_BUCKET}
 
 springdoc:
   packages-to-scan: com.uket
@@ -28,34 +25,12 @@ springdoc:
     display-request-duration: true
     operations-sorter: alpha
     tags-sorter: alpha
-
-app:
-  kakao:
-    token_uri: https://kauth.kakao.com/oauth/token
-    user-info-uri: https://kapi.kakao.com/v2/user/me
-    client-id: ${KAKAO_CLIENT_ID}
-    client-secret: ${KAKAO_CLIENT_SECRET}
-  google:
-    token_uri: https://www.googleapis.com/oauth2/v4/token
-    user-info-uri: https://www.googleapis.com/oauth2/v1/userinfo
-    client-id: ${GOOGLE_CLIENT_ID}
-    client-secret: ${GOOGLE_CLIENT_SECRET}
-  slack:
-    webhook:
-      url: ${SLACK_WEBHOOK_URL}
-  qr-code:
-    width: 300
-    height: 300
-    type: png
 ---
 
 spring:
   config:
     activate:
       on-profile: local
-  sql:
-    init:
-      mode: always
   data:
     redis:
       host: localhost
@@ -72,8 +47,10 @@ spring:
     properties:
       hibernate:
         show_sql: true
-
 app:
+  slack:
+    webhook:
+      url: ${SLACK_WEBHOOK_URL}
   token:
     secret-key: testestsetsetsetsetsetsetsetsetestset
     expiration:
@@ -94,13 +71,6 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
-
-app:
-  token:
-    secret-key: ${JWT_SECRET_KEY}
-    expiration:
-      access-token-expiration: 600_000
-      refresh-token-expiration: 7_200_000
 
 logging:
   level:

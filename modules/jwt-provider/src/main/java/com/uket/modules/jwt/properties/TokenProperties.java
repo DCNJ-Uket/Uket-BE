@@ -1,4 +1,4 @@
-package com.uket.modules.jwt.auth.properties;
+package com.uket.modules.jwt.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
@@ -8,15 +8,18 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @ConfigurationPropertiesBinding
 public record TokenProperties(
         String secretKey,
-        String domain,
         @NestedConfigurationProperty TokenExpirationProperties expiration
 ) {
     @ConfigurationPropertiesBinding
     public record TokenExpirationProperties(
-            String accessTokenExpiration,
-            String refreshTokenExpiration
+            Long ticketExpiration,
+            Long accessTokenExpiration,
+            Long refreshTokenExpiration
     ) {
         public TokenExpirationProperties {
+            if (ticketExpiration == null) {
+                throw new IllegalArgumentException("ticketExpiration이 null일 수 없습니다.");
+            }
             if (accessTokenExpiration == null) {
                 throw new IllegalArgumentException("accessTokenExpiration이 null일 수 없습니다.");
             }

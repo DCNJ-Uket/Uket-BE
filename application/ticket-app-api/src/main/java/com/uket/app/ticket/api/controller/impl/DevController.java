@@ -2,6 +2,7 @@ package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.DevApi;
 import com.uket.app.ticket.api.dto.response.TokenResponse;
+import com.uket.app.ticket.api.service.QRCodeService;
 import com.uket.app.ticket.api.service.UserRegisterService;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.user.dto.CreateUserDetailsDto;
@@ -11,8 +12,9 @@ import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
-import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
+import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -22,6 +24,7 @@ public class DevController implements DevApi {
 
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
     private final UserService userService;
+    private final QRCodeService qrCodeService;
     private final UserRegisterService userRegisterService;
 
     @Override
@@ -44,6 +47,16 @@ public class DevController implements DevApi {
 
         AuthToken authToken = AuthToken.of(newAccessToken, newRefreshToken, isRegistered);
         return ResponseEntity.ok(TokenResponse.from(authToken));
+    }
+
+    @Override
+    public ResponseEntity<byte[]> getQRCode() {
+
+        byte[] qrCode = qrCodeService.generateTicketQRCode(1L);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(qrCode);
     }
 
     private UserDto generateUserDto(Users user) {

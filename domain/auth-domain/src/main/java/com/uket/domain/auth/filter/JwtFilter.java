@@ -1,6 +1,6 @@
 package com.uket.domain.auth.filter;
 
-import static com.uket.modules.jwt.auth.constants.JwtValues.*;
+import static com.uket.modules.jwt.constants.JwtValues.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uket.core.dto.response.ErrorResponse;
@@ -8,7 +8,7 @@ import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.validator.TokenValidator;
 import com.uket.domain.user.dto.UserDto;
-import com.uket.modules.jwt.auth.JwtAuthTokenUtil;
+import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
