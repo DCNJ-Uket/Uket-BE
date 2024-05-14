@@ -113,7 +113,7 @@ class UniversityControllerTest {
                 .andExpect(jsonPath("$.items").isArray())
                 .andExpect(jsonPath("$.items.length()").value(1))
                 .andExpect(jsonPath("$.items[0].id").value(konkuk.getId()))
-                .andExpect(jsonPath("$.items[0].logoUrl").value(konkuk.getLogoUrl()))
+                .andExpect(jsonPath("$.items[0].logoUrl").value(konkuk.getLogoPath()))
                 .andExpect(jsonPath("$.items[0].name").value(konkuk.getName()));
     }
 
@@ -145,6 +145,7 @@ class UniversityControllerTest {
                         .name(EVENT_KONKUK)
                         .startDate(LocalDate.now())
                         .endDate(LocalDate.now())
+                        .location("건국대학교 노천극장")
                         .build()
         );
         University konkuk = universityRepository.save(
@@ -163,7 +164,9 @@ class UniversityControllerTest {
         perform.andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(EVENT_KONKUK))
                 .andExpect(jsonPath("$.startDate").exists())
-                .andExpect(jsonPath("$.endDate").exists());
+                .andExpect(jsonPath("$.endDate").exists())
+                .andExpect(jsonPath("$.location").exists())
+                .andExpect(jsonPath("$.banners").exists());
     }
 
     @Test
