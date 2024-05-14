@@ -25,7 +25,7 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
                 .select(Projections.constructor(UniversityDto.class,
                         university.id,
                         university.name,
-                        university.logoUrl
+                        university.logoPath
                 ))
                 .from(events)
                 .where(events.startDate.loe(date),

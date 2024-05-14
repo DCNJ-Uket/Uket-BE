@@ -29,6 +29,6 @@ public class University {
     private Long id;
     private String name;
     private String emailPostFix;
-    private String logoUrl;
+    private String logoPath;
     private Long currentEvent;
 }

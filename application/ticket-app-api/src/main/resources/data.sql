@@ -1,15 +1,15 @@
-insert into university (name, email_post_fix)
-values ('일반인', null),
-       ('건국대학교', '@konkuk.ac.kr'),
-       ('세종대학교', '@sejong.ac.kr');
+insert into university (name, email_post_fix, logo_path)
+values ('일반인', null, null),
+       ('건국대학교', '@konkuk.ac.kr', 'konkuk.png'),
+       ('세종대학교', '@sejong.ac.kr', null);
 
 insert into events (name, start_date, end_date, location)
 values ('녹색지대', CURDATE(), CURDATE(), '서울 광진구 능동로 120 건국대학교 노천극장'),
        ('대동제', CURDATE(), CURDATE(), '서울 광진구 능동로 120 세종대학교 노천극장');
 
-insert into banner (event_id, name, title)
-values ((select event_id from events e where e.name = '녹색지대'), 'title.png', '축제 소개'),
-       ((select event_id from events e where e.name = '녹색지대'), 'artist.png', '라인업 소개');
+insert into banner (event_id, path, title)
+values ((select event_id from events e where e.name = '녹색지대'), 'konkuk/title.png', '축제 소개'),
+       ((select event_id from events e where e.name = '녹색지대'), 'konkuk/artist.png', '라인업 소개');
 
 INSERT INTO shows (event_id, name, start_date, end_date, ticketing_date, total_ticket_count, location)
 SELECT e.event_id,
