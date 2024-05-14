@@ -31,4 +31,6 @@ public class Banner {
     private Events event;
 
     private String name;
+
+    private String title;
 }

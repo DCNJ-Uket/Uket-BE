@@ -51,7 +51,7 @@ public class UniversityController implements UniversityApi {
     private List<BannerDto> getBannerDtos(List<Banner> banners) {
         return banners.stream().map(banner -> {
             String bannerUrl = s3Service.getBannerImage(banner.getName());
-            return BannerDto.from(bannerUrl);
+            return BannerDto.of(banner.getTitle(), bannerUrl);
         }).toList();
     }
 

@@ -7,6 +7,10 @@ insert into events (name, start_date, end_date, location)
 values ('녹색지대', CURDATE(), CURDATE(), '서울 광진구 능동로 120 건국대학교 노천극장'),
        ('대동제', CURDATE(), CURDATE(), '서울 광진구 능동로 120 세종대학교 노천극장');
 
+insert into banner (event_id, name, title)
+values ((select event_id from events e where e.name = '녹색지대'), 'title.png', '축제 소개'),
+       ((select event_id from events e where e.name = '녹색지대'), 'artist.png', '라인업 소개');
+
 INSERT INTO shows (event_id, name, start_date, end_date, ticketing_date, total_ticket_count, location)
 SELECT e.event_id,
        CONCAT('DAY ', days.day),
