@@ -5,8 +5,6 @@ import com.uket.app.ticket.api.dto.response.ShowResponse;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.domain.event.dto.ShowDto;
 import com.uket.domain.event.dto.TicketingDto;
-import com.uket.domain.event.entity.Events;
-import com.uket.domain.event.entity.Shows;
 import com.uket.domain.event.service.EventService;
 import com.uket.domain.event.service.ShowService;
 import com.uket.domain.event.service.TicketingService;
@@ -26,20 +24,19 @@ public class EventController implements EventApi {
     @Override
     public ResponseEntity<ShowResponse> getShows(Long eventId) {
 
-        Events event = eventService.findById(eventId);
-        String university = eventService.getUniversityName(eventId);
-        List<ShowDto> shows = showService.findByEvent(event);
+        String universityName = eventService.findUniversityNameByEventId(eventId);
+        List<ShowDto> shows = showService.findByEventId(eventId);
 
-        ShowResponse response = ShowResponse.of(university, shows);
+        ShowResponse response = ShowResponse.of(universityName, shows);
         return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<TicketingResponse> getPossibleTicketings(Long showId) {
-        Shows show = showService.findById(showId);
-        List<TicketingDto> ticketings = ticketingService.findByShow(show);
+        String showName = showService.findNameById(showId);
+        List<TicketingDto> ticketings = ticketingService.findByShowId(showId);
 
-        TicketingResponse response = TicketingResponse.of(show.getName(), ticketings);
+        TicketingResponse response = TicketingResponse.of(showName, ticketings);
         return ResponseEntity.ok(response);
     }
 }

@@ -32,20 +32,20 @@ class ShowServiceTest {
 
         Events event = Events.builder().id(1L).university(university).build();
 
-        Shows show = Shows.builder()
+        ShowDto show = ShowDto.builder()
                 .id(1L)
                 .name("DAY1")
                 .startDate(LocalDateTime.now())
                 .endDate(LocalDateTime.now())
                 .ticketingDate(LocalDateTime.now())
                 .location("자양동")
-                .event(event)
+                .totalTicketCount(1000)
                 .build();
 
-        when(showRepository.findByEvent(any())).thenReturn(List.of(show));
+        when(showRepository.findByEventId(any())).thenReturn(List.of(show));
 
-        Assertions.assertThat(showService.findByEvent(event))
+        Assertions.assertThat(showService.findByEventId(event.getId()))
                 .hasSize(1)
-                .contains(ShowDto.from(show));
+                .contains(show);
     }
 }

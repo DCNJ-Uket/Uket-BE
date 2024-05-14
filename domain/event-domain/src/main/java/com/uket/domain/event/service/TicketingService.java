@@ -1,7 +1,6 @@
 package com.uket.domain.event.service;
 
 import com.uket.domain.event.dto.TicketingDto;
-import com.uket.domain.event.entity.Shows;
 import com.uket.domain.event.entity.Ticketing;
 import com.uket.domain.event.repository.TicketingRepository;
 import java.util.List;
@@ -16,8 +15,8 @@ public class TicketingService {
 
     private final TicketingRepository ticketingRepository;
 
-    public List<TicketingDto> findByShow(Shows show) {
-        List<Ticketing> ticketings = ticketingRepository.findByShow(show);
+    public List<TicketingDto> findByShowId(Long showId) {
+        List<Ticketing> ticketings = ticketingRepository.findByShowId(showId);
 
         return ticketings.stream().map(TicketingDto::from).toList();
     }

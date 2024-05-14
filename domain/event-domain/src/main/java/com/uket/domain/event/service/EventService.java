@@ -22,7 +22,7 @@ public class EventService {
                 .orElseThrow(() -> new EventException(ErrorCode.NOT_FOUND_EVENT));
     }
 
-    public String getUniversityName(Long eventId) {
+    public String findUniversityNameByEventId(Long eventId) {
         Events event = findById(eventId);
         University university = event.getUniversity();
 
