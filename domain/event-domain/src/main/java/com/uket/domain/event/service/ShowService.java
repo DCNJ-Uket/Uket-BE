@@ -6,7 +6,6 @@ import com.uket.domain.event.dto.ShowNameDto;
 import com.uket.domain.event.exception.EventException;
 import com.uket.domain.event.repository.ShowRepository;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +22,9 @@ public class ShowService {
     }
 
     public String findNameById(Long showId) {
-        Optional<ShowNameDto> showNameDto = showRepository.findNameById(showId);
-        if (showNameDto.isPresent()) {
-            return showNameDto.get().name();
-        }
-        throw new EventException(ErrorCode.NOT_FOUND_SHOW);
+        ShowNameDto showNameDto = showRepository.findNameById(showId)
+                .orElseThrow(() -> new EventException(ErrorCode.NOT_FOUND_SHOW));
+
+        return showNameDto.name();
     }
 }

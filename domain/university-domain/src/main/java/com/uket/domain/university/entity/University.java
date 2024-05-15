@@ -1,5 +1,7 @@
 package com.uket.domain.university.entity;
 
+import com.uket.core.exception.ErrorCode;
+import com.uket.domain.university.exception.UniversityException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,4 +33,10 @@ public class University {
     private String emailPostFix;
     private String logoPath;
     private Long currentEvent;
+
+    public void validateUniversityEmail(String universityEmail) {
+        if(universityEmail == null || !universityEmail.contains(this.getEmailPostFix())){
+            throw new UniversityException(ErrorCode.NOT_MATCH_UNIVERSITY_EMAIL);
+        }
+    }
 }
