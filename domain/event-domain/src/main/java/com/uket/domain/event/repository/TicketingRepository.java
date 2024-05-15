@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TicketingRepository extends JpaRepository<Ticketing,Long> {
 
-    List<Ticketing> findByShowId(Long showId);
+    <T> List<T> findByShowId(Long showId, Class<T> type);
 }

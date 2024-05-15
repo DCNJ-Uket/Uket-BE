@@ -18,11 +18,11 @@ public class ShowService {
     private final ShowRepository showRepository;
 
     public List<ShowDto> findByEventId(Long eventId) {
-        return showRepository.findByEventId(eventId);
+        return showRepository.findByEventId(eventId, ShowDto.class);
     }
 
     public String findNameById(Long showId) {
-        ShowNameDto showNameDto = showRepository.findNameById(showId)
+        ShowNameDto showNameDto = showRepository.findNameById(showId, ShowNameDto.class)
                 .orElseThrow(() -> new EventException(ErrorCode.NOT_FOUND_SHOW));
 
         return showNameDto.name();
