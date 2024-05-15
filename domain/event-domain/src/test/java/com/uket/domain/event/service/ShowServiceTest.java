@@ -42,7 +42,7 @@ class ShowServiceTest {
                 .totalTicketCount(1000)
                 .build();
 
-        when(showRepository.findByEventId(any())).thenReturn(List.of(show));
+        when(showRepository.findByEventId(any(), any())).thenReturn(List.of(show));
 
         Assertions.assertThat(showService.findByEventId(event.getId()))
                 .hasSize(1)

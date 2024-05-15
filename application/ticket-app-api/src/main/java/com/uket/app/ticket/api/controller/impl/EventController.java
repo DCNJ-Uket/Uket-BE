@@ -33,6 +33,7 @@ public class EventController implements EventApi {
 
     @Override
     public ResponseEntity<TicketingResponse> getPossibleTicketings(Long showId) {
+
         String showName = showService.findNameById(showId);
         List<TicketingDto> ticketings = ticketingService.findByShowId(showId);
 

@@ -28,7 +28,7 @@ public class UserRegisterService {
         Users findUser = userService.findById(userId);
 
         University findUniversity = universityService.findByName(university)
-                .orElse(universityService.getDefault());
+                .orElseGet(universityService::getDefault);
 
         String universityEmail = createUserDetailsDto.universityEmail();
         if (Boolean.FALSE.equals(universityService.isDefault(findUniversity))) {
