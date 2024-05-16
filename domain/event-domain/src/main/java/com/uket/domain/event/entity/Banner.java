@@ -30,5 +30,7 @@ public class Banner {
     @JoinColumn(name = "event_id")
     private Events event;
 
-    private String name;
+    private String path;
+
+    private String title;
 }

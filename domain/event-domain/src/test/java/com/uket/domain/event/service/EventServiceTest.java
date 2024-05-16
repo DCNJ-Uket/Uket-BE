@@ -49,7 +49,7 @@ class EventServiceTest {
 
         when(eventRepository.findById(any())).thenReturn(Optional.ofNullable(event));
 
-        String universityName = eventService.getUniversityName(event.getId());
+        String universityName = eventService.findUniversityNameByEventId(event.getId());
         assertThat(universityName).isEqualTo(university.getName());
     }
 
@@ -62,7 +62,7 @@ class EventServiceTest {
         when(eventRepository.findById(any())).thenReturn(Optional.ofNullable(event));
 
         Long eventId = event.getId();
-        assertThatThrownBy(() -> eventService.getUniversityName(eventId))
+        assertThatThrownBy(() -> eventService.findUniversityNameByEventId(eventId))
                 .isInstanceOf(UniversityException.class)
                 .hasMessage(ErrorCode.NOT_FOUND_UNIVERSITY.getMessage());
     }

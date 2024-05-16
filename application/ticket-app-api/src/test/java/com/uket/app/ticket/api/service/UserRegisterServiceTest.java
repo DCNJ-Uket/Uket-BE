@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.university.entity.University;
+import com.uket.domain.university.exception.UniversityException;
 import com.uket.domain.university.repository.UniversityRepository;
 import com.uket.domain.user.dto.CreateUserDetailsDto;
 import com.uket.domain.user.dto.CreateUserDto;
@@ -150,7 +151,7 @@ class UserRegisterServiceTest {
         Long userId = user.getId();
         Assertions.assertThatThrownBy(
                         () -> userRegisterService.register(userId, createUserDetailsDto, UNIVERSITY_KONKUK))
-                .isInstanceOf(UserException.class)
+                .isInstanceOf(UniversityException.class)
                 .hasMessage(ErrorCode.NOT_MATCH_UNIVERSITY_EMAIL.getMessage());
     }
 }
