@@ -6,6 +6,7 @@ import com.uket.app.ticket.api.dto.response.AuthResponse;
 import com.uket.app.ticket.api.service.UserRegisterService;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.user.dto.CreateUserDetailsDto;
+import com.uket.domain.user.dto.UserInfoDto;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,13 @@ public class UserController implements UserApi {
 
         AuthResponse response = AuthResponse.of(findUser,authToken);
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<UserInfoDto> getUserInfo(Long userId) {
+         UserInfoDto userInfoDto = userService.getUserInfo(userId);
+
+        return ResponseEntity.ok(userInfoDto);
     }
 
     private CreateUserDetailsDto generateCreateUserDetailsDto(UserRegisterRequest request) {
