@@ -8,7 +8,6 @@ import lombok.Builder;
 public record AuthResponse(
         Long id,
         String name,
-        String profileImage,
         String accessToken,
         String refreshToken,
         Boolean isRegistered
@@ -17,7 +16,6 @@ public record AuthResponse(
         return AuthResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
-                .profileImage(user.getProfileImage())
                 .accessToken(authToken.accessToken())
                 .refreshToken(authToken.refreshToken())
                 .isRegistered(authToken.isRegistered())
