@@ -15,11 +15,14 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
 	implementation project(":core")
+
 	implementation project(":domain:core-domain")
 	implementation project(":domain:auth-domain")
 	implementation project(":domain:user-domain")
 	implementation project(":domain:university-domain")
 	implementation project(":domain:event-domain")
+	implementation project(":domain:ticket-domain")
+
 	implementation project(":modules:jwt-provider")
 	implementation project(":modules:aws-s3")
 	implementation project(":modules:slack")

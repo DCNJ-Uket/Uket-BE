@@ -1,0 +1,17 @@
+dependencies {
+    implementation project(":domain:core-domain")
+    implementation project(":domain:user-domain")
+    implementation project(":domain:event-domain")
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.named('bootJar') {
+    enabled = false
+}
+
+tasks.named('jar') {
+    enabled = true
+}
