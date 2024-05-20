@@ -64,6 +64,15 @@ public interface UserApi {
 
     @GetMapping("/info")
     @Operation(summary = "유저 정보 조회", description = "유저 정보를 조회합니다.")
+    @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "US0001", description = "사용자를 DB에서 찾을 수 없는 경우 발생합니다.",
+                            value = """
+                                    {"code": "US0001", "message": "해당 사용자를 찾을 수 없습니다."}
+                                    """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
     ResponseEntity<UserInfoDto> getUserInfo(
             @Parameter(hidden = true)
             @LoginUserId Long userId
