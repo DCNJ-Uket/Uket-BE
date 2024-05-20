@@ -1,5 +1,5 @@
 package com.uket.domain.event.enums;
 
-public enum TicketingUserType {
+public enum ReservationUserType {
     TICKETING_ALL, TICKETING_STUDENT
 }

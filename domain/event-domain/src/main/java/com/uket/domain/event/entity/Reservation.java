@@ -1,7 +1,7 @@
 package com.uket.domain.event.entity;
 
 import com.uket.domain.core.entity.BaseEntity;
-import com.uket.domain.event.enums.TicketingUserType;
+import com.uket.domain.event.enums.ReservationUserType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,11 +29,11 @@ import lombok.NoArgsConstructor;
         @UniqueConstraint(columnNames = {"show_id","start_time","end_time"})
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Ticketing extends BaseEntity {
+public class Reservation extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ticketing_id")
+    @Column(name = "reservation_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,5 +46,5 @@ public class Ticketing extends BaseEntity {
     private Integer totalCount;
 
     @Enumerated(EnumType.STRING)
-    private TicketingUserType type;
+    private ReservationUserType type;
 }
