@@ -2,8 +2,8 @@ package com.uket.domain.ticket.entity;
 
 import com.uket.domain.core.entity.BaseEntity;
 import com.uket.domain.event.entity.Events;
+import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
-import com.uket.domain.event.entity.Ticketing;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.user.entity.Users;
 import jakarta.persistence.Entity;
@@ -46,8 +46,8 @@ public class Ticket extends BaseEntity {
     private Shows show;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticketing_id")
-    private Ticketing ticketing;
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
 
     @Enumerated(value = EnumType.STRING)
     private TicketStatus status;
