@@ -39,4 +39,8 @@ public class University {
             throw new UniversityException(ErrorCode.NOT_MATCH_UNIVERSITY_EMAIL);
         }
     }
+
+    public Boolean validateUniversityByName(String universityName) {
+        return this.name.equals(universityName);
+    }
 }

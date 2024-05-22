@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"show_id","start_time","end_time"})
+        @UniqueConstraint(columnNames = {"show_id", "start_time", "end_time"})
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation extends BaseEntity {
@@ -47,4 +47,13 @@ public class Reservation extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ReservationUserType type;
+
+    public Boolean increaseReservedCount() {
+        if (reservedCount + 1 > totalCount) {
+            return false;
+        }
+
+        this.reservedCount += 1;
+        return true;
+    }
 }
