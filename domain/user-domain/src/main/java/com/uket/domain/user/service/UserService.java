@@ -1,9 +1,11 @@
 package com.uket.domain.user.service;
 
 import com.uket.core.exception.ErrorCode;
+import com.uket.domain.university.entity.University;
 import com.uket.domain.user.dto.CreateUserDto;
+import com.uket.domain.user.dto.UserInfoDto;
+import com.uket.domain.user.entity.UserDetails;
 import com.uket.domain.user.entity.Users;
-import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.exception.UserException;
 import com.uket.domain.user.repository.UserRepository;
 import java.util.Optional;
@@ -45,6 +47,15 @@ public class UserService {
     public Users findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
+    }
+
+    public UserInfoDto getUserInfo(Long userId) {
+        Users findUser = findById(userId);
+
+        UserDetails userDetails = findUser.getUserDetails();
+        University university = findUser.getUniversity();
+
+        return UserInfoDto.of(findUser, userDetails, university.getId());
     }
 
     private Users updateProfileOfExistUser(CreateUserDto createUserDto, Users existUser) {
