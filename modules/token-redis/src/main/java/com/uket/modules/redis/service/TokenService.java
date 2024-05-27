@@ -22,10 +22,6 @@ public class TokenService {
         final String refreshTokenKey = "refreshToken:" + refreshToken;
         deleteTokenIfExist(refreshToken);
 
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(refreshTokenKey))) {
-            redisTemplate.delete(refreshTokenKey);
-        }
-
         Map<String, String> tokenDetails = new HashMap<>();
         tokenDetails.put(REDIS_KEY_ACCESS_TOKEN, accessToken);
         tokenDetails.put(REDIS_KEY_USER_ID, userId.toString());
@@ -48,9 +44,7 @@ public class TokenService {
 
     private void deleteTokenIfExist(String refreshToken) {
         final String refreshTokenKey = "refreshToken:" + refreshToken;
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(refreshTokenKey))) {
-            redisTemplate.delete(refreshTokenKey);
-        }
+        redisTemplate.delete(refreshTokenKey);
     }
 
     public void validateRefreshToken(String refreshToken) {
