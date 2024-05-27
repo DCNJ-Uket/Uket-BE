@@ -18,12 +18,14 @@ import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserService;
 import com.uket.modules.redis.lock.aop.DistributedLock;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class TicketingService {
 
     private final UserService userService;
@@ -34,18 +36,25 @@ public class TicketingService {
     private final TicketingValidator ticketingValidator;
 
     @Transactional
-    @DistributedLock(key = "#reservationId")
     public TicketDto ticketing(Long userId, Long universityId, Long reservationId) {
 
         Users user = userService.findById(userId);
         University university = universityService.findById(universityId);
         Reservation reservation = reservationService.findById(reservationId);
 
-        increaseReservedCount(reservation);
-
         CreateTicketDto createTicketDto = generateCreateTicketDto(user, university, reservation);
         Ticket ticket = ticketService.save(createTicketDto);
         return TicketDto.from(ticket);
+    }
+
+    @DistributedLock(key = "#reservationId")
+    public void increaseReservedCount(Long reservationId) {
+        Reservation reservation = reservationService.findById(reservationId);
+        Boolean isSuccess = reservation.increaseReservedCount();
+
+        if (Boolean.FALSE.equals(isSuccess)) {
+            throw new TicketException(ErrorCode.FAIL_TICKETING_COUNT);
+        }
     }
 
     public void validateTicketing(Long userId, Long universityId, Long reservationId) {
@@ -60,13 +69,6 @@ public class TicketingService {
             ticketingValidator.validateReservationUserType(reservation);
         }
         ticketingValidator.validateDuplicateReservationOfSameShow(user, reservation);
-    }
-
-    private void increaseReservedCount(Reservation reservation) {
-        Boolean isSuccess = reservation.increaseReservedCount();
-        if (Boolean.FALSE.equals(isSuccess)) {
-            throw new TicketException(ErrorCode.FAIL_TICKETING_COUNT);
-        }
     }
 
     private CreateTicketDto generateCreateTicketDto(Users user, University university, Reservation reservation) {

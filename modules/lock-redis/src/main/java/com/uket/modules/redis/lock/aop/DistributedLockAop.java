@@ -37,19 +37,31 @@ public class DistributedLockAop {
         RLock lock = redissonClient.getLock(key);
 
         try {
+            log.info("{} has lock", key);
             boolean available = lock.tryLock(distributedLock.waitTime(), distributedLock.leaseTime(),
                     distributedLock.timeUnit());
 
             if (!available) {
+                log.info("{} can't lock", key);
                 return false;
             }
+            log.info("{} finish lock", key);
             return aopForTransaction.proceed(joinPoint);
         } catch (InterruptedException e) {
             throw new InterruptedException();
         } finally {
-            if (lock.isLocked() && lock.isHeldByCurrentThread()) {
-                lock.unlock();
+            try {
+                lock.unlock();   // (4)
+            } catch (IllegalMonitorStateException e) {
+                log.info("Redisson Lock Already UnLock {} {}",
+                        keyValue("serviceName", method.getName()),
+                        keyValue("key", key)
+                );
             }
         }
+    }
+
+    private Object keyValue(String key, String value) {
+        return String.join(":", key, value);
     }
 }

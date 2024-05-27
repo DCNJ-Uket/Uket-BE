@@ -49,7 +49,7 @@ public class Reservation extends BaseEntity {
     private ReservationUserType type;
 
     public Boolean increaseReservedCount() {
-        if (reservedCount + 1 > totalCount) {
+        if (this.reservedCount + 1 > this.totalCount) {
             return false;
         }
 
