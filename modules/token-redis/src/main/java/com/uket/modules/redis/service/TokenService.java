@@ -20,6 +20,7 @@ public class TokenService {
 
     public void storeToken(String refreshToken, String accessToken, Long userId) {
         final String refreshTokenKey = "refreshToken:" + refreshToken;
+        deleteTokenIfExist(refreshToken);
 
         if (Boolean.TRUE.equals(redisTemplate.hasKey(refreshTokenKey))) {
             redisTemplate.delete(refreshTokenKey);
@@ -45,7 +46,7 @@ public class TokenService {
         return (String) redisTemplate.opsForHash().get(refreshTokenKey, "accessToken");
     }
 
-    public void deleteTokenIfExist(String refreshToken) {
+    private void deleteTokenIfExist(String refreshToken) {
         final String refreshTokenKey = "refreshToken:" + refreshToken;
         if (Boolean.TRUE.equals(redisTemplate.hasKey(refreshTokenKey))) {
             redisTemplate.delete(refreshTokenKey);

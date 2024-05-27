@@ -57,7 +57,6 @@ public class AuthService {
         tokenValidator.validateTokenSignature(refreshToken);
 
         Users findUser = userService.findById(tokenService.getUserIdForToken(refreshToken));
-        tokenService.deleteTokenIfExist(refreshToken);
 
         AuthToken authToken = authTokenGenerator.generateAuthToken(findUser);
 
