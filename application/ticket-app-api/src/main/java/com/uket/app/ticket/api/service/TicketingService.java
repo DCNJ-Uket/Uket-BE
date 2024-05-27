@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 public class TicketingService {
 
@@ -57,6 +56,7 @@ public class TicketingService {
         }
     }
 
+    @Transactional(readOnly = true)
     public void validateTicketing(Long userId, Long universityId, Long reservationId) {
 
         Users user = userService.findById(userId);
