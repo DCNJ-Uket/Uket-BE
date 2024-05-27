@@ -58,8 +58,4 @@ public class TokenService {
             throw new RedisException(ErrorCode.INVALID_OR_EXPIRED_REFRESH_TOKEN);
         }
     }
-
-    public Set<String> allKeys() {
-        return redisTemplate.keys("*");
-    }
 }
