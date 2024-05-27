@@ -1,8 +1,6 @@
 package com.uket.domain.event.service;
 
 import com.uket.domain.event.dto.TicketingDto;
-import com.uket.domain.event.entity.Shows;
-import com.uket.domain.event.entity.Ticketing;
 import com.uket.domain.event.repository.TicketingRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +14,7 @@ public class TicketingService {
 
     private final TicketingRepository ticketingRepository;
 
-    public List<TicketingDto> findByShow(Shows show) {
-        List<Ticketing> ticketings = ticketingRepository.findByShow(show);
-
-        return ticketings.stream().map(TicketingDto::from).toList();
+    public List<TicketingDto> findByShowId(Long showId) {
+        return ticketingRepository.findByShowId(showId, TicketingDto.class);
     }
 }

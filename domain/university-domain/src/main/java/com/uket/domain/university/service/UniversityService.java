@@ -30,6 +30,10 @@ public class UniversityService {
                 .orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
     }
 
+    public Boolean isDefault(University university) {
+        return university.getName().equals(DEFAULT_UNIVERSITY_NAME);
+    }
+
     public Optional<Long> getCurrentEvent(Long universityId) {
         University university = universityRepository.findById(universityId)
                 .orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));

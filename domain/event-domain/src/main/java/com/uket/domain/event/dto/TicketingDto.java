@@ -7,7 +7,7 @@ import lombok.Builder;
 
 @Builder
 public record TicketingDto(
-        Long ticketingId,
+        Long id,
         TicketingUserType type,
         LocalDateTime startTime,
         LocalDateTime endTime,
@@ -16,7 +16,7 @@ public record TicketingDto(
 ) {
     public static TicketingDto from(Ticketing ticketing) {
         return TicketingDto.builder()
-                .ticketingId(ticketing.getId())
+                .id(ticketing.getId())
                 .type(ticketing.getType())
                 .startTime(ticketing.getStartTime())
                 .endTime(ticketing.getEndTime())

@@ -5,7 +5,7 @@ spring:
       hibernate:
         create_empty_composites:
           enabled: true
-        format_sql: true
+#        format_sql: true
         jdbc:
           batch_size: 100
         order_inserts: true
