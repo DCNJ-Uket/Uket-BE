@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Import;
 @Import({RedissonConfig.class})
 class TicketAppApiApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
