@@ -3,6 +3,8 @@ package com.uket.modules.redis.service;
 import static com.uket.modules.redis.constants.RedisValues.REDIS_KEY_ACCESS_TOKEN;
 import static com.uket.modules.redis.constants.RedisValues.REDIS_KEY_USER_ID;
 
+import com.uket.modules.redis.exception.ErrorCode;
+import com.uket.modules.redis.exception.RedisException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +55,7 @@ public class TokenService {
     public void validateRefreshToken(String refreshToken) {
         final String refreshTokenKey = "refreshToken:" + refreshToken;
         if (!Boolean.TRUE.equals(redisTemplate.hasKey(refreshTokenKey))) {
-            throw new IllegalStateException("Refresh token is invalid or expired");
+            throw new RedisException(ErrorCode.INVALID_OR_EXPIRED_REFRESH_TOKEN);
         }
     }
 
