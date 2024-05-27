@@ -43,7 +43,7 @@ public class DevController implements DevApi {
                 userDto.name(),
                 userDto.role(),
                 isRegistered);
-        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken( 7_200_000L);
+        String newRefreshToken = jwtAuthTokenUtil.createRefreshToken( );
 
         AuthToken authToken = AuthToken.of(newAccessToken, newRefreshToken, isRegistered);
         return ResponseEntity.ok(TokenResponse.from(authToken));
