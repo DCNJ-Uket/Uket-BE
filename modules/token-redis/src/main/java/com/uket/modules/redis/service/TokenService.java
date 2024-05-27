@@ -1,5 +1,8 @@
 package com.uket.modules.redis.service;
 
+import static com.uket.modules.redis.constants.RedisValues.REDIS_KEY_ACCESS_TOKEN;
+import static com.uket.modules.redis.constants.RedisValues.REDIS_KEY_USER_ID;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +24,8 @@ public class TokenService {
         }
 
         Map<String, String> tokenDetails = new HashMap<>();
-        tokenDetails.put("accessToken", accessToken);
-        tokenDetails.put("userId", userId.toString());
+        tokenDetails.put(REDIS_KEY_ACCESS_TOKEN, accessToken);
+        tokenDetails.put(REDIS_KEY_USER_ID, userId.toString());
         redisTemplate.opsForHash().putAll(refreshTokenKey, tokenDetails);
 
         redisTemplate.expire(refreshTokenKey, Duration.ofHours(2));
