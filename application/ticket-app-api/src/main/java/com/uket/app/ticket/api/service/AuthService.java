@@ -14,6 +14,8 @@ import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
+import com.uket.modules.redis.exception.ErrorCode;
+import com.uket.modules.redis.exception.RedisException;
 import com.uket.modules.redis.service.TokenService;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +52,11 @@ public class AuthService {
     public AuthToken reissue(String accessToken, String refreshToken) {
 
         tokenValidator.checkNotExpiredToken(accessToken);
+        String existingAccessToken = tokenService.getAccessTokenForToken(refreshToken);
+        if (!accessToken.equals(existingAccessToken)) {
+            throw new RedisException(ErrorCode.ACCESS_TOKEN_NOT_STORED);
+        }
+
         tokenService.validateRefreshToken(refreshToken);
 
         tokenValidator.validateExpiredToken(refreshToken);
