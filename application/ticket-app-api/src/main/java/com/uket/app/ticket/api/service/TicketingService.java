@@ -54,6 +54,7 @@ public class TicketingService {
         Reservation reservation = reservationService.findById(reservationId);
         University university = universityService.findById(universityId);
 
+        ticketingValidator.validateTicketingDate(reservation);
         ticketingValidator.validateTicketingTime(reservation);
         if (Boolean.FALSE.equals(ticketingValidator.validateStudentOfUniversity(user, university))) {
             ticketingValidator.validateReservationUserType(reservation);

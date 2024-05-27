@@ -47,4 +47,13 @@ public class TicketingValidator {
             throw new TicketException(ErrorCode.OVER_TIME_OF_POSSIBLE_TICKETING_TIME);
         }
     }
+
+    public void validateTicketingDate(Reservation reservation) {
+
+        Shows show = reservation.getShow();
+
+        if (show.getTicketingDate().isAfter(LocalDateTime.now())) {
+            throw new TicketException(ErrorCode.NOT_READY_TICKETING);
+        }
+    }
 }
