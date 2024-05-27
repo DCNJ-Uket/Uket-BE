@@ -29,7 +29,6 @@ public class TokenService {
         redisTemplate.opsForHash().putAll(refreshTokenKey, tokenDetails);
 
         redisTemplate.expire(refreshTokenKey, Duration.ofHours(2));
-        //redisTemplate.expire(refreshTokenKey, Duration.ofSeconds(2));
     }
 
     public Long getUserIdForToken(String refreshToken) {
