@@ -33,7 +33,12 @@ public class TokenService {
     public Long getUserIdForToken(String refreshToken) {
         String refreshTokenKey = "refreshToken:" + refreshToken;
         String userIdAsString = (String) redisTemplate.opsForHash().get(refreshTokenKey, "userId");
-        return userIdAsString != null ? Long.parseLong(userIdAsString) : null;
+
+        if (userIdAsString == null) {
+            throw new RedisException(ErrorCode.USER_ID_NOT_FOUND);  // 적절한 ErrorCode 필요
+        }
+
+        return Long.parseLong(userIdAsString);
 
     }
 
