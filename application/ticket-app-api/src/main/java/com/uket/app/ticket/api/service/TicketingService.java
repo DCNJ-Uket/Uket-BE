@@ -51,9 +51,10 @@ public class TicketingService {
     public void validateTicketing(Long userId, Long universityId, Long reservationId) {
 
         Users user = userService.findById(userId);
-        University university = universityService.findById(universityId);
         Reservation reservation = reservationService.findById(reservationId);
+        University university = universityService.findById(universityId);
 
+        ticketingValidator.validateTicketingTime(reservation);
         if (Boolean.FALSE.equals(ticketingValidator.validateStudentOfUniversity(user, university))) {
             ticketingValidator.validateReservationUserType(reservation);
         }

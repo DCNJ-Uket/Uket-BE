@@ -8,6 +8,7 @@ import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.user.entity.Users;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,13 @@ public class TicketingValidator {
 
         if (Boolean.TRUE.equals(ticketRepository.existsByUserAndShow(user, show))) {
             throw new TicketException(ErrorCode.DUPLICATE_RESERVATION_OF_SAME_SHOW);
+        }
+    }
+
+    public void validateTicketingTime(Reservation reservation) {
+
+        if (reservation.getStartTime().isBefore(LocalDateTime.now())) {
+            throw new TicketException(ErrorCode.OVER_TIME_OF_POSSIBLE_TICKETING_TIME);
         }
     }
 }
