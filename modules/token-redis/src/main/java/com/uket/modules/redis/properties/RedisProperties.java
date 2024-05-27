@@ -8,8 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesBindin
 @ConfigurationPropertiesBinding
 public record RedisProperties (
     String host,
-    int port,
-    String password
+    int port
 ) {
 
 }
