@@ -43,7 +43,7 @@ public class TokenService {
         return (String) redisTemplate.opsForHash().get(refreshTokenKey, "accessToken");
     }
 
-    public void checkAndDeleteTokens(String refreshToken) {
+    public void deleteTokenIfExist(String refreshToken) {
         final String refreshTokenKey = "refreshToken:" + refreshToken;
         if (Boolean.TRUE.equals(redisTemplate.hasKey(refreshTokenKey))) {
             redisTemplate.delete(refreshTokenKey);
