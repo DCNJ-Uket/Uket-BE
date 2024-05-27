@@ -9,6 +9,7 @@ import com.uket.domain.user.entity.UserDetails;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserDetailsService;
 import com.uket.domain.user.service.UserService;
+import com.uket.modules.redis.service.RotateTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
