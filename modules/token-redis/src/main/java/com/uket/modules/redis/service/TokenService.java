@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 public class TokenService {
     private final RedisTemplate<String, String> redisTemplate;
 
-
-
     public void storeToken(String refreshToken, String accessToken, Long userId) {
         final String refreshTokenKey = "refreshToken:" + refreshToken;
 
