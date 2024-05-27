@@ -54,7 +54,10 @@ public enum ErrorCode {
      * Ticket Errors
      */
     FAIL_TO_GENERATE_QRCODE(500,"TI0001","QR CODE 생성을 실패했습니다."),
-    FAIL_TICKETING_COUNT(400,"TI0002","티켓 예매 가능 인원이 없습니다.");
+    FAIL_TICKETING_COUNT(400,"TI0002","티켓 예매 가능 인원이 없습니다."),
+    ALREADY_EXIST_TICKET(400,"TI0003","이미 예약된 티켓입니다."),
+    INVALID_RESERVATION_USER_TYPE(400,"TI0004","예매가 불가능한 사용자 구분입니다."),
+    DUPLICATE_RESERVATION_OF_SAME_SHOW(400,"TI0005","해당 공연에 이미 예약이 되어있습니다.");
 
     private final int status;
     private final String code;

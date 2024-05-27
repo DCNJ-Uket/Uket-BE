@@ -1,9 +1,11 @@
 package com.uket.app.ticket.api.service;
 
+import com.uket.app.ticket.api.util.TicketingValidator;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
+import com.uket.domain.event.service.ReservationService;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
@@ -27,22 +29,42 @@ public class TicketingService {
     private final UserService userService;
     private final UniversityService universityService;
     private final TicketService ticketService;
+    private final ReservationService reservationService;
 
-    @DistributedLock(key = "#reservation.getId()")
-    public TicketDto ticketing(Long userId, Long universityId, Reservation reservation) {
+    private final TicketingValidator ticketingValidator;
+
+    @Transactional
+    @DistributedLock(key = "#reservationId")
+    public TicketDto ticketing(Long userId, Long universityId, Long reservationId) {
 
         Users user = userService.findById(userId);
         University university = universityService.findById(universityId);
+        Reservation reservation = reservationService.findById(reservationId);
 
+        increaseReservedCount(reservation);
+
+        CreateTicketDto createTicketDto = generateCreateTicketDto(user, university, reservation);
+        Ticket ticket = ticketService.save(createTicketDto);
+        return TicketDto.from(ticket);
+    }
+
+    public void validateTicketing(Long userId, Long universityId, Long reservationId) {
+
+        Users user = userService.findById(userId);
+        University university = universityService.findById(universityId);
+        Reservation reservation = reservationService.findById(reservationId);
+
+        if (Boolean.FALSE.equals(ticketingValidator.validateStudentOfUniversity(user, university))) {
+            ticketingValidator.validateReservationUserType(reservation);
+        }
+        ticketingValidator.validateDuplicateReservationOfSameShow(user, reservation);
+    }
+
+    private void increaseReservedCount(Reservation reservation) {
         Boolean isSuccess = reservation.increaseReservedCount();
         if (Boolean.FALSE.equals(isSuccess)) {
             throw new TicketException(ErrorCode.FAIL_TICKETING_COUNT);
         }
-
-        CreateTicketDto createTicketDto = generateCreateTicketDto(user, university, reservation);
-
-        Ticket ticket = ticketService.save(createTicketDto);
-        return TicketDto.from(ticket);
     }
 
     private CreateTicketDto generateCreateTicketDto(Users user, University university, Reservation reservation) {
@@ -60,7 +82,7 @@ public class TicketingService {
     }
 
     private TicketStatus checkTicketStatus(Users user, University university) {
-        if (university.validateUniversityByName(user.getUniversity().getName())) {
+        if (Boolean.TRUE.equals(university.validateUniversityByName(user.getUniversity().getName()))) {
             return TicketStatus.BEFORE_ENTER;
         }
         return TicketStatus.BEFORE_PAYMENT;
