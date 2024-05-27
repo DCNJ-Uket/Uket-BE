@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TokenService {
+public class RotateTokenService {
     private final RedisTemplate<String, String> redisTemplate;
 
     public void storeToken(String refreshToken, String accessToken, Long userId) {

@@ -7,7 +7,7 @@ import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
-import com.uket.modules.redis.service.TokenService;
+import com.uket.modules.redis.service.RotateTokenService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -23,9 +23,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @TestMethodOrder(OrderAnnotation.class)
-class TokenServiceTest {
+class RotateTokenServiceTest {
     @Autowired
-    private TokenService tokenService;
+    private RotateTokenService rotateTokenService;
 
     @Autowired
     private AuthService authService;
@@ -58,13 +58,13 @@ class TokenServiceTest {
 
         accessToken = jwtAuthTokenUtil.createAccessToken(testUser.getId(),testUser.getName(), testUser.getRole().toString(),testUser.getIsRegistered(), 3_000L);
         refreshToken = jwtAuthTokenUtil.createRefreshToken(6_000L);
-        tokenService.storeToken(refreshToken, accessToken, testUser.getId());
+        rotateTokenService.storeToken(refreshToken, accessToken, testUser.getId());
     }
 
     @Order(1)
     @Test
     void Redis에_token관련_정보가_잘_저장된다() {
-        assertDoesNotThrow(() -> tokenService.validateRefreshToken(refreshToken));
+        assertDoesNotThrow(() -> rotateTokenService.validateRefreshToken(refreshToken));
     }
 
 

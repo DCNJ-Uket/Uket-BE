@@ -12,7 +12,7 @@ import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
-import com.uket.modules.redis.service.TokenService;
+import com.uket.modules.redis.service.RotateTokenService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class AuthControllerTest {
     private UserService userService;
 
     @Autowired
-    private TokenService tokenService;
+    private RotateTokenService rotateTokenService;
 
     private Users user;
 
@@ -65,7 +65,7 @@ class AuthControllerTest {
         String accessToken = jwtAuthTokenUtil.createAccessToken(user.getId(), user.getName(),
                 String.valueOf(user.getRole()), user.getIsRegistered(), System.currentTimeMillis());
         String refreshToken = jwtAuthTokenUtil.createRefreshToken();
-        tokenService.storeToken(refreshToken,accessToken,user.getId());
+        rotateTokenService.storeToken(refreshToken,accessToken,user.getId());
         TokenReissueRequest request = new TokenReissueRequest(accessToken, refreshToken);
 
         ResultActions perform = mockMvc.perform(
@@ -118,7 +118,7 @@ class AuthControllerTest {
         String accessToken = jwtAuthTokenUtil.createAccessToken(0L, user.getName(),
                 String.valueOf(user.getRole()), user.getIsRegistered(),System.currentTimeMillis());
         String refreshToken = jwtAuthTokenUtil.createRefreshToken(0L);
-        tokenService.storeToken(refreshToken,accessToken,user.getId());
+        rotateTokenService.storeToken(refreshToken,accessToken,user.getId());
         TokenReissueRequest request = new TokenReissueRequest(accessToken, refreshToken);
 
         ResultActions perform = mockMvc.perform(
