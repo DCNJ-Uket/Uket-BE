@@ -116,7 +116,7 @@ public class JwtAuthTokenUtil {
                 .claim(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, JwtValues.JWT_PAYLOAD_VALUE_REFRESH)
                 .claim(JwtValues.JWT_PAYLOAD_KEY_UUID, uuid)
                 .issuedAt(new Date(now))
-                .expiration(new Date(expiration))
+                .expiration(new Date(now+expiration))
                 .signWith(secretKey)
                 .compact();
     }

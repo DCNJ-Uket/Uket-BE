@@ -19,10 +19,12 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
     private final RedisProperties redisProperties;
 
+    public RedisProperties getRedisProperties() {
+        return redisProperties;
+    }
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisProperties.getHost(), redisProperties.getPort());
-        config.setPassword(redisProperties.getPassword());
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(redisProperties.host(), redisProperties.port());
         return new LettuceConnectionFactory(config);
     }
 

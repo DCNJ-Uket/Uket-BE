@@ -9,18 +9,20 @@ import com.uket.domain.user.service.UserService;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import com.uket.modules.redis.service.TokenService;
 import jakarta.transaction.Transactional;
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
 @Transactional
+@TestMethodOrder(OrderAnnotation.class)
 class TokenServiceTest {
     @Autowired
     private TokenService tokenService;
@@ -55,19 +57,18 @@ class TokenServiceTest {
         testUser = userService.saveUser(createUserDto);
 
         accessToken = jwtAuthTokenUtil.createAccessToken(testUser.getId(),testUser.getName(), testUser.getRole().toString(),testUser.getIsRegistered(), 3_000L);
-        refreshToken = jwtAuthTokenUtil.createRefreshToken();
+        refreshToken = jwtAuthTokenUtil.createRefreshToken(6_000L);
         tokenService.storeToken(refreshToken, accessToken, testUser.getId());
     }
 
+    @Order(1)
     @Test
     void Redis에_token관련_정보가_잘_저장된다() {
-        Set<String> keys = tokenService.allKeys();
-        assertNotNull(keys);
-        assertFalse(keys.isEmpty());
-        assertTrue(keys.contains("refreshToken:" + refreshToken));
+        assertDoesNotThrow(() -> tokenService.validateRefreshToken(refreshToken));
     }
 
 
+    @Order(2)
     @Test
     void Reissue를_진행할경우_Redis에_저장되는_refreshToken은_바뀐다() {
         AuthToken authToken = authService.reissue(accessToken, refreshToken);
@@ -76,16 +77,16 @@ class TokenServiceTest {
         assertNotEquals(refreshToken, authToken.refreshToken(), "The old and new refresh tokens should not be the same");
     }
 
+    @Order(3)
     @Test
     void RefreshToken_만료시간이_지난경우_Redis에서_삭제되어_Reissue가_진행되지_않는다() throws InterruptedException {
-        //TokenService.java의 redis 만료시간을 2초로 변경 후 진행
-        Thread.sleep(3000);
+        Thread.sleep(7000);
 
         Exception exception = assertThrows(RuntimeException.class, () -> {
             authService.reissue(accessToken, refreshToken);
         });
 
-        assertEquals("Refresh token is invalid or expired", exception.getMessage());
+        assertEquals("만료된 토큰입니다.", exception.getMessage());
     }
 
 }
