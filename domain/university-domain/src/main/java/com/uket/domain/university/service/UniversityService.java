@@ -18,6 +18,11 @@ public class UniversityService {
 
     private final UniversityRepository universityRepository;
 
+    public University findById(Long universityId) {
+        return universityRepository.findById(universityId)
+                .orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
+    }
+
     public Optional<University> findByName(String name) {
         if (DEFAULT_UNIVERSITY_NAME.equals(name)) {
             return Optional.empty();

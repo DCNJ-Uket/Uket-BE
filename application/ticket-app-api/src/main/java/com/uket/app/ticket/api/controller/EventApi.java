@@ -1,7 +1,7 @@
 package com.uket.app.ticket.api.controller;
 
 import com.uket.app.ticket.api.dto.response.ShowResponse;
-import com.uket.app.ticket.api.dto.response.TicketingResponse;
+import com.uket.app.ticket.api.dto.response.ReservationResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -44,7 +44,7 @@ public interface EventApi {
             Long eventId
     );
 
-    @GetMapping("/shows/{id}/ticketings")
+    @GetMapping("/shows/{id}/reservations")
     @Operation(summary = "예매 가능 시간 조회 API", description = "공연별 예매 가능 시간을 조회할 수 있습니다.")
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
             mediaType = "application/json",
@@ -55,7 +55,7 @@ public interface EventApi {
                                     """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
-    ResponseEntity<TicketingResponse> getPossibleTicketings(
+    ResponseEntity<ReservationResponse> getPossibleReservations(
             @PathVariable("id")
             Long showId
     );

@@ -49,11 +49,18 @@ public enum ErrorCode {
     NOT_FOUND_EVENT(404,"EV0001", "해당 축제를 찾을 수 없습니다."),
     NOT_FOUND_CURRENT_EVENT(404,"EV0002", "진행중인 축제를 찾을 수 없습니다."),
     NOT_FOUND_SHOW(404,"EV0003", "해당 공연을 찾을 수 없습니다."),
+    NOT_FOUND_RESERVATION(404,"EV0004", "해당 예매 정보를 찾을 수 없습니다."),
 
     /**
      * Ticket Errors
      */
-    FAIL_TO_GENERATE_QRCODE(500,"TI0001","QR CODE 생성을 실패했습니다.");
+    FAIL_TO_GENERATE_QRCODE(500,"TI0001","QR CODE 생성을 실패했습니다."),
+    FAIL_TICKETING_COUNT(400,"TI0002","티켓 예매 가능 인원이 없습니다."),
+    ALREADY_EXIST_TICKET(400,"TI0003","이미 예약된 티켓입니다."),
+    INVALID_RESERVATION_USER_TYPE(400,"TI0004","예매가 불가능한 사용자 구분입니다."),
+    DUPLICATE_RESERVATION_OF_SAME_SHOW(400,"TI0005","해당 공연에 이미 예약이 되어있습니다."),
+    OVER_TIME_OF_POSSIBLE_TICKETING_TIME(400,"TI0006","예매 가능 시각이 지났습니다."),
+    NOT_READY_TICKETING(400,"TI0007","예매 시작 전입니다.");
 
     private final int status;
     private final String code;

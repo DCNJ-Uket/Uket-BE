@@ -1,14 +1,13 @@
 package com.uket.app.ticket.api.dto.response;
 
-import com.uket.domain.event.dto.TicketingDto;
-import java.util.List;
+import com.uket.domain.ticket.dto.TicketDto;
 
 public record TicketingResponse(
-        String showName,
-        List<TicketingDto> ticketings
+    Boolean success,
+    TicketDto ticket
 ) {
 
-    public static TicketingResponse of(String showName, List<TicketingDto> ticketings) {
-        return new TicketingResponse(showName, ticketings);
+    public static TicketingResponse of(Boolean success, TicketDto ticket) {
+        return new TicketingResponse(success, ticket);
     }
 }
