@@ -90,6 +90,13 @@ spring:
   config:
     activate:
       on-profile: dev
+  data:
+    redis:
+      lock:
+        host: redis-lock
+        port: 6379
+      host: redis-auth
+      port: 6380
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql:3306/uket?useSSL=false&allowPublicKeyRetrieval=true
