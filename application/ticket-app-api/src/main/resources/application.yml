@@ -93,10 +93,10 @@ spring:
   data:
     redis:
       lock:
-        host: redis-lock
-        port: 6379
-      host: redis-auth
-      port: 6380
+        host: ${REDIS_LOCK_HOST}
+        port: ${REDIS_LOCK_PORT}
+      host: ${REDIS_AUTH_HOST}
+      port: ${REDIS_AUTH_PORT}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql:3306/uket?useSSL=false&allowPublicKeyRetrieval=true
