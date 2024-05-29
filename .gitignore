@@ -214,3 +214,13 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,gradle,macos
+/domain/event-domain/src/main/generated/com/uket/domain/event/entity/QBanner.java
+/domain/core-domain/src/main/generated/com/uket/domain/core/entity/QBaseEntity.java
+/domain/core-domain/src/main/generated/com/uket/domain/core/entity/QDeletableBaseEntity.java
+/domain/event-domain/src/main/generated/com/uket/domain/event/entity/QEvents.java
+/domain/event-domain/src/main/generated/com/uket/domain/event/entity/QReservation.java
+/domain/event-domain/src/main/generated/com/uket/domain/event/entity/QShows.java
+/domain/ticket-domain/src/main/generated/com/uket/domain/ticket/entity/QTicket.java
+/domain/university-domain/src/main/generated/com/uket/domain/university/entity/QUniversity.java
+/domain/user-domain/src/main/generated/com/uket/domain/user/entity/QUserDetails.java
+/domain/user-domain/src/main/generated/com/uket/domain/user/entity/QUsers.java

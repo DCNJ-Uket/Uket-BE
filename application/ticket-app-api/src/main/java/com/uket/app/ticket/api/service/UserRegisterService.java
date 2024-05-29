@@ -39,6 +39,9 @@ public class UserRegisterService {
 
         UserDetails userDetails = userDetailsService.saveUserDetails(createUserDetailsDto);
         findUser.register(userDetails, findUniversity);
-        return authTokenGenerator.generateAuthToken(findUser);
+
+        AuthToken authToken = authTokenGenerator.generateAuthToken(findUser);
+        rotateTokenService.storeToken(authToken.refreshToken(), authToken.accessToken(),findUser.getId());
+        return authToken;
     }
 }
