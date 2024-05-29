@@ -3,7 +3,7 @@ package com.uket.modules.redis.service;
 import static com.uket.modules.redis.constants.RedisValues.REDIS_KEY_ACCESS_TOKEN;
 import static com.uket.modules.redis.constants.RedisValues.REDIS_KEY_USER_ID;
 
-import com.uket.modules.redis.exception.ErrorCode;
+import com.uket.modules.redis.exception.RedisErrorCode;
 import com.uket.modules.redis.exception.RedisException;
 import java.time.Duration;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class RotateTokenService {
         String userIdAsString = (String) redisTemplate.opsForHash().get(refreshTokenKey, "userId");
 
         if (userIdAsString == null) {
-            throw new RedisException(ErrorCode.USER_ID_NOT_FOUND);  // 적절한 ErrorCode 필요
+            throw new RedisException(RedisErrorCode.USER_ID_NOT_FOUND);
         }
         return Long.parseLong(userIdAsString);
     }
@@ -51,7 +51,7 @@ public class RotateTokenService {
     public void validateRefreshToken(String refreshToken) {
         final String refreshTokenKey = "refreshToken:" + refreshToken;
         if (!Boolean.TRUE.equals(redisTemplate.hasKey(refreshTokenKey))) {
-            throw new RedisException(ErrorCode.INVALID_OR_EXPIRED_REFRESH_TOKEN);
+            throw new RedisException(RedisErrorCode.INVALID_OR_EXPIRED_REFRESH_TOKEN);
         }
     }
 }

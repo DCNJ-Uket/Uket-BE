@@ -14,7 +14,7 @@ import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
-import com.uket.modules.redis.exception.ErrorCode;
+import com.uket.modules.redis.exception.RedisErrorCode;
 import com.uket.modules.redis.exception.RedisException;
 import com.uket.modules.redis.service.RotateTokenService;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
@@ -54,7 +54,7 @@ public class AuthService {
         tokenValidator.checkNotExpiredToken(accessToken);
         String existingAccessToken = rotateTokenService.getAccessTokenForToken(refreshToken);
         if (!accessToken.equals(existingAccessToken)) {
-            throw new RedisException(ErrorCode.ACCESS_TOKEN_NOT_STORED);
+            throw new RedisException(RedisErrorCode.ACCESS_TOKEN_NOT_STORED);
         }
 
         rotateTokenService.validateRefreshToken(refreshToken);
