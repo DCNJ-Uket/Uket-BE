@@ -5,6 +5,9 @@ import com.uket.core.exception.BaseException;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.user.exception.UserException;
+import com.uket.modules.redis.dto.response.RedisErrorResponse;
+import com.uket.modules.redis.exception.RedisErrorCode;
+import com.uket.modules.redis.exception.RedisException;
 import com.uket.modules.slack.dto.ErrorReportDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
@@ -79,6 +82,19 @@ public class WebExceptionHandler {
         return ResponseEntity
             .status(HttpStatus.valueOf(errorCode.getStatus()))
             .body(ErrorResponse.of(errorCode));
+    }
+
+    @ExceptionHandler(RedisException.class)
+    ResponseEntity<RedisErrorResponse> handleRedisException(HttpServletRequest request,
+        RedisException exception) {
+        RedisErrorCode redisErrorCode = exception.getRedisErrorCode();
+
+        log.warn("[RedisException] {}: {}", redisErrorCode.getCode(), redisErrorCode.getMessage(),
+            exception);
+
+        return ResponseEntity
+            .status(HttpStatus.valueOf(redisErrorCode.getStatus()))
+            .body(RedisErrorResponse.of(redisErrorCode));
     }
 
     @ExceptionHandler(Throwable.class)

@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class RedisException extends RuntimeException{
-    private final ErrorCode errorCode;
-    public RedisException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    private final RedisErrorCode redisErrorCode;
+    public RedisException(RedisErrorCode redisErrorCode) {
+        super(redisErrorCode.getMessage());
+        this.redisErrorCode = redisErrorCode;
     }
 }
