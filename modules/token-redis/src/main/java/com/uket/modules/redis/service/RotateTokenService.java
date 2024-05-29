@@ -25,7 +25,6 @@ public class RotateTokenService {
         tokenDetails.put(REDIS_KEY_ACCESS_TOKEN, accessToken);
         tokenDetails.put(REDIS_KEY_USER_ID, userId.toString());
         redisTemplate.opsForHash().putAll(refreshTokenKey, tokenDetails);
-
         redisTemplate.expire(refreshTokenKey, Duration.ofHours(2));
     }
 
