@@ -6,6 +6,8 @@ spring:
         port: 6379
       host: localhost
       port: 6379
+    hikari:
+      maximum-pool-size: 40
   sql:
     init:
       mode: never
@@ -27,15 +29,6 @@ spring:
     url: jdbc:h2:mem:test;MODE=MySQL
     username: sa
     password:
-<<<<<<< HEAD
-  data:
-    redis:
-      host: localhost
-      port: 6379
-=======
-    hikari:
-      maximum-pool-size: 40
->>>>>>> 50d9bb3107d25166b73e986cf3bfcf711d9c1665
   cloud:
     aws:
       s3:
