@@ -2,12 +2,12 @@ package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.EventApi;
 import com.uket.app.ticket.api.dto.response.ShowResponse;
-import com.uket.app.ticket.api.dto.response.TicketingResponse;
+import com.uket.app.ticket.api.dto.response.ReservationResponse;
 import com.uket.domain.event.dto.ShowDto;
-import com.uket.domain.event.dto.TicketingDto;
+import com.uket.domain.event.dto.ReservationDto;
 import com.uket.domain.event.service.EventService;
 import com.uket.domain.event.service.ShowService;
-import com.uket.domain.event.service.TicketingService;
+import com.uket.domain.event.service.ReservationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class EventController implements EventApi {
 
     private final EventService eventService;
     private final ShowService showService;
-    private final TicketingService ticketingService;
+    private final ReservationService reservationService;
 
     @Override
     public ResponseEntity<ShowResponse> getShows(Long eventId) {
@@ -32,12 +32,12 @@ public class EventController implements EventApi {
     }
 
     @Override
-    public ResponseEntity<TicketingResponse> getPossibleTicketings(Long showId) {
+    public ResponseEntity<ReservationResponse> getPossibleReservations(Long showId) {
 
         String showName = showService.findNameById(showId);
-        List<TicketingDto> ticketings = ticketingService.findByShowId(showId);
+        List<ReservationDto> reservations = reservationService.findByShowId(showId);
 
-        TicketingResponse response = TicketingResponse.of(showName, ticketings);
+        ReservationResponse response = ReservationResponse.of(showName, reservations);
         return ResponseEntity.ok(response);
     }
 }

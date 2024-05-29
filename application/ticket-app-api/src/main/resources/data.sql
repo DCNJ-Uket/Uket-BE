@@ -27,7 +27,7 @@ FROM events e
                      SELECT 2, 3) days
 WHERE e.name IN ('녹색지대', '대동제');
 
-INSERT INTO ticketing (show_id, start_time, end_time, reserved_count, total_count, type)
+INSERT INTO reservation (show_id, start_time, end_time, reserved_count, total_count, type)
 SELECT s.show_id,
        DATE_ADD(s.ticketing_date, INTERVAL CONCAT(t.hour, ':', t.minute) HOUR_MINUTE) AS start_time,
        DATE_ADD(s.ticketing_date, INTERVAL CONCAT(t.hour + ((t.minute + 20) DIV 60), ':', ((t.minute + 20) MOD 60))
