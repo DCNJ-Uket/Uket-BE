@@ -12,6 +12,7 @@ import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
+import com.uket.modules.redis.service.RotateTokenService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,9 @@ class AuthControllerTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RotateTokenService rotateTokenService;
+
     private Users user;
 
     @BeforeEach
@@ -60,7 +64,8 @@ class AuthControllerTest {
         //expired token
         String accessToken = jwtAuthTokenUtil.createAccessToken(user.getId(), user.getName(),
                 String.valueOf(user.getRole()), user.getIsRegistered(), System.currentTimeMillis());
-        String refreshToken = jwtAuthTokenUtil.createRefreshToken(user.getId());
+        String refreshToken = jwtAuthTokenUtil.createRefreshToken();
+        rotateTokenService.storeToken(refreshToken,accessToken,user.getId());
         TokenReissueRequest request = new TokenReissueRequest(accessToken, refreshToken);
 
         ResultActions perform = mockMvc.perform(
@@ -95,7 +100,7 @@ class AuthControllerTest {
     void refreshToken이_만료된_경우_재발급이_불가능하다() throws Exception {
         String accessToken = jwtAuthTokenUtil.createAccessToken(user.getId(), user.getName(),
                 String.valueOf(user.getRole()), user.getIsRegistered());
-        String refreshToken = jwtAuthTokenUtil.createRefreshToken(user.getId(), System.currentTimeMillis());
+        String refreshToken = jwtAuthTokenUtil.createRefreshToken( System.currentTimeMillis());
         TokenReissueRequest request = new TokenReissueRequest(accessToken, refreshToken);
 
         ResultActions perform = mockMvc.perform(
@@ -113,6 +118,7 @@ class AuthControllerTest {
         String accessToken = jwtAuthTokenUtil.createAccessToken(0L, user.getName(),
                 String.valueOf(user.getRole()), user.getIsRegistered(),System.currentTimeMillis());
         String refreshToken = jwtAuthTokenUtil.createRefreshToken(0L);
+        rotateTokenService.storeToken(refreshToken,accessToken,user.getId());
         TokenReissueRequest request = new TokenReissueRequest(accessToken, refreshToken);
 
         ResultActions perform = mockMvc.perform(

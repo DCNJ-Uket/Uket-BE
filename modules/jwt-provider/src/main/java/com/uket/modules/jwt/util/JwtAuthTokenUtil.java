@@ -6,6 +6,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.SignatureException;
 import java.util.Date;
+import java.util.UUID;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 
@@ -94,26 +95,28 @@ public class JwtAuthTokenUtil {
                 .compact();
     }
 
-    public String createRefreshToken(Long userId) {
+    public String createRefreshToken() {
         long now = System.currentTimeMillis();
+        UUID uuid = UUID.randomUUID();
 
         return Jwts.builder()
                 .claim(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, JwtValues.JWT_PAYLOAD_VALUE_REFRESH)
-                .claim(JwtValues.JWT_PAYLOAD_KEY_ID, userId)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_UUID, uuid)
                 .issuedAt(new Date(now))
                 .expiration(getRefreshTokenExpiration(now))
                 .signWith(secretKey)
                 .compact();
     }
 
-    public String createRefreshToken(Long userId, Long expiration) {
+    public String createRefreshToken(Long expiration) {
         long now = System.currentTimeMillis();
+        UUID uuid = UUID.randomUUID();
 
         return Jwts.builder()
                 .claim(JwtValues.JWT_PAYLOAD_KEY_CATEGORY, JwtValues.JWT_PAYLOAD_VALUE_REFRESH)
-                .claim(JwtValues.JWT_PAYLOAD_KEY_ID, userId)
+                .claim(JwtValues.JWT_PAYLOAD_KEY_UUID, uuid)
                 .issuedAt(new Date(now))
-                .expiration(new Date(expiration))
+                .expiration(new Date(now+expiration))
                 .signWith(secretKey)
                 .compact();
     }

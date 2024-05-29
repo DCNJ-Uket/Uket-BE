@@ -56,7 +56,3 @@ app:
   slack:
     webhook:
       url: testestest
-
-
-
-

@@ -20,6 +20,7 @@ public class S3Service {
     public String getUniversityLogo(String filename) {
         return getPreSignedUrl(UNIVERSITY_LOGO_FOLDER, filename);
     }
+
     public String getBannerImage(String filename) {
         return getPreSignedUrl(BANNER_IMAGE_FOLDER, filename);
     }

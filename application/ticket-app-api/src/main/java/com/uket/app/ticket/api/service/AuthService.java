@@ -14,6 +14,9 @@ import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
+import com.uket.modules.redis.exception.ErrorCode;
+import com.uket.modules.redis.exception.RedisException;
+import com.uket.modules.redis.service.RotateTokenService;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,7 @@ public class AuthService {
     private final OAuth2UserInfoManager oAuth2UserInfoManager;
     private final UserService userService;
     private final AuthTokenGenerator authTokenGenerator;
+    private final RotateTokenService rotateTokenService;
 
     @Transactional
     public AuthToken login(Platform platform, String redirectUri, String code) {
@@ -38,20 +42,33 @@ public class AuthService {
         OAuth2UserInfoResponse userInfo = oAuth2UserInfoManager.getUserInfo(platform, tokenResponse);
 
         Users newUser = userService.saveUser(generateCreateUserDto(userInfo));
-        return authTokenGenerator.generateAuthToken(newUser);
+
+        AuthToken authToken = authTokenGenerator.generateAuthToken(newUser);
+
+        rotateTokenService.storeToken(authToken.refreshToken(), authToken.accessToken(),newUser.getId());
+        return authToken;
     }
 
     public AuthToken reissue(String accessToken, String refreshToken) {
 
         tokenValidator.checkNotExpiredToken(accessToken);
+        String existingAccessToken = rotateTokenService.getAccessTokenForToken(refreshToken);
+        if (!accessToken.equals(existingAccessToken)) {
+            throw new RedisException(ErrorCode.ACCESS_TOKEN_NOT_STORED);
+        }
+
+        rotateTokenService.validateRefreshToken(refreshToken);
 
         tokenValidator.validateExpiredToken(refreshToken);
         tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_REFRESH, refreshToken);
         tokenValidator.validateTokenSignature(refreshToken);
 
-        Users findUser = userService.findById(jwtAuthTokenUtil.getId(refreshToken));
+        Users findUser = userService.findById(rotateTokenService.getUserIdForToken(refreshToken));
 
-        return authTokenGenerator.generateAuthToken(findUser);
+        AuthToken authToken = authTokenGenerator.generateAuthToken(findUser);
+
+        rotateTokenService.storeToken(authToken.refreshToken(), authToken.accessToken(),findUser.getId());
+        return authToken;
     }
 
     private CreateUserDto generateCreateUserDto(OAuth2UserInfoResponse userInfo) {
