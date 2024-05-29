@@ -35,9 +35,7 @@ public class RotateTokenService {
         if (userIdAsString == null) {
             throw new RedisException(ErrorCode.USER_ID_NOT_FOUND);  // 적절한 ErrorCode 필요
         }
-
         return Long.parseLong(userIdAsString);
-
     }
 
     public String getAccessTokenForToken(String refreshToken) {
