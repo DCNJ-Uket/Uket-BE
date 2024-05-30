@@ -87,6 +87,8 @@ app:
       refresh-token-expiration: 7_200_000
 ---
 spring:
+  jackson:
+    time-zone: Asia/Seoul
   config:
     activate:
       on-profile: dev
@@ -99,7 +101,7 @@ spring:
       port: ${REDIS_AUTH_PORT}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/uket?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    url: jdbc:mysql://mysql:3306/uket?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
     username: ${DEV_MYSQL_USERNAME}
     password: ${DEV_MYSQL_PASSWORD}
   jpa:
