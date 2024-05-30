@@ -1,8 +1,8 @@
 FROM openjdk:21-slim-buster AS Builder
 WORKDIR /usr/bin/app
 COPY build/libs/*.jar app.jar
-
-RUN ["java", "-Djarmode=layertools", "-Dspring.profiles.active=dev", "-Duser.timezone=UTC" ,"-jar", "app.jar", "extract"]
+ENV TZ=Asia/Seoul
+RUN ["java", "-Djarmode=layertools", "-Dspring.profiles.active=dev", "-Duser.timezone=Asia/Seoul" ,"-jar", "app.jar", "extract"]
 
 FROM openjdk:21-slim-buster AS runner
 ARG WORK_DIR=/usr/bin/app
