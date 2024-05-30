@@ -47,8 +47,8 @@ public class TicketingValidator {
     public void validateTicketingTime(Reservation reservation) {
 
         log.warn("reservation.getStartTime(): {}", reservation.getStartTime());
-        log.warn("LocalDateTime.now(ZoneId.of(\"Asia/Seoul\")): {}", LocalDateTime.now(ZoneId.of("Asia/Seoul")));
-        if (reservation.getStartTime().isBefore(LocalDateTime.now(ZoneId.of("Asia/Seoul")))) {
+        log.warn("LocalDateTime.now(): {}", LocalDateTime.now());
+        if (reservation.getStartTime().isBefore(LocalDateTime.now())) {
             throw new TicketException(ErrorCode.OVER_TIME_OF_POSSIBLE_TICKETING_TIME);
         }
     }
@@ -56,8 +56,9 @@ public class TicketingValidator {
     public void validateTicketingDate(Reservation reservation) {
 
         Shows show = reservation.getShow();
-
-        if (show.getTicketingDate().isAfter(LocalDateTime.now(ZoneId.of("Asia/Seoul")))) {
+        log.warn("show.getTicketingDate(): {}", show.getTicketingDate());
+        log.warn("LocalDateTime.now(): {}", LocalDateTime.now());
+        if (show.getTicketingDate().isAfter(LocalDateTime.now())) {
             throw new TicketException(ErrorCode.NOT_READY_TICKETING);
         }
     }
