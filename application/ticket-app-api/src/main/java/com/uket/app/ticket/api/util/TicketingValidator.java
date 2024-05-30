@@ -10,6 +10,7 @@ import com.uket.domain.university.entity.University;
 import com.uket.domain.user.entity.Users;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
