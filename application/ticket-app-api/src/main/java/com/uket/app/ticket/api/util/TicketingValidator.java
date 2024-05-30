@@ -9,6 +9,7 @@ import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.user.entity.Users;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -45,7 +46,7 @@ public class TicketingValidator {
 
     public void validateTicketingTime(Reservation reservation) {
 
-        if (reservation.getStartTime().isBefore(LocalDateTime.now())) {
+        if (reservation.getStartTime().isBefore(LocalDateTime.now(ZoneId.of("Asia/Seoul")))) {
             throw new TicketException(ErrorCode.OVER_TIME_OF_POSSIBLE_TICKETING_TIME);
         }
     }
@@ -54,9 +55,9 @@ public class TicketingValidator {
 
         Shows show = reservation.getShow();
         log.warn("show.getTicketingDate() -> {}", show.getTicketingDate());
-        log.warn("LocalDateTime.now() -> {}", LocalDateTime.now());
+        log.warn("LocalDateTime.now() -> {}", LocalDateTime.now(ZoneId.of("Asia/Seoul")));
 
-        if (show.getTicketingDate().isAfter(LocalDateTime.now())) {
+        if (show.getTicketingDate().isAfter(LocalDateTime.now(ZoneId.of("Asia/Seoul")))) {
             throw new TicketException(ErrorCode.NOT_READY_TICKETING);
         }
     }
