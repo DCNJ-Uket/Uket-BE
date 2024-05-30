@@ -11,8 +11,10 @@ import com.uket.domain.user.entity.Users;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TicketingValidator {
@@ -44,6 +46,8 @@ public class TicketingValidator {
 
     public void validateTicketingTime(Reservation reservation) {
 
+        log.warn("reservation.getStartTime(): {}", reservation.getStartTime());
+        log.warn("LocalDateTime.now(ZoneId.of(\"Asia/Seoul\")): {}", LocalDateTime.now(ZoneId.of("Asia/Seoul")));
         if (reservation.getStartTime().isBefore(LocalDateTime.now(ZoneId.of("Asia/Seoul")))) {
             throw new TicketException(ErrorCode.OVER_TIME_OF_POSSIBLE_TICKETING_TIME);
         }
