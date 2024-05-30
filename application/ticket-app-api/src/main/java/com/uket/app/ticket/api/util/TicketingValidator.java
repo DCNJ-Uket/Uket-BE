@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TicketingValidator {
@@ -51,6 +52,8 @@ public class TicketingValidator {
     public void validateTicketingDate(Reservation reservation) {
 
         Shows show = reservation.getShow();
+        log.warn("show.getTicketingDate() -> {}", show.getTicketingDate());
+        log.warn("LocalDateTime.now() -> {}", LocalDateTime.now());
 
         if (show.getTicketingDate().isAfter(LocalDateTime.now())) {
             throw new TicketException(ErrorCode.NOT_READY_TICKETING);
