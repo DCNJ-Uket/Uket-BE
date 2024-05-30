@@ -99,7 +99,7 @@ spring:
       port: ${REDIS_AUTH_PORT}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/uket?useSSL=false&allowPublicKeyRetrieval=true&?serverTimezone=UTC
+    url: jdbc:mysql://mysql:3306/uket?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: ${DEV_MYSQL_USERNAME}
     password: ${DEV_MYSQL_PASSWORD}
   jpa:
