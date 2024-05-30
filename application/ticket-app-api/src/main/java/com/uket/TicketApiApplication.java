@@ -16,6 +16,6 @@ public class TicketApiApplication {
 
     @PostConstruct
     public void init(){
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 }
