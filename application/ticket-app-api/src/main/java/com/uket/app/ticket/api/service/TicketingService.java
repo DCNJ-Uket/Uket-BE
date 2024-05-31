@@ -6,6 +6,7 @@ import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
 import com.uket.domain.event.service.ReservationService;
+import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
@@ -17,6 +18,8 @@ import com.uket.domain.university.service.UniversityService;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserService;
 import com.uket.modules.redis.lock.aop.DistributedLock;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -90,5 +93,12 @@ public class TicketingService {
             return TicketStatus.BEFORE_ENTER;
         }
         return TicketStatus.BEFORE_PAYMENT;
+    }
+
+    public List<CheckTicketDto> checkUserTickets(Long userId) {
+        List<Ticket> tickets = ticketService.findAllTicketsByUserId(userId);
+        return tickets.stream()
+            .map(CheckTicketDto::from)
+            .collect(Collectors.toList());
     }
 }

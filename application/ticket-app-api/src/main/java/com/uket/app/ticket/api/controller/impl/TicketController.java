@@ -4,7 +4,9 @@ import com.uket.app.ticket.api.controller.TicketApi;
 import com.uket.app.ticket.api.dto.request.TicketingRequest;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.app.ticket.api.service.TicketingService;
+import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,5 +27,10 @@ public class TicketController implements TicketApi {
 
         TicketingResponse response = TicketingResponse.of(true, ticket);
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public List<CheckTicketDto> getUserTickets(Long userId) {
+        return ticketingService.checkUserTickets(userId);
     }
 }
