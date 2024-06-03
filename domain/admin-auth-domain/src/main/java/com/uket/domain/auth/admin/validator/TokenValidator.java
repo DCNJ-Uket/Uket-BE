@@ -3,6 +3,7 @@ package com.uket.domain.auth.admin.validator;
 
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.admin.exception.AuthException;
+import com.uket.domain.user.enums.UserRole;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,13 @@ public class TokenValidator {
         String tokenCategory = jwtAuthTokenUtil.getCategory(token);
         if (Boolean.FALSE.equals(tokenCategory.equals(category))) {
             throw new AuthException(ErrorCode.NOT_MATCH_CATEGORY);
+        }
+    }
+
+    public void validateRole(UserRole userRole, String accessToken) {
+        String role = jwtAuthTokenUtil.getRole(accessToken);
+        if (Boolean.FALSE.equals(userRole.equals(UserRole.valueOf(role)))) {
+            throw new AuthException(ErrorCode.INVALID_ROLE);
         }
     }
 }

@@ -18,6 +18,7 @@ dependencies {
     implementation project(":core")
     implementation project(":modules:jwt-provider")
     implementation project(":modules:slack")
+    implementation project(":domain:core-domain")
     implementation project(":domain:ticket-domain")
     implementation project(":domain:admin-auth-domain")
     implementation project(":domain:user-domain")

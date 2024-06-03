@@ -10,6 +10,7 @@ import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.admin.validator.TokenValidator;
 import com.uket.domain.auth.admin.exception.AuthException;
 import com.uket.domain.user.dto.UserDto;
+import com.uket.domain.user.enums.UserRole;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -57,6 +58,7 @@ public class JwtFilter extends OncePerRequestFilter {
             tokenValidator.validateExpiredToken(accessToken);
             tokenValidator.validateTokenSignature(accessToken);
             tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_ACCESS, accessToken);
+            tokenValidator.validateRole(UserRole.ROLE_ADMIN, accessToken);
         } catch (AuthException exception) {
             ErrorCode errorCode =  exception.getErrorCode();
             writeErrorResponse(response, errorCode);

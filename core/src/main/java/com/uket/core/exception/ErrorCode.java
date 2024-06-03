@@ -15,6 +15,7 @@ public enum ErrorCode {
     INVALID_DATE(400,"CM0003", "유효하지 않은 연 또는 월입니다."),
     METHOD_NOT_ALLOWED(405,"CM0004", "허가되지 않은 메서드입니다."),
     IO_ERROR(500,"CM0005", "I/O 관련 에러입니다. 서버 팀에 문의 부탁드립니다."),
+    INVALID_ROLE(400,"CM0006", "권한이 유효하지 않습니다."),
 
     /**
      * Auth Related Errors
@@ -68,7 +69,10 @@ public enum ErrorCode {
     INVALID_RESERVATION_USER_TYPE(400,"TI0004","예매가 불가능한 사용자 구분입니다."),
     DUPLICATE_RESERVATION_OF_SAME_SHOW(400,"TI0005","해당 공연에 이미 예약이 되어있습니다."),
     OVER_TIME_OF_POSSIBLE_TICKETING_TIME(400,"TI0006","예매 가능 시각이 지났습니다."),
-    NOT_READY_TICKETING(400,"TI0007","예매 시작 전입니다.");
+    NOT_READY_TICKETING(400,"TI0007","예매 시작 전입니다."),
+    NOT_FOUND_TICKET(404,"TI0008","해당 티켓을 찾을 수 없습니다."),
+    BEFORE_PAYMENT_TICKET(400,"TI0009","입금이 완료되지 않은 티켓입니다."),
+    ALREADY_ENTER_TICKET(400,"TI0010","이미 입장이 완료된 티켓입니다.");
 
     private final int status;
     private final String code;

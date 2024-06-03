@@ -38,4 +38,8 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
+    public Ticket findById(Long ticketId) {
+        return ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
+    }
 }
