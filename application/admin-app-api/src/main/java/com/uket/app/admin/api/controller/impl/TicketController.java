@@ -2,10 +2,10 @@ package com.uket.app.admin.api.controller.impl;
 
 import static com.uket.modules.jwt.constants.JwtValues.JWT_PAYLOAD_VALUE_TICKET;
 
-import com.uket.app.admin.api.controller.TicketAdminApi;
+import com.uket.app.admin.api.controller.TicketApi;
 import com.uket.app.admin.api.dto.request.EnterShowRequest;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
-import com.uket.domain.auth.validator.TokenValidator;
+import com.uket.domain.auth.admin.validator.TokenValidator;
 import com.uket.modules.jwt.util.JwtTicketUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class TicketAdminController implements TicketAdminApi {
+public class TicketController implements TicketApi {
 
     private final JwtTicketUtil jwtTicketUtil;
     private final TokenValidator tokenValidator;

@@ -30,6 +30,12 @@ public enum ErrorCode {
     TOKEN_NOT_EXPIRED(403,"AU0009", "아직 토큰이 만료되지 않았습니다."),
 
     /**
+     * Admin Errors
+     */
+    NOT_FOUND_EMAIL_OF_ADMIN(404,"AD0001", "어드민의 이메일을 찾을 수 없습니다."),
+    NOT_MATCH_PASSWORD(400,"AD0002", "올바르지 않은 비밀번호입니다."),
+
+    /**
      * User Errors
      */
     NOT_FOUND_USER(404,"US0001", "해당 사용자를 찾을 수 없습니다."),

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin/v1/ticket")
 @SecurityRequirement(name = "JWT")
 @ApiResponse(responseCode = "200", description = "OK")
-public interface TicketAdminApi {
+public interface TicketApi {
 
     @PostMapping("/enter")
     @Operation(summary = "입장 확인 API", description = "QR code를 통한 Token값으로 입장 확인을 할 수 있습니다.")
