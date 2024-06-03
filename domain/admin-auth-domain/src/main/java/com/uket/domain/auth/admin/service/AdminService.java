@@ -24,7 +24,7 @@ public class AdminService {
     public Admin save(String email, String password, String name) {
 
         if (Boolean.TRUE.equals(adminRepository.existsByEmail(email))) {
-            throw new AuthException(ErrorCode.ALREADY_EXIST_USER);
+            throw new AuthException(ErrorCode.ALREADY_EXIST_ADMIN);
         }
 
         Admin admin = Admin.builder()
