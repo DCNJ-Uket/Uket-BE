@@ -14,20 +14,21 @@ import java.time.LocalDateTime;
 public record CheckTicketDto(
     String userName,
     LocalDateTime showDate,
-    LocalDateTime EnterStartTime,
-    LocalDateTime EnterEndTime,
+    LocalDateTime enterStartTime,
+    LocalDateTime enterEndTime,
     String showLocation,
     String universityName,
     TicketStatus ticketStatus,
     String ticketSerialNumber,
-    Timestamp purchaseTime,
-    ReservationUserType userType
+    ReservationUserType userType,
+    String showName
 ) {
     public static CheckTicketDto from(Ticket ticket) {
         Users user = ticket.getUser();
         Events event = ticket.getEvent();
         Shows show = ticket.getShow();
         Reservation reservation = ticket.getReservation();
+        String showName = event.getName() + " " + show.getName();
 
         return new CheckTicketDto(
             user.getName(),
@@ -38,8 +39,8 @@ public record CheckTicketDto(
             event.getUniversity().getName(),
             ticket.getStatus(),
             ticket.getTicketSerialNumber(),
-            ticket.getCreatedAt(),
-            reservation.getType()
+            reservation.getType(),
+            showName
         );
     }
 }
