@@ -18,6 +18,7 @@ import com.uket.domain.university.service.UniversityService;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserService;
 import com.uket.modules.redis.lock.aop.DistributedLock;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -97,8 +98,11 @@ public class TicketingService {
 
     public List<CheckTicketDto> checkUserTickets(Long userId) {
         List<Ticket> tickets = ticketService.findAllTicketsByUserId(userId);
-        return tickets.stream()
-            .map(CheckTicketDto::from)
-            .collect(Collectors.toList());
+        List<CheckTicketDto> list = new ArrayList<>();
+        for (Ticket ticket : tickets) {
+            CheckTicketDto from = CheckTicketDto.from(ticket);
+            list.add(from);
+        }
+        return list;
     }
 }

@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserRepository extends JpaRepository<Users,Long> {
 
     Optional<Users> findByPlatformAndPlatformId(Platform platform, String platformId);
+
+    Optional<Users> findByName(String name);
 }
