@@ -31,16 +31,4 @@ public class TokenValidator {
             throw new AuthException(ErrorCode.NOT_MATCH_CATEGORY);
         }
     }
-
-    public void checkNotExpiredToken(String token) {
-        if (Boolean.FALSE.equals(jwtAuthTokenUtil.isExpired(token))) {
-            throw new AuthException(ErrorCode.TOKEN_NOT_EXPIRED);
-        }
-    }
-
-    public void validateRegistered(String accessToken) {
-        if (Boolean.FALSE.equals(jwtAuthTokenUtil.isRegistered(accessToken))) {
-            throw new AuthException(ErrorCode.NOT_REGISTERED_USER);
-        }
-    }
 }

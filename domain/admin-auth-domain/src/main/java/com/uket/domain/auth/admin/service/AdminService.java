@@ -19,4 +19,21 @@ public class AdminService {
         return adminRepository.findByEmail(email)
                 .orElseThrow(() -> new AuthException(ErrorCode.NOT_FOUND_EMAIL_OF_ADMIN));
     }
+
+    @Transactional
+    public Admin save(String email, String password, String name) {
+
+        if (Boolean.TRUE.equals(adminRepository.existsByEmail(email))) {
+            throw new AuthException(ErrorCode.ALREADY_EXIST_USER);
+        }
+
+        Admin admin = Admin.builder()
+                .email(email)
+                .password(password)
+                .name(name)
+                .isRegistered(false)
+                .build();
+
+        return adminRepository.save(admin);
+    }
 }

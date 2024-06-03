@@ -27,11 +27,27 @@ public class AuthService {
     public AdminAuthToken login(String email, String password) {
         Admin admin = adminService.findByEmail(email);
 
+        validateRegistered(admin);
         validatePassword(admin, password);
+
         String accessToken = jwtAuthTokenUtil.createAccessToken(admin.getId(), admin.getName(),
                 String.valueOf(UserRole.ROLE_ADMIN), true);
 
         return AdminAuthToken.from(accessToken);
+    }
+
+    @Transactional
+    public Admin registerToEmail(String email, String password, String name) {
+
+        String encodedPassword = bCryptPasswordEncoder.encode(password);
+
+        return adminService.save(email, encodedPassword, name);
+    }
+
+    private void validateRegistered(Admin admin) {
+        if (Boolean.FALSE.equals(admin.getIsRegistered())) {
+            throw new AuthException(ErrorCode.NOT_REGISTERED_ADMIN);
+        }
     }
 
     private void validatePassword(final Admin admin, final String password) {

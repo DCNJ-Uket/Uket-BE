@@ -1,6 +1,8 @@
 package com.uket.app.admin.api.controller;
 
 import com.uket.app.admin.api.dto.request.EmailLoginRequest;
+import com.uket.app.admin.api.dto.request.EmailRegisterRequest;
+import com.uket.app.admin.api.dto.response.AdminRegisterResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.auth.admin.dto.AdminAuthToken;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,5 +32,16 @@ public interface AuthApi {
     ResponseEntity<AdminAuthToken> login(
             @Valid
             @RequestBody EmailLoginRequest request
+    );
+
+    @Operation(summary = "어드민 회원가입", description = "어드민 회원가입을 진행합니다.")
+    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+            }, schema = @Schema(implementation = ErrorResponse.class)))
+    @PostMapping("/register")
+    ResponseEntity<AdminRegisterResponse> register(
+            @Valid
+            @RequestBody EmailRegisterRequest request
     );
 }
