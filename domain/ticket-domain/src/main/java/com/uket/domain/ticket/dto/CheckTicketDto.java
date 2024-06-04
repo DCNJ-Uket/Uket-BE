@@ -6,9 +6,7 @@ import com.uket.domain.event.entity.Shows;
 import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
-import com.uket.domain.user.entity.UserDetails;
 import com.uket.domain.user.entity.Users;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public record CheckTicketDto(

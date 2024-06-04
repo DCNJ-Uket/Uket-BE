@@ -20,7 +20,6 @@ import com.uket.domain.user.service.UserService;
 import com.uket.modules.redis.lock.aop.DistributedLock;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
