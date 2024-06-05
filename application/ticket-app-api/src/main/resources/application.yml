@@ -83,8 +83,8 @@ app:
     secret-key: testestsetsetsetsetsetsetsetsetestset
     expiration:
       ticket-expiration: 300_000
-      access-token-expiration: 3_600_000
-      refresh-token-expiration: 7_200_000
+      access-token-expiration: 10_000
+      refresh-token-expiration: 30_000
 ---
 spring:
   jackson:
