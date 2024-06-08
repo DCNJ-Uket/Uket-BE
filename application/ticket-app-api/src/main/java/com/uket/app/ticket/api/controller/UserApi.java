@@ -2,6 +2,7 @@ package com.uket.app.ticket.api.controller;
 
 import com.uket.app.ticket.api.dto.request.UserRegisterRequest;
 import com.uket.app.ticket.api.dto.response.AuthResponse;
+import com.uket.app.ticket.api.dto.response.ListResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.auth.config.userid.LoginUserId;
 import com.uket.domain.ticket.dto.CheckTicketDto;
@@ -91,7 +92,7 @@ public interface UserApi {
                         {"code": "US0001", "message": "해당 사용자를 찾을 수 없습니다."}
                         """
         ), schema = @Schema(implementation = ErrorResponse.class)))
-    List<CheckTicketDto> getUserTickets(
+    ResponseEntity<ListResponse<CheckTicketDto>> getUserTickets(
         @Parameter(hidden = true)
         @LoginUserId Long userId
     );

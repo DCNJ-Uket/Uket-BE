@@ -3,6 +3,7 @@ package com.uket.app.ticket.api.controller.impl;
 import com.uket.app.ticket.api.controller.UserApi;
 import com.uket.app.ticket.api.dto.request.UserRegisterRequest;
 import com.uket.app.ticket.api.dto.response.AuthResponse;
+import com.uket.app.ticket.api.dto.response.ListResponse;
 import com.uket.app.ticket.api.service.TicketingService;
 import com.uket.app.ticket.api.service.UserRegisterService;
 import com.uket.domain.auth.config.userid.LoginUserId;
@@ -47,8 +48,10 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public List<CheckTicketDto> getUserTickets(Long userId) {
-        return ticketingService.checkUserTickets(userId);
+    public ResponseEntity<ListResponse<CheckTicketDto>> getUserTickets(Long userId) {
+        List<CheckTicketDto> tickets = ticketingService.checkUserTickets(userId);
+        ListResponse<CheckTicketDto> response = ListResponse.from(tickets);
+        return ResponseEntity.ok(response);
     }
 
     private CreateUserDetailsDto generateCreateUserDetailsDto(UserRegisterRequest request) {
