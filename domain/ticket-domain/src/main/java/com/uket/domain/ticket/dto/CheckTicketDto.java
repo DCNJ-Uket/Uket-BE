@@ -19,7 +19,7 @@ public record CheckTicketDto(
     String showLocation,
     String universityName,
     TicketStatus ticketStatus,
-    String ticketSerialNumber,
+    String ticketNo,
     ReservationUserType userType,
     String showName
 ) {
@@ -38,7 +38,7 @@ public record CheckTicketDto(
             .showLocation(show.getLocation())
             .universityName(event.getUniversity().getName())
             .ticketStatus(ticket.getStatus())
-            .ticketSerialNumber(ticket.getTicketSerialNumber())
+            .ticketNo(ticket.getTicketNo())
             .userType(reservation.getType())
             .showName(showName)
             .build();

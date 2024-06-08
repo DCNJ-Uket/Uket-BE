@@ -35,7 +35,7 @@ public class TicketService {
                 .event(createTicketDto.event())
                 .show(createTicketDto.show())
                 .status(createTicketDto.status())
-                .ticketSerialNumber(UUID.randomUUID().toString())
+                .ticketNo(UUID.randomUUID().toString())
                 .build();
 
         return ticketRepository.save(ticket);
