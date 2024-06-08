@@ -9,5 +9,4 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
 
     <T> List<T> findByShowId(Long showId, Class<T> type);
 
-    List<Reservation> findByStartTime(LocalDateTime startTime);
 }
