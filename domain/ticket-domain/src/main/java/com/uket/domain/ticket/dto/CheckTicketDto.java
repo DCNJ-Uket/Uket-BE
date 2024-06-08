@@ -8,7 +8,9 @@ import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.user.entity.Users;
 import java.time.LocalDateTime;
+import lombok.Builder;
 
+@Builder
 public record CheckTicketDto(
     String userName,
     LocalDateTime showDate,
@@ -28,17 +30,17 @@ public record CheckTicketDto(
         Reservation reservation = ticket.getReservation();
         String showName = event.getName() + " " + show.getName();
 
-        return new CheckTicketDto(
-            user.getName(),
-            show.getStartDate(),
-            reservation.getStartTime(),
-            reservation.getEndTime(),
-            show.getLocation(),
-            event.getUniversity().getName(),
-            ticket.getStatus(),
-            ticket.getTicketSerialNumber(),
-            reservation.getType(),
-            showName
-        );
+        return CheckTicketDto.builder()
+            .userName(user.getName())
+            .showDate(show.getStartDate())
+            .enterStartTime(reservation.getStartTime())
+            .enterEndTime(reservation.getEndTime())
+            .showLocation(show.getLocation())
+            .universityName(event.getUniversity().getName())
+            .ticketStatus(ticket.getStatus())
+            .ticketSerialNumber(ticket.getTicketSerialNumber())
+            .userType(reservation.getType())
+            .showName(showName)
+            .build();
     }
 }
