@@ -28,9 +28,4 @@ public class TicketController implements TicketApi {
         TicketingResponse response = TicketingResponse.of(true, ticket);
         return ResponseEntity.ok(response);
     }
-
-    @Override
-    public List<CheckTicketDto> getUserTickets(Long userId) {
-        return ticketingService.checkUserTickets(userId);
-    }
 }
