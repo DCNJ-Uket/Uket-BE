@@ -11,5 +11,4 @@ public interface ShowRepository extends JpaRepository<Shows, Long> {
 
     <T> Optional<T> findNameById(Long showId, Class<T> type);
 
-    List<Shows> findByName(String name);
 }
