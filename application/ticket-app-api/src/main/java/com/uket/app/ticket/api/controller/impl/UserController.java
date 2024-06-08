@@ -6,7 +6,6 @@ import com.uket.app.ticket.api.dto.response.AuthResponse;
 import com.uket.app.ticket.api.dto.response.ListResponse;
 import com.uket.app.ticket.api.service.TicketingService;
 import com.uket.app.ticket.api.service.UserRegisterService;
-import com.uket.domain.auth.config.userid.LoginUserId;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.user.dto.CreateUserDetailsDto;

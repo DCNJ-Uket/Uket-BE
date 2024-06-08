@@ -1,9 +1,6 @@
 package com.uket.app.ticket.api.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
@@ -17,24 +14,19 @@ import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.repository.UniversityRepository;
-import com.uket.domain.user.dto.CreateUserDto;
-import com.uket.domain.user.entity.UserDetails;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.enums.Platform;
 import com.uket.domain.user.enums.UserRole;
-import com.uket.domain.user.repository.UserDetailsRepository;
 import com.uket.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -177,7 +169,7 @@ class TicketingServiceTest {
             .show(konkukFirstShow)
             .reservation(konkukFirstShowReserve)
             .status(TicketStatus.BEFORE_ENTER)
-            .ticketSerialNumber(UUID.randomUUID().toString())
+            .ticketNo(UUID.randomUUID().toString())
             .build());
 
         Ticket ticket2 = ticketRepository.save(Ticket.builder()
@@ -186,7 +178,7 @@ class TicketingServiceTest {
             .show(konkukSecondShow)
             .reservation(konkukSecondShowReserve)
             .status(TicketStatus.BEFORE_ENTER)
-            .ticketSerialNumber(UUID.randomUUID().toString())
+            .ticketNo(UUID.randomUUID().toString())
             .build());
 
         List<CheckTicketDto> tickets = ticketingService.checkUserTickets(user.getId());
