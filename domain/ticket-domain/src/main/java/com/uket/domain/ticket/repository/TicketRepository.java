@@ -11,4 +11,7 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
     Boolean existsByUserAndReservation(Users user, Reservation reservation);
 
     Boolean existsByUserAndShow(Users user, Shows show);
+
+    Boolean existsByUserIdAndId(Long userId, Long ticketId);
 }
+

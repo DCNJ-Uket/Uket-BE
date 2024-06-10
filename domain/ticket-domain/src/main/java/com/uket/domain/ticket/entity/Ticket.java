@@ -6,6 +6,7 @@ import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.user.entity.Users;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,6 +32,7 @@ public class Ticket extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ticket_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
