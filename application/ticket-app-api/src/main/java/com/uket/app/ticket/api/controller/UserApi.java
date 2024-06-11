@@ -2,8 +2,10 @@ package com.uket.app.ticket.api.controller;
 
 import com.uket.app.ticket.api.dto.request.UserRegisterRequest;
 import com.uket.app.ticket.api.dto.response.AuthResponse;
+import com.uket.app.ticket.api.dto.response.ListResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.auth.config.userid.LoginUserId;
+import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.user.dto.UserInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -76,5 +78,18 @@ public interface UserApi {
     ResponseEntity<UserInfoDto> getUserInfo(
             @Parameter(hidden = true)
             @LoginUserId Long userId
+    );
+
+    @Operation(summary = "사용자 티켓 조회 API", description = "특정 사용자의 모든 티켓을 조회합니다.")
+    @GetMapping("/tickes")
+    @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(mediaType = "application/json",
+        examples = @ExampleObject(name = "US0001", description = "토큰에 담긴 UserId에 대한 사용자를 찾을 수 없을 때 발생합니다.",
+            value = """
+                        {"code": "US0001", "message": "해당 사용자를 찾을 수 없습니다."}
+                        """
+        ), schema = @Schema(implementation = ErrorResponse.class)))
+    ResponseEntity<ListResponse<CheckTicketDto>> getUserTickets(
+        @Parameter(hidden = true)
+        @LoginUserId Long userId
     );
 }

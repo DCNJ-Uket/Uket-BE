@@ -4,6 +4,7 @@ import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.user.entity.Users;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
@@ -11,4 +12,6 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
     Boolean existsByUserAndReservation(Users user, Reservation reservation);
 
     Boolean existsByUserAndShow(Users user, Shows show);
+
+    List<Ticket> findAllByUserId(Long userId);
 }
