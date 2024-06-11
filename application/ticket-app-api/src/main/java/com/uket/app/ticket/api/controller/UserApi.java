@@ -81,7 +81,7 @@ public interface UserApi {
     );
 
     @Operation(summary = "사용자 티켓 조회 API", description = "특정 사용자의 모든 티켓을 조회합니다.")
-    @GetMapping("/tickes")
+    @GetMapping("/tickets")
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(mediaType = "application/json",
         examples = @ExampleObject(name = "US0001", description = "토큰에 담긴 UserId에 대한 사용자를 찾을 수 없을 때 발생합니다.",
             value = """
