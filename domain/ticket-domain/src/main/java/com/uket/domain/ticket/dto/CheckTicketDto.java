@@ -7,6 +7,7 @@ import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.user.entity.Users;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import lombok.Builder;
 
@@ -21,7 +22,11 @@ public record CheckTicketDto(
     TicketStatus ticketStatus,
     String ticketNo,
     ReservationUserType userType,
-    String showName
+    String showName,
+
+    Long ticketId,
+
+    Timestamp createdAt
 ) {
     public static CheckTicketDto from(Ticket ticket) {
         Users user = ticket.getUser();
@@ -41,6 +46,8 @@ public record CheckTicketDto(
             .ticketNo(ticket.getTicketNo())
             .userType(reservation.getType())
             .showName(showName)
+            .ticketId(ticket.getId())
+            .createdAt(ticket.getCreatedAt())
             .build();
     }
 }
