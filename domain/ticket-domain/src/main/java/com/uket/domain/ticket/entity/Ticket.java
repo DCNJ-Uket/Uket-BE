@@ -16,6 +16,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -27,6 +29,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @AllArgsConstructor
+@Table(uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"ticket_no"})
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Ticket extends BaseEntity {
 
@@ -54,4 +59,5 @@ public class Ticket extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private TicketStatus status;
     private LocalDateTime paymentAt;
+    private String ticketNo;
 }
