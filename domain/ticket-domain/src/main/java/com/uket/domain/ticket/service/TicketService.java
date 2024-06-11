@@ -41,6 +41,11 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
+    public void checkTicketOwner(Long userId, Long ticketId) {
+        if (Boolean.FALSE.equals(ticketRepository.existsByUserIdAndId(userId, ticketId))) {
+            throw new TicketException(ErrorCode.INVALID_ACCESS_TICKET);
+        }
+    }
 
     public List<Ticket> findAllTicketsByUserId(Long userId) {
         return ticketRepository.findAllByUserId(userId);
