@@ -24,6 +24,8 @@ public record CheckTicketDto(
     ReservationUserType userType,
     String showName,
 
+    String eventName,
+
     Long ticketId,
 
     Timestamp createdAt
@@ -33,7 +35,6 @@ public record CheckTicketDto(
         Events event = ticket.getEvent();
         Shows show = ticket.getShow();
         Reservation reservation = ticket.getReservation();
-        String showName = event.getName() + " " + show.getName();
 
         return CheckTicketDto.builder()
             .userName(user.getName())
@@ -45,7 +46,8 @@ public record CheckTicketDto(
             .ticketStatus(ticket.getStatus())
             .ticketNo(ticket.getTicketNo())
             .userType(reservation.getType())
-            .showName(showName)
+            .showName(show.getName())
+            .eventName(event.getName())
             .ticketId(ticket.getId())
             .createdAt(ticket.getCreatedAt())
             .build();
