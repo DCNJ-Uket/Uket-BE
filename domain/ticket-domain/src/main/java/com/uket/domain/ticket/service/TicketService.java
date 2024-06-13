@@ -7,6 +7,8 @@ import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,7 @@ public class TicketService {
                 .event(createTicketDto.event())
                 .show(createTicketDto.show())
                 .status(createTicketDto.status())
+                .ticketNo(UUID.randomUUID().toString())
                 .build();
 
         return ticketRepository.save(ticket);
@@ -42,4 +45,15 @@ public class TicketService {
         return ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
     }
+
+    public void checkTicketOwner(Long userId, Long ticketId) {
+        if (Boolean.FALSE.equals(ticketRepository.existsByUserIdAndId(userId, ticketId))) {
+            throw new TicketException(ErrorCode.INVALID_ACCESS_TICKET);
+        }
+    }
+
+    public List<Ticket> findAllTicketsByUserId(Long userId) {
+        return ticketRepository.findAllByUserId(userId);
+    }
+
 }

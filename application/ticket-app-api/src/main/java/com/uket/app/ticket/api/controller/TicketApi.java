@@ -4,15 +4,20 @@ import com.uket.app.ticket.api.dto.request.TicketingRequest;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.auth.config.userid.LoginUserId;
+import com.uket.domain.ticket.dto.CheckTicketDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -87,5 +92,25 @@ public interface TicketApi {
 
             @RequestBody
             TicketingRequest request
+    );
+
+    @GetMapping("/{id}/qrcode")
+    @Operation(summary = "티켓 QR 코드 발급 API", description = "티켓의 QR 코드를 발급할 수 있습니다.")
+    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "TI0008", description = "티켓의 소유주가 아닌 사용자가 티켓 QR 코드를 발급하려고 할 때 발생합니다.",
+                            value = """
+                                    {"code": "TI0008", "message": "해당 티켓을 소유하지 않은 사용자입니다."}
+                                    """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
+    ResponseEntity<byte[]> getQRCode(
+            @Parameter(hidden = true)
+            @LoginUserId
+            Long userId,
+
+            @PathVariable("id")
+            Long ticketId
     );
 }
