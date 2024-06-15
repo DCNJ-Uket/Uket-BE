@@ -43,4 +43,10 @@ public class TicketController implements TicketApi {
                 .contentType(MediaType.IMAGE_PNG)
                 .body(qrCode);
     }
+
+    @Override
+    public ResponseEntity<Void> cancelTicket(Long userId, Long ticketId) {
+        ticketService.cancelTicketByUserIdAndId(userId, ticketId);
+        return ResponseEntity.noContent().build();
+    }
 }

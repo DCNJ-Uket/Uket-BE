@@ -51,4 +51,13 @@ public class TicketService {
         return ticketRepository.findAllByUserId(userId);
     }
 
+    public void cancelTicketByUserIdAndId(Long userId, Long ticketId) {
+        Ticket ticket = ticketRepository.findByUserIdAndId(userId, ticketId);
+        if (ticket != null) {
+            ticketRepository.delete(ticket);
+        } else {
+            throw new TicketException(ErrorCode.FAIL_TO_FIND_TICKET);
+        }
+    }
+
 }
