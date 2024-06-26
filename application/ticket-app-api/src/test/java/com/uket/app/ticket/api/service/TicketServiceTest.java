@@ -51,6 +51,13 @@ class TicketServiceTest {
         testUser = userService.saveUser(createUserDto);
     }
 
+
+    @AfterEach
+    void afterEach() {
+        ticketRepository.deleteAll();
+        userRepository.deleteAll();
+    }
+
     @Test
     void 티켓이_성공적으로_삭제된다() {
         Ticket ticket = ticketRepository.save(Ticket.builder()
