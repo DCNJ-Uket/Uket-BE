@@ -8,6 +8,7 @@ import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,12 +53,9 @@ public class TicketService {
     }
 
     public void cancelTicketByUserIdAndId(Long userId, Long ticketId) {
-        Ticket ticket = ticketRepository.findByUserIdAndId(userId, ticketId);
-        if (ticket != null) {
-            ticketRepository.delete(ticket);
-        } else {
-            throw new TicketException(ErrorCode.FAIL_TO_FIND_TICKET);
-        }
+        Optional<Ticket> optionalTicket = Optional.ofNullable(ticketRepository.findByUserIdAndId(userId, ticketId));
+        Ticket ticket = optionalTicket.orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+        ticketRepository.delete(ticket);
     }
 
 }
