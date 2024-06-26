@@ -55,7 +55,10 @@ public class TicketService {
     public void cancelTicketByUserIdAndId(Long userId, Long ticketId) {
         Optional<Ticket> optionalTicket = Optional.ofNullable(ticketRepository.findByUserIdAndId(userId, ticketId));
         Ticket ticket = optionalTicket.orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
-        ticketRepository.delete(ticket);
+
+        ticket.cancel();
+        ticket.updateDeletedAt();
+        ticketRepository.save(ticket);
     }
 
 }

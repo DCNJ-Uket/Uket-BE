@@ -1,6 +1,7 @@
 package com.uket.domain.ticket.entity;
 
 import com.uket.domain.core.entity.BaseEntity;
+import com.uket.domain.core.entity.DeletableBaseEntity;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
@@ -33,7 +34,7 @@ import lombok.NoArgsConstructor;
     @UniqueConstraint(columnNames = {"ticket_no"})
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Ticket extends BaseEntity {
+public class Ticket extends DeletableBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,4 +61,8 @@ public class Ticket extends BaseEntity {
     private TicketStatus status;
     private LocalDateTime paymentAt;
     private String ticketNo;
+
+    public void cancel() {
+        this.status = TicketStatus.RESERVATION_CANCEL;
+    }
 }
