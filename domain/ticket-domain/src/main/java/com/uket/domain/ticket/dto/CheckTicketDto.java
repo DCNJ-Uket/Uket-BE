@@ -5,7 +5,6 @@ import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
 import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.entity.Ticket;
-import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.user.entity.Users;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -19,7 +18,7 @@ public record CheckTicketDto(
     LocalDateTime enterEndTime,
     String showLocation,
     String universityName,
-    TicketStatus ticketStatus,
+    String ticketStatus,
     String ticketNo,
     ReservationUserType userType,
     String showName,
@@ -43,7 +42,7 @@ public record CheckTicketDto(
             .enterEndTime(reservation.getEndTime())
             .showLocation(show.getLocation())
             .universityName(event.getUniversity().getName())
-            .ticketStatus(ticket.getStatus())
+            .ticketStatus(ticket.getStatus().getValue())
             .ticketNo(ticket.getTicketNo())
             .userType(reservation.getType())
             .showName(show.getName())
