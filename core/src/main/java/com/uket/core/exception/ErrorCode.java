@@ -28,6 +28,7 @@ public enum ErrorCode {
     AUTHORIZATION_FAILED(403,"AU0007", "접근 권한이 없습니다."),
     TOKEN_EXPIRED(403,"AU0008", "만료된 토큰입니다."),
     TOKEN_NOT_EXPIRED(403,"AU0009", "아직 토큰이 만료되지 않았습니다."),
+    UNABLE_TO_SEND_EMAIL(400, "AU0010", "이메일 전송에 실패했습니다."),
 
     /**
      * User Errors
