@@ -1,8 +1,11 @@
 package com.uket.app.ticket.api.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.uket.domain.event.entity.Reservation;
+import com.uket.domain.event.repository.ReservationRepository;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.ticket.exception.TicketException;
@@ -23,13 +26,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-@Transactional
 class TicketServiceTest {
     @Autowired
     TicketService ticketService;
 
     @Autowired
     TicketRepository ticketRepository;
+
+    @Autowired
+    ReservationRepository reservationRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -60,21 +65,34 @@ class TicketServiceTest {
 
     @Test
     void 티켓이_성공적으로_삭제된다() {
+        Reservation reservation = reservationRepository.save(Reservation.builder()
+            .reservedCount(1)
+            .totalCount(10)
+            .build());
+
         Ticket ticket = ticketRepository.save(Ticket.builder()
             .user(testUser)
+            .reservation(reservation)
             .status(TicketStatus.BEFORE_ENTER)
             .ticketNo(UUID.randomUUID().toString())
             .build());
 
         ticketService.cancelTicketByUserIdAndId(testUser.getId(), ticket.getId());
 
-        assertNull(ticketRepository.findByUserIdAndId(testUser.getId(), ticket.getId()));
+        Ticket cancelledTicket = ticketRepository.findByUserIdAndId(testUser.getId(), ticket.getId()).get();
+        assertEquals(TicketStatus.RESERVATION_CANCEL, cancelledTicket.getStatus());
     }
 
     @Test
     void 잘못된_티켓_Id를_입력할경우_예외처리를_진행한다() {
+        Reservation reservation = reservationRepository.save(Reservation.builder()
+            .reservedCount(1)
+            .totalCount(10)
+            .build());
+
         Ticket ticket = ticketRepository.save(Ticket.builder()
             .user(testUser)
+            .reservation(reservation)
             .status(TicketStatus.BEFORE_ENTER)
             .ticketNo(UUID.randomUUID().toString())
             .build());
