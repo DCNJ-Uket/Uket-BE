@@ -5,6 +5,7 @@ import com.uket.app.ticket.api.dto.request.TicketingRequest;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.app.ticket.api.service.QRCodeService;
 import com.uket.app.ticket.api.service.TicketingService;
+import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -45,8 +46,8 @@ public class TicketController implements TicketApi {
     }
 
     @Override
-    public ResponseEntity<Void> cancelTicket(Long userId, Long ticketId) {
-        ticketService.cancelTicketByUserIdAndId(userId, ticketId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<CancelTicketDto> cancelTicket(Long userId, Long ticketId) {
+        CancelTicketDto responseDto = ticketService.cancelTicketByUserIdAndId(userId, ticketId);
+        return ResponseEntity.ok(responseDto);
     }
 }

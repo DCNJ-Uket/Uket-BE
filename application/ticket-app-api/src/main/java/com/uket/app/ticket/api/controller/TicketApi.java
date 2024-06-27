@@ -4,6 +4,7 @@ import com.uket.app.ticket.api.dto.request.TicketingRequest;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.auth.config.userid.LoginUserId;
+import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -127,7 +128,7 @@ public interface TicketApi {
                                     """
             )
         }, schema = @Schema(implementation = ErrorResponse.class)))
-    ResponseEntity<Void> cancelTicket(
+    ResponseEntity<CancelTicketDto> cancelTicket(
         @Parameter(hidden = true)
         @LoginUserId
         Long userId,

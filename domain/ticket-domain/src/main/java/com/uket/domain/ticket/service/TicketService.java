@@ -2,6 +2,7 @@ package com.uket.domain.ticket.service;
 
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Reservation;
+import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.exception.TicketException;
@@ -52,13 +53,15 @@ public class TicketService {
         return ticketRepository.findAllByUserId(userId);
     }
 
-    public void cancelTicketByUserIdAndId(Long userId, Long ticketId) {
+    public CancelTicketDto cancelTicketByUserIdAndId(Long userId, Long ticketId) {
         Ticket ticket = ticketRepository.findByUserIdAndId(userId, ticketId)
             .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
         ticket.cancel();
         ticket.updateDeletedAt();
         ticketRepository.save(ticket);
+
+        return new CancelTicketDto(ticket.getId(), ticket.getStatus().getValue());
     }
 
 }
