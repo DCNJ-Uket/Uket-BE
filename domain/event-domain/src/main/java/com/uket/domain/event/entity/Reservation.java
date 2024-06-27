@@ -56,4 +56,13 @@ public class Reservation extends BaseEntity {
         this.reservedCount += 1;
         return true;
     }
+
+    public Boolean decreaseReservedCount() {
+        if (this.reservedCount < 1 ) {
+            return false;
+        }
+
+        this.reservedCount -= 1;
+        return true;
+    }
 }

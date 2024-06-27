@@ -2,6 +2,7 @@ package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.TicketApi;
 import com.uket.app.ticket.api.dto.request.TicketingRequest;
+import com.uket.app.ticket.api.dto.response.CancelTicketResponse;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.app.ticket.api.service.QRCodeService;
 import com.uket.app.ticket.api.service.TicketingService;
@@ -46,8 +47,11 @@ public class TicketController implements TicketApi {
     }
 
     @Override
-    public ResponseEntity<CancelTicketDto> cancelTicket(Long userId, Long ticketId) {
-        CancelTicketDto responseDto = ticketService.cancelTicketByUserIdAndId(userId, ticketId);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<CancelTicketResponse> cancelTicket(Long userId, Long ticketId) {
+        CancelTicketDto cancelTicket = ticketService.cancelTicketByUserIdAndId(userId, ticketId);
+        ticketService.decreaseReservedCount(cancelTicket.reservationId());
+
+        CancelTicketResponse cancelTicketResponse = CancelTicketResponse.of(cancelTicket);
+        return ResponseEntity.ok(cancelTicketResponse);
     }
 }

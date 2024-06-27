@@ -1,6 +1,7 @@
 package com.uket.app.ticket.api.controller;
 
 import com.uket.app.ticket.api.dto.request.TicketingRequest;
+import com.uket.app.ticket.api.dto.response.CancelTicketResponse;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.auth.config.userid.LoginUserId;
@@ -128,7 +129,7 @@ public interface TicketApi {
                                     """
             )
         }, schema = @Schema(implementation = ErrorResponse.class)))
-    ResponseEntity<CancelTicketDto> cancelTicket(
+    ResponseEntity<CancelTicketResponse> cancelTicket(
         @Parameter(hidden = true)
         @LoginUserId
         Long userId,
