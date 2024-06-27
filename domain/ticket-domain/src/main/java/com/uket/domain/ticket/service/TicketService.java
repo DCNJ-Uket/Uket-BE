@@ -6,6 +6,7 @@ import com.uket.domain.event.service.ReservationService;
 import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
+import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
@@ -64,7 +65,11 @@ public class TicketService {
 
     @Transactional(readOnly = true)
     public List<Ticket> findAllTicketsByUserId(Long userId) {
-        return ticketRepository.findAllByUserId(userId);
+        List<Ticket> tickets = ticketRepository.findAllByUserIdAndStatusNot(userId, TicketStatus.RESERVATION_CANCEL);
+        if (tickets.isEmpty()) {
+            throw new TicketException(ErrorCode.NOT_FOUND_TICKET);
+        }
+        return tickets;
     }
 
     @Transactional

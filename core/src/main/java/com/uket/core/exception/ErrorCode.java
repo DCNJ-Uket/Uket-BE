@@ -63,7 +63,8 @@ public enum ErrorCode {
     NOT_READY_TICKETING(400, "TI0007", "예매 시작 전입니다."),
     INVALID_ACCESS_TICKET(400, "TI0008", "해당 티켓을 소유하지 않은 사용자입니다."),
     FAIL_TO_FIND_TICKET(404, "TI009", "해당 티켓을 찾을 수 없습니다. 티켓 아이디를 다시 확인해주세요."),
-    FAIL_TICKET_CANCEL(400,"TI0010","예매된 티켓이 존재하지 않습니다.");
+    FAIL_TICKET_CANCEL(400,"TI0010","예매된 티켓이 존재하지 않습니다."),
+    NOT_FOUND_TICKET(404, "TI0011", "해당 사용자에 해당하는 티켓이 존재하지 않습니다.");
 
     private final int status;
     private final String code;
