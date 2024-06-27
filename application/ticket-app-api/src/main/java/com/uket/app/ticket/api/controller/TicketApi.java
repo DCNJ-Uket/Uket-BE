@@ -1,9 +1,11 @@
 package com.uket.app.ticket.api.controller;
 
 import com.uket.app.ticket.api.dto.request.TicketingRequest;
+import com.uket.app.ticket.api.dto.response.CancelTicketResponse;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.auth.config.userid.LoginUserId;
+import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,6 +18,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -112,5 +115,26 @@ public interface TicketApi {
 
             @PathVariable("id")
             Long ticketId
+    );
+
+
+    @DeleteMapping("/{id}/cancel")
+    @Operation(summary = "티켓 취소 API", description = "티켓을 취소할 수 있습니다.")
+    @ApiResponse(responseCode = "404", description = "BAD REQUEST", content = @Content(
+        mediaType = "application/json",
+        examples = {
+            @ExampleObject(name = "TI0009", description = "티켓의 아이디가 잘못된 경우 발생합니다.",
+                value = """
+                                    {"code": "TI0009", "message": "해당 티켓을 찾을 수 없습니다. 티켓 아이디를 다시 확인해주세요."}
+                                    """
+            )
+        }, schema = @Schema(implementation = ErrorResponse.class)))
+    ResponseEntity<CancelTicketResponse> cancelTicket(
+        @Parameter(hidden = true)
+        @LoginUserId
+        Long userId,
+
+        @PathVariable("id")
+        Long ticketId
     );
 }

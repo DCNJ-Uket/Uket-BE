@@ -2,9 +2,11 @@ package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.TicketApi;
 import com.uket.app.ticket.api.dto.request.TicketingRequest;
+import com.uket.app.ticket.api.dto.response.CancelTicketResponse;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.app.ticket.api.service.QRCodeService;
 import com.uket.app.ticket.api.service.TicketingService;
+import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +44,14 @@ public class TicketController implements TicketApi {
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
                 .body(qrCode);
+    }
+
+    @Override
+    public ResponseEntity<CancelTicketResponse> cancelTicket(Long userId, Long ticketId) {
+        CancelTicketDto cancelTicket = ticketService.cancelTicketByUserIdAndId(userId, ticketId);
+        ticketService.decreaseReservedCount(cancelTicket.reservationId());
+
+        CancelTicketResponse cancelTicketResponse = CancelTicketResponse.of(cancelTicket);
+        return ResponseEntity.ok(cancelTicketResponse);
     }
 }

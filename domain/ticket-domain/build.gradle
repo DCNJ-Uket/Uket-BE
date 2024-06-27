@@ -3,6 +3,7 @@ dependencies {
     implementation project(":domain:user-domain")
     implementation project(":domain:event-domain")
     implementation project(":domain:university-domain")
+    implementation project(":modules:lock-redis")
 }
 
 tasks.named('test') {

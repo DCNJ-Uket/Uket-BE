@@ -123,14 +123,12 @@ class TicketInfoServiceTest {
             .event(konkuk)
             .show(konkukSecondShow)
             .reservation(konkukSecondShowReserve)
-            .status(TicketStatus.BEFORE_ENTER)
+            .status(TicketStatus.RESERVATION_CANCEL)
             .ticketNo(UUID.randomUUID().toString())
             .build());
 
         List<CheckTicketDto> tickets = ticketInfoService.getUserTickets(user.getId());
 
-        assertThat(tickets).hasSize(2);
-        assertThat(tickets.get(0).userName()).isEqualTo(user.getName());
-        assertThat(tickets.get(1).userName()).isEqualTo(user.getName());
+        assertThat(tickets).hasSize(1);
     }
 }
