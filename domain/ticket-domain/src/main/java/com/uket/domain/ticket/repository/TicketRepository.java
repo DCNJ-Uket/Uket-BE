@@ -5,6 +5,7 @@ import com.uket.domain.event.entity.Shows;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.user.entity.Users;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
@@ -15,7 +16,7 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     Boolean existsByUserIdAndId(Long userId, Long ticketId);
 
-    Ticket findByUserIdAndId(Long userId, Long ticketId);
+    Optional<Ticket> findByUserIdAndId(Long userId, Long ticketId);
 
     List<Ticket> findAllByUserId(Long userId);
 }
