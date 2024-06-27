@@ -19,9 +19,10 @@ public class EmailController implements EmailApi {
     @Override
     public ResponseEntity<AuthEmailResponse> sendEmail(AuthEmailRequest request) {
         String email = request.email();
+        Long universityId = request.universityId();
         Long expiration = emailProperties.properties().authCodeExpirationMillis();
 
-        userAuthEmailService.sendAuthEmail(email);
+        userAuthEmailService.sendAuthEmail(email, universityId);
 
         return ResponseEntity.ok(AuthEmailResponse.of(email, expiration));
     }

@@ -48,4 +48,13 @@ public class UniversityService {
         }
         return Optional.ofNullable(university.getCurrentEvent());
     }
+
+    public void checkEmailPrefix(String email, Long universityId) {
+        University university = universityRepository.findById(universityId)
+                .orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
+
+        if (Boolean.TRUE.equals(isDefault(university)) || !email.endsWith(university.getEmailPostFix())) {
+            throw new UniversityException(ErrorCode.NOT_MATCH_UNIVERSITY_EMAIL);
+        }
+    }
 }

@@ -4,7 +4,9 @@ import jakarta.validation.constraints.Email;
 
 public record AuthEmailRequest(
         @Email
-        String email
+        String email,
+
+        Long universityId
 ) {
 
 }
