@@ -11,7 +11,6 @@ import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
