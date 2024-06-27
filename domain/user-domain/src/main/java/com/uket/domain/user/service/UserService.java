@@ -55,7 +55,7 @@ public class UserService {
         UserDetails userDetails = findUser.getUserDetails();
         University university = findUser.getUniversity();
 
-        return UserInfoDto.of(findUser, userDetails, university.getId());
+        return UserInfoDto.of(findUser, userDetails, university.getName());
     }
 
     private Users updateProfileOfExistUser(CreateUserDto createUserDto, Users existUser) {
