@@ -23,6 +23,7 @@ spring:
           batch_size: 100
         order_inserts: true
         order_updates: true
+    show-sql: true
   datasource:
     driverClassName: org.h2.Driver
     url: jdbc:h2:mem:test;MODE=MySQL;
