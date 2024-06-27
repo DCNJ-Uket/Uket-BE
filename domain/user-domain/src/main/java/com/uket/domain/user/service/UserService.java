@@ -55,12 +55,18 @@ public class UserService {
         UserDetails userDetails = findUser.getUserDetails();
         University university = findUser.getUniversity();
 
-        return UserInfoDto.of(findUser, userDetails, university.getId());
+        return UserInfoDto.of(findUser, userDetails, university.getName());
     }
 
     private Users updateProfileOfExistUser(CreateUserDto createUserDto, Users existUser) {
         existUser.updateProfile(createUserDto.email(), createUserDto.name(), createUserDto.profileImage());
         userRepository.save(existUser);
         return existUser;
+    }
+
+    public void checkDuplicateEmail(String email) {
+        if (Boolean.TRUE.equals(userRepository.existsByEmail(email))) {
+            throw new UserException(ErrorCode.ALREADY_EXIST_USER);
+        }
     }
 }

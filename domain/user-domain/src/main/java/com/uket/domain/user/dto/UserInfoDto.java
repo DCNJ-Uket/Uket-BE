@@ -11,20 +11,20 @@ public record UserInfoDto(
         String profileImage,
         Boolean isRegistered,
         String phoneNumber,
-        Long universityId,
+        String universityName,
         String studentMajor,
         String studentCode,
         String universityEmail
 ) {
 
-    public static UserInfoDto of(Users user, UserDetails userDetails, Long universityId) {
+    public static UserInfoDto of(Users user, UserDetails userDetails, String universityName) {
         return UserInfoDto.builder()
                 .name(user.getName())
                 .depositorName(userDetails.getDepositorName())
                 .profileImage(user.getProfileImage())
                 .isRegistered(user.getIsRegistered())
                 .phoneNumber(userDetails.getPhoneNumber())
-                .universityId(universityId)
+                .universityName(universityName)
                 .studentMajor(userDetails.getStudentMajor())
                 .studentCode(userDetails.getStudentCode())
                 .universityEmail(userDetails.getUniversityEmail())
