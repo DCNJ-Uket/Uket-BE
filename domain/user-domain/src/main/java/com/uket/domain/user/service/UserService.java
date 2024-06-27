@@ -63,4 +63,10 @@ public class UserService {
         userRepository.save(existUser);
         return existUser;
     }
+
+    public void checkDuplicateEmail(String email) {
+        if (Boolean.TRUE.equals(userRepository.existsByEmail(email))) {
+            throw new UserException(ErrorCode.ALREADY_EXIST_USER);
+        }
+    }
 }
