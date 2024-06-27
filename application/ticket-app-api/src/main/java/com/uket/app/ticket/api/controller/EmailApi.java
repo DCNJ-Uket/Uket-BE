@@ -1,5 +1,6 @@
 package com.uket.app.ticket.api.controller;
 
+import com.uket.app.ticket.api.dto.request.AuthCodeRequest;
 import com.uket.app.ticket.api.dto.request.AuthEmailRequest;
 import com.uket.app.ticket.api.dto.response.AuthEmailResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,5 +25,13 @@ public interface EmailApi {
             @Valid
             @RequestBody
             AuthEmailRequest request
+    );
+
+    @PostMapping("/verify")
+    @Operation(summary = "인증 코드 확인 API", description = "이메일 인증 코드를 확인 할 수 있습니다.")
+    ResponseEntity<Void> verifyEmail(
+            @Valid
+            @RequestBody
+            AuthCodeRequest request
     );
 }

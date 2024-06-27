@@ -1,6 +1,7 @@
 package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.EmailApi;
+import com.uket.app.ticket.api.dto.request.AuthCodeRequest;
 import com.uket.app.ticket.api.dto.request.AuthEmailRequest;
 import com.uket.app.ticket.api.dto.response.AuthEmailResponse;
 import com.uket.app.ticket.api.properties.EmailProperties;
@@ -25,5 +26,13 @@ public class EmailController implements EmailApi {
         userAuthEmailService.sendAuthEmail(email, universityId);
 
         return ResponseEntity.ok(AuthEmailResponse.of(email, expiration));
+    }
+
+    @Override
+    public ResponseEntity<Void> verifyEmail(AuthCodeRequest request) {
+
+        userAuthEmailService.verifyAuthEmail(request.email(), request.universityId(), request.authCode());
+
+        return ResponseEntity.ok().build();
     }
 }
