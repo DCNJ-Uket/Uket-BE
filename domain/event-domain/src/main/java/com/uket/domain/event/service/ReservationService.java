@@ -3,6 +3,7 @@ package com.uket.domain.event.service;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.dto.ReservationDto;
 import com.uket.domain.event.entity.Reservation;
+import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.event.exception.EventException;
 import com.uket.domain.event.repository.ReservationRepository;
 import java.util.List;
@@ -17,8 +18,11 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
 
-    public List<ReservationDto> findByShowId(Long showId) {
-        return reservationRepository.findByShowId(showId, ReservationDto.class);
+    public List<ReservationDto> findByShowIdAndReservationUserType(Long showId, ReservationUserType reservationUserType) {
+        if (reservationUserType.equals(ReservationUserType.TICKETING_STUDENT)) {
+            return reservationRepository.findByShowId(showId, ReservationDto.class);
+        }
+        return reservationRepository.findByShowIdAndType(showId, reservationUserType, ReservationDto.class);
     }
 
     public Reservation findById(Long reservationId) {
