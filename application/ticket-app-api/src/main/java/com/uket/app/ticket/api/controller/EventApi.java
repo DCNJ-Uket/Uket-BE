@@ -3,7 +3,9 @@ package com.uket.app.ticket.api.controller;
 import com.uket.app.ticket.api.dto.response.ShowResponse;
 import com.uket.app.ticket.api.dto.response.ReservationResponse;
 import com.uket.core.dto.response.ErrorResponse;
+import com.uket.domain.auth.config.userid.LoginUserId;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,11 +42,15 @@ public interface EventApi {
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
     ResponseEntity<ShowResponse> getShows(
+            @LoginUserId
+            @Parameter(hidden = true)
+            Long userId,
+
             @PathVariable("id")
             Long eventId
     );
 
-    @GetMapping("/shows/{id}/reservations")
+    @GetMapping("/shows/{id}/reservations/{reservationUserType}")
     @Operation(summary = "예매 가능 시간 조회 API", description = "공연별 예매 가능 시간을 조회할 수 있습니다.")
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
             mediaType = "application/json",
@@ -57,6 +63,9 @@ public interface EventApi {
             }, schema = @Schema(implementation = ErrorResponse.class)))
     ResponseEntity<ReservationResponse> getPossibleReservations(
             @PathVariable("id")
-            Long showId
+            Long showId,
+
+            @PathVariable("reservationUserType")
+            String userType
     );
 }

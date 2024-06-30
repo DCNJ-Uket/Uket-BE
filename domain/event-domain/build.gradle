@@ -1,6 +1,7 @@
 dependencies {
     implementation project(":domain:core-domain")
     implementation project(":domain:university-domain")
+    implementation project(":domain:user-domain")
 }
 
 tasks.named('test') {
