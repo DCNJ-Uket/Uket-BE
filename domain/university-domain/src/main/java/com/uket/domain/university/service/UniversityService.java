@@ -61,6 +61,6 @@ public class UniversityService {
 
     public List<University> getCertifiableUniversities() {
 
-        return universityRepository.findAll();
+        return universityRepository.findAllByNameNot(DEFAULT_UNIVERSITY_NAME);
     }
 }
