@@ -94,6 +94,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/api/v1/universities").permitAll()
                         .requestMatchers("/api/v1/universities/{id}/event").permitAll()
+                        .requestMatchers("/api/v1/universities/certification").permitAll()
                 )
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/api/v1/email/**").permitAll()

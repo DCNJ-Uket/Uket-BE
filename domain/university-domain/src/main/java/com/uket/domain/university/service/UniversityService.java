@@ -4,6 +4,7 @@ import com.uket.core.exception.ErrorCode;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.exception.UniversityException;
 import com.uket.domain.university.repository.UniversityRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,10 @@ public class UniversityService {
         if (Boolean.TRUE.equals(isDefault(university)) || !email.endsWith(university.getEmailPostFix())) {
             throw new UniversityException(ErrorCode.NOT_MATCH_UNIVERSITY_EMAIL);
         }
+    }
+
+    public List<University> getCertifiableUniversities() {
+
+        return universityRepository.findAll();
     }
 }

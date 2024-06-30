@@ -1,5 +1,6 @@
 package com.uket.app.ticket.api.controller;
 
+import com.uket.app.ticket.api.dto.response.CertifiableUniversityResponse;
 import com.uket.app.ticket.api.dto.response.CurrentEventResponse;
 import com.uket.app.ticket.api.dto.response.ListResponse;
 import com.uket.core.dto.response.ErrorResponse;
@@ -53,4 +54,8 @@ public interface UniversityApi {
             @Parameter(description = "대학 id")
             Long universityId
     );
+
+    @GetMapping(value = "/certification")
+    @Operation(summary = "인증 가능한 대학 조회 API", description = "인증 가능한 모든 대학을 조회합니다.")
+    ResponseEntity<ListResponse<CertifiableUniversityResponse>> getCertifiableOfUniversity();
 }
