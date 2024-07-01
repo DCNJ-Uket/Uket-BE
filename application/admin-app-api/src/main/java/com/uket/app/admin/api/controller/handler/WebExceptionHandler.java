@@ -3,7 +3,7 @@ package com.uket.app.admin.api.controller.handler;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.core.exception.BaseException;
 import com.uket.core.exception.ErrorCode;
-import com.uket.domain.auth.exception.AuthException;
+import com.uket.domain.auth.admin.exception.AuthException;
 import com.uket.modules.slack.dto.ErrorReportDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
