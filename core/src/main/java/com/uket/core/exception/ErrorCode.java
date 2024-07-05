@@ -53,6 +53,7 @@ public enum ErrorCode {
     NOT_FOUND_CURRENT_EVENT(404, "EV0002", "진행중인 축제를 찾을 수 없습니다."),
     NOT_FOUND_SHOW(404, "EV0003", "해당 공연을 찾을 수 없습니다."),
     NOT_FOUND_RESERVATION(404, "EV0004", "해당 예매 정보를 찾을 수 없습니다."),
+    NOT_FOUND_RESERVATION_USER_TYPE(404, "EV0005", "해당 예매 회원 구분을 찾을 수 없습니다."),
 
     /**
      * Ticket Errors
