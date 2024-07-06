@@ -7,14 +7,16 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
+
     /**
      * Common Errors
      */
-    UNKNOWN_SERVER_ERROR(500, "CM0001", "일시적으로 접속이 원활하지 않습니다. 서버 팀에 문의 부탁드립니다."),
-    INVALID_INPUT_VALUE(400, "CM0002", "유효하지 않은 입력입니다."),
-    INVALID_DATE(400, "CM0003", "유효하지 않은 연 또는 월입니다."),
-    METHOD_NOT_ALLOWED(405, "CM0004", "허가되지 않은 메서드입니다."),
-    IO_ERROR(500, "CM0005", "I/O 관련 에러입니다. 서버 팀에 문의 부탁드립니다."),
+    UNKNOWN_SERVER_ERROR(500,"CM0001", "일시적으로 접속이 원활하지 않습니다. 서버 팀에 문의 부탁드립니다."),
+    INVALID_INPUT_VALUE(400,"CM0002", "유효하지 않은 입력입니다."),
+    INVALID_DATE(400,"CM0003", "유효하지 않은 연 또는 월입니다."),
+    METHOD_NOT_ALLOWED(405,"CM0004", "허가되지 않은 메서드입니다."),
+    IO_ERROR(500,"CM0005", "I/O 관련 에러입니다. 서버 팀에 문의 부탁드립니다."),
+    INVALID_ROLE(400,"CM0006", "권한이 유효하지 않습니다."),
 
     /**
      * Auth Related Errors
@@ -31,6 +33,14 @@ public enum ErrorCode {
     UNABLE_TO_SEND_EMAIL(400, "AU0010", "이메일 전송에 실패했습니다."),
     INVALID_AUTH_CODE(400, "AU0011", "유효하지 않은 인증 코드입니다."),
     NOT_MATCHED_AUTH_CODE(400, "AU0012", "올바르지 않은 인증 코드입니다."),
+
+    /**
+     * Admin Errors
+     */
+    NOT_FOUND_EMAIL_OF_ADMIN(404,"AD0001", "어드민의 이메일을 찾을 수 없습니다."),
+    NOT_MATCH_PASSWORD(400,"AD0002", "올바르지 않은 비밀번호입니다."),
+    ALREADY_EXIST_ADMIN(400,"AD0003", "이미 가입된 어드민입니다."),
+    NOT_REGISTERED_ADMIN(400,"AD0004", "인가되지 않은 어드민입니다."),
 
     /**
      * User Errors
@@ -68,7 +78,9 @@ public enum ErrorCode {
     INVALID_ACCESS_TICKET(400, "TI0008", "해당 티켓을 소유하지 않은 사용자입니다."),
     FAIL_TO_FIND_TICKET(404, "TI009", "해당 티켓을 찾을 수 없습니다. 티켓 아이디를 다시 확인해주세요."),
     FAIL_TICKET_CANCEL(400,"TI0010","예매된 티켓이 존재하지 않습니다."),
-    NOT_FOUND_TICKET(404, "TI0011", "해당 사용자에 해당하는 티켓이 존재하지 않습니다.");
+    NOT_FOUND_TICKET(404, "TI0011", "해당 사용자에 해당하는 티켓이 존재하지 않습니다."),
+    BEFORE_PAYMENT_TICKET(400,"TI0012","입금이 완료되지 않은 티켓입니다."),
+    ALREADY_ENTER_TICKET(400,"TI0013","이미 입장이 완료된 티켓입니다.");
 
     private final int status;
     private final String code;

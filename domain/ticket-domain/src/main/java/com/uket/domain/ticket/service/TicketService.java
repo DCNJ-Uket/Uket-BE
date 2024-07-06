@@ -57,6 +57,10 @@ public class TicketService {
     }
 
     @Transactional(readOnly = true)
+    public Ticket findById(Long ticketId) {
+        return ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
+    }
     public void checkTicketOwner(Long userId, Long ticketId) {
         if (Boolean.FALSE.equals(ticketRepository.existsByUserIdAndId(userId, ticketId))) {
             throw new TicketException(ErrorCode.INVALID_ACCESS_TICKET);

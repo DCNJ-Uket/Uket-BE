@@ -1,10 +1,23 @@
 package com.uket.app.admin.api.dto.response;
 
+import com.uket.domain.ticket.dto.TicketDto;
+import com.uket.domain.ticket.enums.TicketStatus;
+import lombok.Builder;
+
+@Builder
 public record EnterShowResponse(
-        Long ticketId
+        Long ticketId,
+        Long userId,
+        String userName,
+        TicketStatus status
 ) {
 
-    public static EnterShowResponse of(Long ticketId) {
-        return new EnterShowResponse(ticketId);
+    public static EnterShowResponse of(TicketDto ticketDto) {
+        return EnterShowResponse.builder()
+                .ticketId(ticketDto.ticketId())
+                .userId(ticketDto.userId())
+                .userName(ticketDto.userName())
+                .status(ticketDto.status())
+                .build();
     }
 }
