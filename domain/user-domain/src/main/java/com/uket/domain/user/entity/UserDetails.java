@@ -28,4 +28,9 @@ public class UserDetails {
     private String studentMajor;
     private String studentCode;
     private String universityEmail;
+
+    public void updateUserInfo(String depositorName, String phoneNumber) {
+        this.depositorName = depositorName == null ? this.depositorName : depositorName;
+        this.phoneNumber = phoneNumber == null ? this.phoneNumber : phoneNumber;
+    }
 }
