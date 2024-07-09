@@ -1,6 +1,7 @@
 package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.UserApi;
+import com.uket.app.ticket.api.dto.request.UserInfoUpdateRequest;
 import com.uket.app.ticket.api.dto.request.UserRegisterRequest;
 import com.uket.app.ticket.api.dto.response.AuthResponse;
 import com.uket.app.ticket.api.dto.response.ListResponse;
@@ -12,6 +13,7 @@ import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.user.dto.CreateUserDetailsDto;
 import com.uket.domain.user.dto.UserInfoDto;
 import com.uket.domain.user.entity.Users;
+import com.uket.domain.user.service.UserDetailsService;
 import com.uket.domain.user.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Controller;
 public class UserController implements UserApi {
 
     private final UserService userService;
+    private final UserDetailsService userDetailsService;
     private final UserRegisterService userRegisterService;
     private final TicketInfoService ticketInfoService;
 
@@ -52,6 +55,13 @@ public class UserController implements UserApi {
         List<CheckTicketDto> tickets = ticketInfoService.getUserTickets(userId);
         ListResponse<CheckTicketDto> response = ListResponse.from(tickets);
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<UserInfoDto> updateUserInfo(Long userId, UserInfoUpdateRequest request) {
+        UserInfoDto userInfoDto = userDetailsService.updateUserInfo(userId, request.depositorName(), request.phoneNumber());
+
+        return ResponseEntity.ok(userInfoDto);
     }
 
     private CreateUserDetailsDto generateCreateUserDetailsDto(UserRegisterRequest request) {
