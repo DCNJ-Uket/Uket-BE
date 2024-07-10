@@ -56,6 +56,8 @@ public class TicketingService {
         }
     }
 
+
+    //TODO : 추후 검증로직을 취소한 티켓은 제외하고 검증하는 로직 추가 예정
     @Transactional(readOnly = true)
     public void validateTicketing(Long userId, Long universityId, Long reservationId) {
 
