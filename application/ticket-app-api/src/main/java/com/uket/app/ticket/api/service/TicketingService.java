@@ -68,7 +68,6 @@ public class TicketingService {
         if (Boolean.FALSE.equals(ticketingValidator.validateStudentOfUniversity(user, university))) {
             ticketingValidator.validateReservationUserType(reservation);
         }
-        ticketingValidator.validateDuplicateReservationOfSameShow(user, reservation);
     }
 
     private CreateTicketDto generateCreateTicketDto(Users user, University university, Reservation reservation) {
