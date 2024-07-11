@@ -129,8 +129,8 @@ app:
   token:
     secret-key: ${JWT_SECRET_KEY}
     expiration:
-      ticket-expiration: 300_000
-      access-token-expiration: 600_000
+      ticket-expiration: 1_20_000
+      access-token-expiration: 1_200_000
       refresh-token-expiration: 7_200_000
 
 logging:
