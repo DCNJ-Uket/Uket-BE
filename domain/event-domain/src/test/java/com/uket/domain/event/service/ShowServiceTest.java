@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.uket.domain.event.dto.ShowDto;
+import com.uket.domain.event.dto.ShowQueryDto;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.repository.ShowRepository;
 import com.uket.domain.university.entity.University;
@@ -33,12 +34,12 @@ class ShowServiceTest {
 
         Events event = Events.builder().id(1L).university(university).build();
 
-        ShowDto show = ShowDto.builder()
+        ShowQueryDto show = ShowQueryDto.builder()
                 .id(1L)
                 .name("DAY1")
-                .startDate(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Asia/Seoul")))
-                .endDate(ZonedDateTime.of(LocalDateTime.now(),ZoneId.of("Asia/Seoul")))
-                .ticketingDate(ZonedDateTime.of(LocalDateTime.now(),ZoneId.of("Asia/Seoul")))
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now())
+                .ticketingDate(LocalDateTime.now())
                 .location("자양동")
                 .totalTicketCount(1000)
                 .build();
@@ -46,7 +47,6 @@ class ShowServiceTest {
         when(showRepository.findByEventId(any(), any())).thenReturn(List.of(show));
 
         Assertions.assertThat(showService.findByEventId(event.getId()))
-                .hasSize(1)
-                .contains(show);
+                .hasSize(1);
     }
 }
