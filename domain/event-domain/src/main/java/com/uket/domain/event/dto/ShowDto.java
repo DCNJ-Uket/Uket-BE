@@ -16,9 +16,9 @@ public record ShowDto(
         Integer totalTicketCount,
         String location
 ) {
+    private static final String zoneId = "Asia/Seoul";
 
     public static ShowDto from(Shows show) {
-        String zoneId = "Asia/Seoul";
 
         return ShowDto.builder()
                 .id(show.getId())
@@ -28,6 +28,19 @@ public record ShowDto(
                 .ticketingDate(ZonedDateTime.of(show.getTicketingDate(), ZoneId.of(zoneId)))
                 .totalTicketCount(show.getTotalTicketCount())
                 .location(show.getLocation())
+                .build();
+    }
+
+    public static ShowDto from(ShowQueryDto show) {
+
+        return ShowDto.builder()
+                .id(show.id())
+                .name(show.name())
+                .startDate(ZonedDateTime.of(show.startDate(), ZoneId.of(zoneId)))
+                .endDate(ZonedDateTime.of(show.endDate(), ZoneId.of(zoneId)))
+                .ticketingDate(ZonedDateTime.of(show.ticketingDate(), ZoneId.of(zoneId)))
+                .totalTicketCount(show.totalTicketCount())
+                .location(show.location())
                 .build();
     }
 }

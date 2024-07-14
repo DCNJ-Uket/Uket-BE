@@ -3,6 +3,7 @@ package com.uket.domain.event.service;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.dto.ShowDto;
 import com.uket.domain.event.dto.ShowNameDto;
+import com.uket.domain.event.dto.ShowQueryDto;
 import com.uket.domain.event.exception.EventException;
 import com.uket.domain.event.repository.ShowRepository;
 import java.util.List;
@@ -18,7 +19,8 @@ public class ShowService {
     private final ShowRepository showRepository;
 
     public List<ShowDto> findByEventId(Long eventId) {
-        return showRepository.findByEventId(eventId, ShowDto.class);
+        List<ShowQueryDto> showQueryDtos = showRepository.findByEventId(eventId, ShowQueryDto.class);
+        return showQueryDtos.stream().map(ShowDto::from).toList();
     }
 
     public String findNameById(Long showId) {
