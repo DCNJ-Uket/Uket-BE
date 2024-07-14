@@ -69,11 +69,7 @@ public class TicketService {
 
     @Transactional(readOnly = true)
     public List<Ticket> findAllTicketsByUserId(Long userId) {
-        List<Ticket> tickets = ticketRepository.findAllByUserIdAndStatusNot(userId, TicketStatus.RESERVATION_CANCEL);
-        if (tickets.isEmpty()) {
-            throw new TicketException(ErrorCode.NOT_FOUND_TICKET);
-        }
-        return tickets;
+        return ticketRepository.findAllByUserIdAndStatusNot(userId, TicketStatus.RESERVATION_CANCEL);
     }
 
     @Transactional
