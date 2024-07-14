@@ -5,10 +5,11 @@ import static org.mockito.Mockito.when;
 
 import com.uket.domain.event.dto.ShowDto;
 import com.uket.domain.event.entity.Events;
-import com.uket.domain.event.entity.Shows;
 import com.uket.domain.event.repository.ShowRepository;
 import com.uket.domain.university.entity.University;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,9 +36,9 @@ class ShowServiceTest {
         ShowDto show = ShowDto.builder()
                 .id(1L)
                 .name("DAY1")
-                .startDate(LocalDateTime.now())
-                .endDate(LocalDateTime.now())
-                .ticketingDate(LocalDateTime.now())
+                .startDate(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("Asia/Seoul")))
+                .endDate(ZonedDateTime.of(LocalDateTime.now(),ZoneId.of("Asia/Seoul")))
+                .ticketingDate(ZonedDateTime.of(LocalDateTime.now(),ZoneId.of("Asia/Seoul")))
                 .location("자양동")
                 .totalTicketCount(1000)
                 .build();
