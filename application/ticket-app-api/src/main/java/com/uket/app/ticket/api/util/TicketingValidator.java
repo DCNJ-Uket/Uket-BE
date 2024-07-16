@@ -4,6 +4,7 @@ import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
 import com.uket.domain.event.enums.ReservationUserType;
+import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.university.entity.University;
@@ -39,7 +40,7 @@ public class TicketingValidator {
 
         Shows show = reservation.getShow();
 
-        if (Boolean.TRUE.equals(ticketRepository.existsByUserAndShow(user, show))) {
+        if (Boolean.TRUE.equals(ticketRepository.existsByUserAndShowAndStatusNot(user, show, TicketStatus.RESERVATION_CANCEL))) {
             throw new TicketException(ErrorCode.DUPLICATE_RESERVATION_OF_SAME_SHOW);
         }
     }
