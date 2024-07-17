@@ -24,9 +24,9 @@ public class EnterShowService {
     private final TicketService ticketService;
 
     public TicketDto enterShow(String ticketToken) {
-        tokenValidator.validateExpiredToken(ticketToken);
-        tokenValidator.validateTokenCategory(JWT_PAYLOAD_VALUE_TICKET, ticketToken);
-        tokenValidator.validateTokenSignature(ticketToken);
+        tokenValidator.validateExpiredQRToken(ticketToken);
+        tokenValidator.validateQRTokenCategory(JWT_PAYLOAD_VALUE_TICKET, ticketToken);
+        tokenValidator.validateQRTokenSignature(ticketToken);
 
         Long ticketId = jwtTicketUtil.getTicketId(ticketToken);
         Ticket ticket = ticketService.findById(ticketId);
