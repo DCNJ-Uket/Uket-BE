@@ -10,7 +10,6 @@ public record EnterShowResponse(
         Long userId,
         String userName,
         TicketStatus status,
-
         String msg
 ) {
 
