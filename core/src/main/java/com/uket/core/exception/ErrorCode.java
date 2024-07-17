@@ -82,6 +82,9 @@ public enum ErrorCode {
     BEFORE_PAYMENT_TICKET(400,"TI0012","입금이 완료되지 않은 티켓입니다."),
     ALREADY_ENTER_TICKET(400,"TI0013","이미 입장이 완료된 티켓입니다.");
 
+
+
+
     private final int status;
     private final String code;
     private final String message;

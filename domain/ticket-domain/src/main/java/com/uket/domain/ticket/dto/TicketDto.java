@@ -9,7 +9,8 @@ public record TicketDto(
         Long ticketId,
         Long userId,
         String userName,
-        TicketStatus status
+        TicketStatus status,
+        String msg
 ) {
 
     public static TicketDto from(Ticket ticket) {
@@ -18,6 +19,7 @@ public record TicketDto(
                 .userId(ticket.getUser().getId())
                 .userName(ticket.getUser().getName())
                 .status(ticket.getStatus())
+                .msg(ticket.getStatus().getMsg())
                 .build();
     }
 }
