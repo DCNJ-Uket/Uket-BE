@@ -80,7 +80,14 @@ public enum ErrorCode {
     FAIL_TICKET_CANCEL(400,"TI0010","예매된 티켓이 존재하지 않습니다."),
     NOT_FOUND_TICKET(404, "TI0011", "해당 사용자에 해당하는 티켓이 존재하지 않습니다."),
     BEFORE_PAYMENT_TICKET(400,"TI0012","입금이 완료되지 않은 티켓입니다."),
-    ALREADY_ENTER_TICKET(400,"TI0013","이미 입장이 완료된 티켓입니다.");
+    ALREADY_ENTER_TICKET(400,"TI0013","이미 입장이 완료된 티켓입니다."),
+
+    /**
+     * QR Errors
+     */
+    NOT_QR_TOKEN(400, "QR0001", "QR과 관련없는 다른 유형의 토큰이 입력되었습니다."),
+    EXPIRED_QR_TOKEN(403, "QR0002", "QR code의 유효 기간이 만료되었습니다. 재발급 부탁드립니다."),
+    NOT_VALID_QR(401, "QR0003", "QR code의 토큰이 유효하지않습니다. 변조되었을 가능성이 있으니 개발자에게 문의 부탁드립니다.");
 
     private final int status;
     private final String code;

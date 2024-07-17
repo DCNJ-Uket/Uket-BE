@@ -9,7 +9,9 @@ public record EnterShowResponse(
         Long ticketId,
         Long userId,
         String userName,
-        TicketStatus status
+        TicketStatus status,
+
+        String msg
 ) {
 
     public static EnterShowResponse of(TicketDto ticketDto) {
@@ -18,6 +20,7 @@ public record EnterShowResponse(
                 .userId(ticketDto.userId())
                 .userName(ticketDto.userName())
                 .status(ticketDto.status())
+                .msg(ticketDto.msg())
                 .build();
     }
 }

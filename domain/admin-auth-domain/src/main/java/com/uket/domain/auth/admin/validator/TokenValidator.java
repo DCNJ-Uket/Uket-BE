@@ -20,9 +20,21 @@ public class TokenValidator {
         }
     }
 
+    public void validateQRTokenSignature(String token) {
+        if (Boolean.FALSE.equals(jwtAuthTokenUtil.isValidToken(token))) {
+            throw new AuthException(ErrorCode.NOT_VALID_QR);
+        }
+    }
+
     public void validateExpiredToken(String token) {
         if (Boolean.TRUE.equals(jwtAuthTokenUtil.isExpired(token))) {
             throw new AuthException(ErrorCode.TOKEN_EXPIRED);
+        }
+    }
+
+    public void validateExpiredQRToken(String token) {
+        if (Boolean.TRUE.equals(jwtAuthTokenUtil.isExpired(token))) {
+            throw new AuthException(ErrorCode.EXPIRED_QR_TOKEN);
         }
     }
 
@@ -30,6 +42,13 @@ public class TokenValidator {
         String tokenCategory = jwtAuthTokenUtil.getCategory(token);
         if (Boolean.FALSE.equals(tokenCategory.equals(category))) {
             throw new AuthException(ErrorCode.NOT_MATCH_CATEGORY);
+        }
+    }
+
+    public void validateQRTokenCategory(String category, String token) {
+        String tokenCategory = jwtAuthTokenUtil.getCategory(token);
+        if (Boolean.FALSE.equals(tokenCategory.equals(category))) {
+            throw new AuthException(ErrorCode.NOT_QR_TOKEN);
         }
     }
 
