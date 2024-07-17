@@ -26,9 +26,9 @@ public interface TicketApi {
     @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
         mediaType = "application/json",
         examples = {
-            @ExampleObject(name = "AU0001", description = "QR code와 관련되지 않은 토큰을 입력할 시 발생합니다.",
+            @ExampleObject(name = "QR0001", description = "QR code와 관련되지 않은 토큰을 입력할 시 발생합니다.",
                 value = """
-                                    {"code": "AU0001", "message": "올바르지 않은 유형의 토큰입니다."}
+                                    {"code": "QR0001", "message": "QR과 관련없는 다른 유형의 토큰이 입력되었습니다."}
                                     """
             ),
             @ExampleObject(name = "TI0012", description = "입금이 완료되지않은 티켓으로 입장할 시 발생합니다.",
@@ -45,18 +45,18 @@ public interface TicketApi {
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
         mediaType = "application/json",
         examples = {
-            @ExampleObject(name = "AU0005", description = "토큰이 유효하지 않은 경우 발생합니다.",
+            @ExampleObject(name = "QR0003", description = "QR코드의 토큰이 유효하지 않은 경우 발생합니다.",
                 value = """
-                                    {"code": "AU0005", "message": "유효하지 않은 토큰입니다."}
+                                    {"code": "QR0003", "message": "QR code의 토큰이 유효하지않습니다. 변조되었을 가능성이 있으니 개발자에게 문의 부탁드립니다."}
                                     """
             )
         }, schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "403", description = "FORBIDDEN", content = @Content(
         mediaType = "application/json",
         examples = {
-            @ExampleObject(name = "AU0008", description = "refreshToken이 만료된 경우 발생합니다.",
+            @ExampleObject(name = "QR0002", description = "QR code의 token 유효기간이 만료된 경우 발생합니다.",
                 value = """
-                                    {"code": "AU0008", "message": "만료된 토큰입니다."}
+                                    {"code": "QR0002", "message": "QR code의 유효 기간이 만료되었습니다. 재발급 부탁드립니다."}
                                     """
             )
         }, schema = @Schema(implementation = ErrorResponse.class)))

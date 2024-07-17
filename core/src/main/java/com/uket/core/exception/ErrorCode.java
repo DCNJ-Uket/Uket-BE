@@ -86,8 +86,8 @@ public enum ErrorCode {
      * QR Errors
      */
     NOT_QR_TOKEN(400, "QR0001", "QR과 관련없는 다른 유형의 토큰이 입력되었습니다."),
-    EXPIRED_QR_TOKEN(401, "QR0002", "QR code의 유효 기간이 만료되었습니다. 재발급 부탁드립니다."),
-    NOT_VALID_QR(403, "QR0003", "QR code의 토큰이 유효하지않습니다. 변조되었을 가능성이 있으니 개발자에게 문의 부탁드립니다.");
+    EXPIRED_QR_TOKEN(403, "QR0002", "QR code의 유효 기간이 만료되었습니다. 재발급 부탁드립니다."),
+    NOT_VALID_QR(401, "QR0003", "QR code의 토큰이 유효하지않습니다. 변조되었을 가능성이 있으니 개발자에게 문의 부탁드립니다.");
 
     private final int status;
     private final String code;
