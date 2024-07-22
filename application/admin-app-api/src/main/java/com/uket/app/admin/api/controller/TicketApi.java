@@ -58,6 +58,11 @@ public interface TicketApi {
                 value = """
                                     {"code": "QR0002", "message": "QR code의 유효 기간이 만료되었습니다. 재발급 부탁드립니다."}
                                     """
+            ),
+            @ExampleObject(name = "AU0008", description = "admin계정의 accessToken이 만료되었을 때 발생합니다.",
+                value = """
+                                    {"code": "AU0008", "message": "만료된 토큰입니다."}
+                                    """
             )
         }, schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/{token}/enter")
