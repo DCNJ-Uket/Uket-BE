@@ -102,7 +102,7 @@ app:
     secret-key: testestsetsetsetsetsetsetsetsetestset
     expiration:
       ticket-expiration: 1_200_000
-      access-token-expiration: 1_200_000
+      access-token-expiration: 21_600_000
       refresh-token-expiration: 7_200_000
 ---
 spring:
@@ -133,7 +133,7 @@ app:
     secret-key: ${JWT_SECRET_KEY}
     expiration:
       ticket-expiration: 1_20_000
-      access-token-expiration: 1_200_000
+      access-token-expiration: 21_600_000
       refresh-token-expiration: 7_200_000
 
 logging:
