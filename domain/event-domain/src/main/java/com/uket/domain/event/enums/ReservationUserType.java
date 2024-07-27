@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public enum ReservationUserType {
-    TICKETING_ALL("일반인 zone"), TICKETING_STUDENT("재학생 zone");
+    TICKETING_ALL("일반인"), TICKETING_STUDENT("재학생");
 
     private final String value;
 
