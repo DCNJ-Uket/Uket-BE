@@ -25,7 +25,7 @@ public class TicketController implements TicketApi {
     @Override
     public ResponseEntity<TicketingResponse> ticketing(Long userId, TicketingRequest request) {
 
-        ticketingService.validateTicketing(userId, request.universityId(), request.reservationId());
+        //ticketingService.validateTicketing(userId, request.universityId(), request.reservationId());
         ticketingService.increaseReservedCount(request.reservationId());
 
         TicketDto ticket = ticketingService.ticketing(userId, request.universityId(), request.reservationId());

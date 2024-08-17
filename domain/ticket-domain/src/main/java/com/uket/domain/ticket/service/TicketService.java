@@ -40,9 +40,11 @@ public class TicketService {
         Users user = createTicketDto.user();
         Reservation reservation = createTicketDto.reservation();
 
+        /*
         if(Boolean.TRUE.equals(ticketRepository.existsByUserAndReservationAndStatusNot(user, reservation, TicketStatus.RESERVATION_CANCEL))){
             throw new TicketException(ErrorCode.ALREADY_EXIST_TICKET);
         }
+         */
 
         Ticket ticket = Ticket.builder()
                 .user(user)
