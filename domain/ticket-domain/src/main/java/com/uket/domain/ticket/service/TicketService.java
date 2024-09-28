@@ -63,6 +63,7 @@ public class TicketService {
         return ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
     }
+
     public void checkTicketOwner(Long userId, Long ticketId) {
         if (Boolean.FALSE.equals(ticketRepository.existsByUserIdAndId(userId, ticketId))) {
             throw new TicketException(ErrorCode.INVALID_ACCESS_TICKET);
@@ -77,12 +78,21 @@ public class TicketService {
     @Transactional
     public CancelTicketDto cancelTicketByUserIdAndId(Long userId, Long ticketId) {
         Ticket ticket = ticketRepository.findByUserIdAndId(userId, ticketId)
-            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
         ticket.cancel();
         ticket.updateDeletedAt();
         ticketRepository.save(ticket);
 
         return new CancelTicketDto(ticket.getId(), ticket.getStatus().getValue(), ticket.getReservation().getId());
+    }
+
+
+    public Ticket updateTicketStatus(Long ticketId, TicketStatus ticketStatus) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+
+        Ticket updatedTicket = ticket.updateStatus(ticketStatus);
+        return ticketRepository.save(updatedTicket);
     }
 }
