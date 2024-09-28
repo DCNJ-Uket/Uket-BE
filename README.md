@@ -2,6 +2,7 @@
 
 ## 바로가기
 > [API 명세서](https://dev.api.uket.site/swagger-ui/index.html#/)
+> [관리자 API 명세서](https://uketadmin.p-e.kr/swagger-ui/index.html#/)
 
 ## 개발환경
 | 구분 | 종류                             |
