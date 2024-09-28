@@ -60,6 +60,6 @@ subprojects {
     }
 
     bootJar {
-        mainClass = 'com.uket.TicketApiApplication'
+        mainClass = 'com.uket.AdminApiApplication'
     }
 }
