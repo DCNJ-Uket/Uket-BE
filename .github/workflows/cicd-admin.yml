@@ -136,7 +136,7 @@ jobs:
       - name: Login to Amazon ECR for admin
         uses: aws-actions/amazon-ecr-login@v1
 
-      # Building and pushing Docker image to ECR
+      # Building and pushing Docker Image to ECR
       - name: Docker build and push for admin
         run: |
           cd ./application/ticket-app-api
