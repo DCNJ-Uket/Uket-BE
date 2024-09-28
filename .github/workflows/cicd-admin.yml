@@ -92,7 +92,7 @@ jobs:
     if: github.ref == 'refs/heads/admin'
     runs-on: ubuntu-latest
     env:
-      DOCKER_IMAGE_NAME: admin-uket
+      DOCKER_IMAGE_NAME: admin-uket-image
       DOCKER_CONTAINER_NAME: admin-uket
       DOCKER_REGISTRY_URL: ${{ secrets.ADMIN_DOCKER_REGISTRY_URL }}
     steps:
@@ -150,11 +150,6 @@ jobs:
     needs: build-and-push-docker-image-admin
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registry: ${{ env.DOCKER_REGISTRY_URL }}
-
       - name: Deploy to Admin EC2 via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -164,7 +159,7 @@ jobs:
           script: |
             aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.DOCKER_REGISTRY_URL }}
             docker-compose down
-            docker pull ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}
+            docker pull ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest
             docker-compose up -d
             # Cleaning up unused Docker images
             docker image prune -f
