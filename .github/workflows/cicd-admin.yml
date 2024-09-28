@@ -92,7 +92,7 @@ jobs:
     if: github.ref == 'refs/heads/admin'
     runs-on: ubuntu-latest
     env:
-      DOCKER_IMAGE_NAME: admin-uket-image
+      DOCKER_IMAGE_NAME: admin-uket
       DOCKER_CONTAINER_NAME: admin-uket
       DOCKER_REGISTRY_URL: ${{ secrets.ADMIN_DOCKER_REGISTRY_URL }}
     steps:
