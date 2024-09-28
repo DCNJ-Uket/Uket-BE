@@ -1,7 +1,9 @@
 package com.uket.app.admin.api.controller;
 
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
+import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.core.dto.response.ErrorResponse;
+import com.uket.domain.ticket.enums.TicketStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -11,6 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,4 +73,10 @@ public interface TicketApi {
         @PathVariable("token") String ticketToken
     );
 
+    @Operation(summary = "티켓 상태 변경 API", description = "어드민용 티켓 상태를 변경합니다.")
+    @PatchMapping("/{ticketId}/status/{ticketStatus}")
+    ResponseEntity<UpdateTicketStatusResponse> updateTicketStatus(
+            @PathVariable("ticketId") Long ticketId,
+            @PathVariable("ticketStatus") TicketStatus ticketStatus
+    );
 }
