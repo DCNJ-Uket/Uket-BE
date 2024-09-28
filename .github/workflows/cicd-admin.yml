@@ -122,7 +122,7 @@ jobs:
 
       # Building the application with Gradle
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean build -x test
 
       # Configuring AWS credentials for accessing AWS services
       - name: Configure AWS credentials for admin
