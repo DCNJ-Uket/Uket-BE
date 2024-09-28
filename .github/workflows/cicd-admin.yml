@@ -9,7 +9,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
 
-# dev branch
+# Dev branch
 jobs:
   build-and-push-docker-image-dev:
     if: github.ref == 'refs/heads/dev'
