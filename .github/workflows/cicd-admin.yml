@@ -147,6 +147,10 @@ jobs:
 
   deploy-admin:
     if: github.ref == 'refs/heads/admin'
+    env:
+      DOCKER_IMAGE_NAME: admin-uket
+      DOCKER_CONTAINER_NAME: admin-uket
+      DOCKER_REGISTRY_URL: ${{ secrets.ADMIN_DOCKER_REGISTRY_URL }}
     needs: build-and-push-docker-image-admin
     runs-on: ubuntu-latest
     steps:
@@ -157,7 +161,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY_ADMIN }}
           script: |
-            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}
+            aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.DOCKER_REGISTRY_URL }}
             docker-compose down
             docker pull ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}
             docker-compose up -d
