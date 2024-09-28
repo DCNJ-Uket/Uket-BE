@@ -154,7 +154,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST_ADMIN }}
-          username: ec2-user
+          username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY_ADMIN }}
           script: |
             aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.DOCKER_REGISTRY_URL }}
