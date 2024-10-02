@@ -1,7 +1,6 @@
 package com.uket.app.admin.api.dto.response;
 
-import com.uket.domain.ticket.entity.Ticket;
-import com.uket.domain.ticket.enums.TicketStatus;
+import com.uket.domain.ticket.dto.CheckTicketDto;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -15,20 +14,20 @@ public record TicketResponse(
     LocalDateTime showTime,
     Timestamp orderDate,
     Timestamp updatedDate,
-    TicketStatus status,
+    String ticketStatus,
     String userType
 ) {
 
-    public static TicketResponse from(Ticket ticket) {
+    public static TicketResponse from(CheckTicketDto checkTicketDto) {
         return TicketResponse.builder()
-            .ticketId(ticket.getId())
-            .depositorName(ticket.getUser().getName())
-            .showDate(ticket.getShow().getStartDate())
-            .showTime(ticket.getReservation().getStartTime())
-            .orderDate(ticket.getCreatedAt())
-            .updatedDate(ticket.getModifiedAt())
-            .status(ticket.getStatus())
-            .userType(ticket.getReservation().getType().getValue())
+            .ticketId(checkTicketDto.ticketId())
+            .depositorName(checkTicketDto.userName())
+            .showDate(checkTicketDto.showDate())
+            .showTime(checkTicketDto.enterStartTime())
+            .orderDate(checkTicketDto.createdAt())
+            .updatedDate(checkTicketDto.updatedAt())
+            .ticketStatus(checkTicketDto.ticketStatus())
+            .userType(checkTicketDto.userType())
             .build();
     }
 }

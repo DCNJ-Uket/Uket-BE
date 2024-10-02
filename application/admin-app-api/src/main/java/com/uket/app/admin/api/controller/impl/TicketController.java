@@ -1,10 +1,12 @@
 package com.uket.app.admin.api.controller.impl;
 
 import com.uket.app.admin.api.controller.TicketApi;
+import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.app.admin.api.service.EnterShowService;
+import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
@@ -42,11 +44,14 @@ public class TicketController implements TicketApi {
     }
 
     @Override
-    public ResponseEntity<Page<TicketResponse>> getAllTickets(int page, int size) {
-        Page<TicketResponse> ticketResponses = ticketService.getAllTickets(page, size);
-        return ResponseEntity.ok(ticketResponses);
+    public ResponseEntity<CustomPageResponse<TicketResponse>> getAllTickets(int page, int size) {
+        Page<CheckTicketDto> tickets = ticketService.getAllTickets(page-1, size);
+        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
+        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
+        return ResponseEntity.ok(customResponse);
     }
 
+    /*
     @Override
     public ResponseEntity<Page<TicketResponse>> getTicketsByUserName(String userName, int page, int size) {
         Page<TicketResponse> ticketResponses = ticketService.getTicketsByUserName(userName, page, size);
@@ -70,5 +75,5 @@ public class TicketController implements TicketApi {
         Page<TicketResponse> ticketResponses = ticketService.getTicketsByShowStartDate(showDate, page, size);
         return ResponseEntity.ok(ticketResponses);
     }
-
+    */
 }

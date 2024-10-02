@@ -1,10 +1,10 @@
 package com.uket.domain.ticket.service;
 
-import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.service.ReservationService;
 import com.uket.domain.ticket.dto.CancelTicketDto;
+import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
@@ -12,7 +12,6 @@ import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -103,13 +102,14 @@ public class TicketService {
     }
 
 
-    public Page<TicketResponse> getAllTickets(int page, int size) {
+    @Transactional(readOnly = true)
+    public Page<CheckTicketDto> getAllTickets(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Ticket> tickets = ticketRepository.findAll(pageable);
-        return tickets.map(TicketResponse::from);
+        Page<Ticket> tickets =  ticketRepository.findAll(pageable);
+        return tickets.map(CheckTicketDto::from);
     }
 
-
+    /*
     public Page<TicketResponse> getTicketsByStatus(TicketStatus status, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Ticket> tickets = ticketRepository.findByStatus(status, pageable);
@@ -133,4 +133,5 @@ public class TicketService {
         Page<Ticket> tickets = ticketRepository.findByShowStartDate(startDate, pageable);
         return tickets.map(TicketResponse::from);
     }
+     */
 }
