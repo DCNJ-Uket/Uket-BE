@@ -2,13 +2,17 @@ package com.uket.app.admin.api.controller.impl;
 
 import com.uket.app.admin.api.controller.TicketApi;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
+import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.app.admin.api.service.EnterShowService;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.ticket.service.TicketService;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -36,4 +40,35 @@ public class TicketController implements TicketApi {
         UpdateTicketStatusResponse response = UpdateTicketStatusResponse.from(ticket);
         return ResponseEntity.ok(response);
     }
+
+    @Override
+    public ResponseEntity<Page<TicketResponse>> getAllTickets(int page, int size) {
+        Page<TicketResponse> ticketResponses = ticketService.getAllTickets(page, size);
+        return ResponseEntity.ok(ticketResponses);
+    }
+
+    @Override
+    public ResponseEntity<Page<TicketResponse>> getTicketsByUserName(String userName, int page, int size) {
+        Page<TicketResponse> ticketResponses = ticketService.getTicketsByUserName(userName, page, size);
+        return ResponseEntity.ok(ticketResponses);
+    }
+
+    @Override
+    public ResponseEntity<Page<TicketResponse>> getTicketsByStatus(TicketStatus status, int page, int size) {
+        Page<TicketResponse> ticketResponses = ticketService.getTicketsByStatus(status, page, size);
+        return ResponseEntity.ok(ticketResponses);
+    }
+
+    @Override
+    public ResponseEntity<Page<TicketResponse>> getTicketsByPhoneNumber(String phoneNumber, int page, int size) {
+        Page<TicketResponse> ticketResponses = ticketService.getTicketsByPhoneNumber(phoneNumber, page, size);
+        return ResponseEntity.ok(ticketResponses);
+    }
+
+    @Override
+    public ResponseEntity<Page<TicketResponse>> getTicketsByShowDate(LocalDateTime showDate, int page, int size) {
+        Page<TicketResponse> ticketResponses = ticketService.getTicketsByShowStartDate(showDate, page, size);
+        return ResponseEntity.ok(ticketResponses);
+    }
+
 }

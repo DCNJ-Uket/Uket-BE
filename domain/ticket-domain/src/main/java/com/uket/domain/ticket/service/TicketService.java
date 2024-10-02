@@ -1,5 +1,6 @@
 package com.uket.domain.ticket.service;
 
+import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.service.ReservationService;
@@ -11,9 +12,13 @@ import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,11 +93,44 @@ public class TicketService {
     }
 
 
+    @Transactional
     public Ticket updateTicketStatus(Long ticketId, TicketStatus ticketStatus) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
         Ticket updatedTicket = ticket.updateStatus(ticketStatus);
         return ticketRepository.save(updatedTicket);
+    }
+
+
+    public Page<TicketResponse> getAllTickets(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Ticket> tickets = ticketRepository.findAll(pageable);
+        return tickets.map(TicketResponse::from);
+    }
+
+
+    public Page<TicketResponse> getTicketsByStatus(TicketStatus status, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Ticket> tickets = ticketRepository.findByStatus(status, pageable);
+        return tickets.map(TicketResponse::from);
+    }
+
+    public Page<TicketResponse> getTicketsByUserName(String userName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Ticket> tickets = ticketRepository.findByUserName(userName, pageable);
+        return tickets.map(TicketResponse::from);
+    }
+
+    public Page<TicketResponse> getTicketsByPhoneNumber(String phoneNumber, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Ticket> tickets = ticketRepository.findByUserUserDetailsPhoneNumber(phoneNumber, pageable);
+        return tickets.map(TicketResponse::from);
+    }
+
+    public Page<TicketResponse> getTicketsByShowStartDate(LocalDateTime startDate, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Ticket> tickets = ticketRepository.findByShowStartDate(startDate, pageable);
+        return tickets.map(TicketResponse::from);
     }
 }

@@ -1,6 +1,7 @@
 package com.uket.app.admin.api.controller;
 
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
+import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.ticket.enums.TicketStatus;
@@ -11,11 +12,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.LocalDateTime;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "어드민용 티켓 관리 API", description = "어드민용 티켓 관리 API")
@@ -78,5 +84,42 @@ public interface TicketApi {
     ResponseEntity<UpdateTicketStatusResponse> updateTicketStatus(
             @PathVariable("ticketId") Long ticketId,
             @PathVariable("ticketStatus") TicketStatus ticketStatus
+    );
+
+    @Operation(summary = "전체 티켓 조회", description = "전체 티켓을 조회합니다.")
+    @GetMapping("/all")
+    ResponseEntity<Page<TicketResponse>> getAllTickets(int page, int size);
+
+
+    @Operation(summary = "사용자 이름으로 티켓 조회", description = "사용자 이름으로 티켓을 조회합니다.")
+    @GetMapping("/byUserName")
+    ResponseEntity<Page<TicketResponse>> getTicketsByUserName(
+        @RequestBody String userName,
+        int page,
+        int size
+    );
+
+    @Operation(summary = "티켓 상태로 티켓 조회", description = "티켓 상태로 티켓을 조회합니다.")
+    @GetMapping("/byStatus")
+    ResponseEntity<Page<TicketResponse>> getTicketsByStatus(
+        @RequestBody TicketStatus status,
+        int page,
+        int size
+    );
+
+    @Operation(summary = "전화번호로 티켓 조회", description = "전화번호로 티켓을 조회합니다.")
+    @GetMapping("/byPhoneNumber")
+    ResponseEntity<Page<TicketResponse>> getTicketsByPhoneNumber(
+        @RequestBody String phoneNumber,
+        int page,
+        int size
+    );
+
+    @Operation(summary = "해당 날짜 공연 티켓 조회", description = "해당 날짜의 공연 관련 티켓을 조회합니다.")
+    @GetMapping("/byShowDate")
+    ResponseEntity<Page<TicketResponse>> getTicketsByShowDate(
+        @RequestBody LocalDateTime showDate,
+        int page,
+        int size
     );
 }
