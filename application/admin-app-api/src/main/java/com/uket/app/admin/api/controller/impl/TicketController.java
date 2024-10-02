@@ -1,6 +1,8 @@
 package com.uket.app.admin.api.controller.impl;
 
 import com.uket.app.admin.api.controller.TicketApi;
+import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
+import com.uket.app.admin.api.dto.request.UserNameRequest;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
@@ -44,37 +46,41 @@ public class TicketController implements TicketApi {
     }
 
     @Override
-    public ResponseEntity<CustomPageResponse<TicketResponse>> getAllTickets(int page, int size) {
-        Page<CheckTicketDto> tickets = ticketService.getAllTickets(page-1, size);
+    public ResponseEntity<CustomPageResponse<TicketResponse>> searchAllTickets(int page, int size) {
+        Page<CheckTicketDto> tickets = ticketService.searchAllTickets(page-1, size);
         Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
         CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
         return ResponseEntity.ok(customResponse);
     }
 
     @Override
-    public ResponseEntity<CustomPageResponse<TicketResponse>> getTicketsByStatus(TicketStatus status, int page, int size) {
-        Page<CheckTicketDto> tickets = ticketService.getTicketsByStatus(status,page-1, size);
+    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByStatus(TicketStatus status, int page, int size) {
+        Page<CheckTicketDto> tickets = ticketService.searchTicketsByStatus(status,page-1, size);
         Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
         CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
         return ResponseEntity.ok(customResponse);
     }
 
+
+    @Override
+    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByUserName(UserNameRequest userNameRequest, int page, int size) {
+        Page<CheckTicketDto> tickets = ticketService.searchTicketsByUserName(userNameRequest.userName(), page-1, size);
+        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
+        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
+        return ResponseEntity.ok(customResponse);
+    }
+
+    @Override
+    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByPhoneNumber(PhoneNumberRequest phoneNumberRequest, int page, int size) {
+        Page<CheckTicketDto> tickets = ticketService.searchTicketsByPhoneNumber(phoneNumberRequest.phoneNumber(), page-1, size);
+        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
+        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
+        return ResponseEntity.ok(customResponse);
+    }
     /*
     @Override
-    public ResponseEntity<Page<TicketResponse>> getTicketsByUserName(String userName, int page, int size) {
-        Page<TicketResponse> ticketResponses = ticketService.getTicketsByUserName(userName, page, size);
-        return ResponseEntity.ok(ticketResponses);
-    }
-
-    @Override
-    public ResponseEntity<Page<TicketResponse>> getTicketsByPhoneNumber(String phoneNumber, int page, int size) {
-        Page<TicketResponse> ticketResponses = ticketService.getTicketsByPhoneNumber(phoneNumber, page, size);
-        return ResponseEntity.ok(ticketResponses);
-    }
-
-    @Override
-    public ResponseEntity<Page<TicketResponse>> getTicketsByShowDate(LocalDateTime showDate, int page, int size) {
-        Page<TicketResponse> ticketResponses = ticketService.getTicketsByShowStartDate(showDate, page, size);
+    public ResponseEntity<Page<TicketResponse>> searchTicketsByShowDate(LocalDateTime showDate, int page, int size) {
+        Page<TicketResponse> ticketResponses = ticketService.searchTicketsByShowStartDate(showDate, page-1, size);
         return ResponseEntity.ok(ticketResponses);
     }
     */

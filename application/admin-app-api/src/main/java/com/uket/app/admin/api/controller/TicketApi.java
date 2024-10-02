@@ -1,5 +1,7 @@
 package com.uket.app.admin.api.controller;
 
+import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
+import com.uket.app.admin.api.dto.request.UserNameRequest;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
@@ -18,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -85,42 +88,42 @@ public interface TicketApi {
             @PathVariable("ticketStatus") TicketStatus ticketStatus
     );
 
-    @Operation(summary = "전체 티켓 페이지별 조회", description = "전체 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @Operation(summary = "전체 티켓 페이지별 조회 API", description = "전체 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
     @GetMapping("/search/all")
-    ResponseEntity<CustomPageResponse<TicketResponse>> getAllTickets(
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchAllTickets(
         @RequestParam(defaultValue = "1")int page,
         @RequestParam(defaultValue = "10")int size
     );
 
-    @Operation(summary = "티켓 상태로 티켓 페이지별 조회", description = "티켓 상태로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @Operation(summary = "티켓 상태로 티켓 페이지별 조회 API", description = "티켓 상태로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
     @GetMapping("/search/{ticketStatus}")
-    ResponseEntity<CustomPageResponse<TicketResponse>> getTicketsByStatus(
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByStatus(
         @PathVariable("ticketStatus") TicketStatus ticketStatus,
         @RequestParam(defaultValue = "1")int page,
         @RequestParam(defaultValue = "10")int size
     );
 
+
+    @Operation(summary = "사용자 이름으로 티켓 페이지별 조회 API", description = "사용자 이름으로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @PostMapping("/search/userName")
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByUserName(
+        @RequestBody UserNameRequest userNameRequest,
+        @RequestParam(defaultValue = "1")int page,
+        @RequestParam(defaultValue = "10")int size
+    );
+
+
+    @Operation(summary = "전화번호로 티켓 페이지별 조회 API", description = "전화번호로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @GetMapping("/search/phoneNumber")
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByPhoneNumber(
+        @RequestBody PhoneNumberRequest phoneNumberRequest,
+        @RequestParam(defaultValue = "1")int page,
+        @RequestParam(defaultValue = "10")int size
+    );
     /*
-    @Operation(summary = "사용자 이름으로 티켓 조회", description = "사용자 이름으로 티켓을 조회합니다.")
-    @GetMapping("/byUserName")
-    ResponseEntity<CustomPageResponse<TicketResponse>> getTicketsByUserName(
-        @RequestBody String userName,
-        @RequestParam(defaultValue = "1")int page,
-        @RequestParam(defaultValue = "10")int size
-    );
-
-
-    @Operation(summary = "전화번호로 티켓 조회", description = "전화번호로 티켓을 조회합니다.")
-    @GetMapping("/byPhoneNumber")
-    ResponseEntity<CustomPageResponse<TicketResponse>> getTicketsByPhoneNumber(
-        @RequestBody String phoneNumber,
-        @RequestParam(defaultValue = "1")int page,
-        @RequestParam(defaultValue = "10")int size
-    );
-
-    @Operation(summary = "해당 날짜 공연 티켓 조회", description = "해당 날짜의 공연 관련 티켓을 조회합니다.")
+    @Operation(summary = "해당 날짜 공연 티켓 페이지별로 조회 API", description = "해당 날짜의 공연 관련 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
     @GetMapping("/byShowDate")
-    ResponseEntity<CustomPageResponse<TicketResponse>> getTicketsByShowDate(
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByShowDate(
         @RequestBody LocalDateTime showDate,
         @RequestParam(defaultValue = "1")int page,
         @RequestParam(defaultValue = "10")int size

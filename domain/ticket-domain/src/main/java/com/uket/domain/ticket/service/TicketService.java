@@ -103,38 +103,38 @@ public class TicketService {
 
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> getAllTickets(int page, int size) {
+    public Page<CheckTicketDto> searchAllTickets(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Ticket> tickets =  ticketRepository.findAll(pageable);
         return tickets.map(CheckTicketDto::from);
     }
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> getTicketsByStatus(TicketStatus status, int page, int size) {
+    public Page<CheckTicketDto> searchTicketsByStatus(TicketStatus status, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Ticket> tickets = ticketRepository.findByStatus(status, pageable);
         return tickets.map(CheckTicketDto::from);
     }
-    /*
+
     @Transactional(readOnly = true)
-    public Page<TicketResponse> getTicketsByUserName(String userName, int page, int size) {
+    public Page<CheckTicketDto> searchTicketsByUserName(String userName, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Ticket> tickets = ticketRepository.findByUserName(userName, pageable);
-        return tickets.map(TicketResponse::from);
+        return tickets.map(CheckTicketDto::from);
     }
 
     @Transactional(readOnly = true)
-    public Page<TicketResponse> getTicketsByPhoneNumber(String phoneNumber, int page, int size) {
+    public Page<CheckTicketDto> searchTicketsByPhoneNumber(String phoneNumber, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Ticket> tickets = ticketRepository.findByUserUserDetailsPhoneNumber(phoneNumber, pageable);
-        return tickets.map(TicketResponse::from);
+        return tickets.map(CheckTicketDto::from);
     }
-
+    /*
     @Transactional(readOnly = true)
-    public Page<TicketResponse> getTicketsByShowStartDate(LocalDateTime startDate, int page, int size) {
+    public Page<CheckTicketDto> searchTicketsByShowStartDate(LocalDateTime startDate, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Ticket> tickets = ticketRepository.findByShowStartDate(startDate, pageable);
-        return tickets.map(TicketResponse::from);
+        return tickets.map(CheckTicketDto::from);
     }
      */
 }
