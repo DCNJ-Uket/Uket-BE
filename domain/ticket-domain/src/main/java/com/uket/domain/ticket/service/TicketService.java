@@ -13,6 +13,7 @@ import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -143,6 +144,13 @@ public class TicketService {
     public Page<CheckTicketDto> searchTicketsByReservationUserType(ReservationUserType userType, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Ticket> tickets = ticketRepository.findByReservationType(userType, pageable);
+        return tickets.map(CheckTicketDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CheckTicketDto> searchTicketsByCreatedAt(Timestamp createdAt, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Ticket> tickets = ticketRepository.findByCreatedAt(createdAt, pageable);
         return tickets.map(CheckTicketDto::from);
     }
 

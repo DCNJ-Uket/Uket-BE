@@ -6,12 +6,15 @@ import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.user.entity.Users;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
@@ -40,5 +43,10 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
     Page<Ticket> findByShowStartDate(LocalDateTime startDate, Pageable pageable);
 
     Page<Ticket> findByReservationType(ReservationUserType userType, Pageable pageable);
+
+    Page<Ticket> findByCreatedAt(Timestamp createdAt, Pageable pageable);
+
+    Page<Ticket> findByModifiedAt(Timestamp modifiedAt, Pageable pageable);
+
 }
 

@@ -1,6 +1,7 @@
 package com.uket.app.admin.api.controller.impl;
 
 import com.uket.app.admin.api.controller.TicketApi;
+import com.uket.app.admin.api.dto.request.CreatedAtRequest;
 import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
 import com.uket.app.admin.api.dto.request.ShowDateRequest;
 import com.uket.app.admin.api.dto.request.UserNameRequest;
@@ -15,6 +16,7 @@ import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.ticket.service.TicketService;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -92,6 +94,15 @@ public class TicketController implements TicketApi {
     @Override
     public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByReservationUserType(ReservationUserType reservationUserType, int page, int size) {
         Page<CheckTicketDto> tickets = ticketService.searchTicketsByReservationUserType(reservationUserType, page-1, size);
+        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
+        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
+        return ResponseEntity.ok(customResponse);
+    }
+
+    @Override
+    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByCreatedAt(CreatedAtRequest createdAtRequest, int page, int size) {
+        Timestamp createdAt = createdAtRequest.toTimestamp();
+        Page<CheckTicketDto> tickets = ticketService.searchTicketsByCreatedAt(createdAt, page-1, size);
         Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
         CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
         return ResponseEntity.ok(customResponse);
