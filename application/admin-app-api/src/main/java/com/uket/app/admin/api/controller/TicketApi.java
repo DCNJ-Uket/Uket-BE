@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -114,7 +113,7 @@ public interface TicketApi {
 
 
     @Operation(summary = "전화번호로 티켓 페이지별 조회 API", description = "전화번호로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
-    @GetMapping("/search/phoneNumber")
+    @PostMapping("/search/phoneNumber")
     ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByPhoneNumber(
         @RequestBody PhoneNumberRequest phoneNumberRequest,
         @RequestParam(defaultValue = "1")int page,

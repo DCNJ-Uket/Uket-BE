@@ -77,6 +77,7 @@ public class TicketController implements TicketApi {
         CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
         return ResponseEntity.ok(customResponse);
     }
+
     /*
     @Override
     public ResponseEntity<Page<TicketResponse>> searchTicketsByShowDate(LocalDateTime showDate, int page, int size) {
