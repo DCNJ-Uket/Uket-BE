@@ -9,6 +9,7 @@ import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.app.admin.api.service.EnterShowService;
+import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
@@ -83,6 +84,14 @@ public class TicketController implements TicketApi {
     @Override
     public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByShowDate(ShowDateRequest showDateRequest, int page, int size) {
         Page<CheckTicketDto> tickets = ticketService.searchTicketsByShowStartDate(showDateRequest.showDate(), page-1, size);
+        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
+        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
+        return ResponseEntity.ok(customResponse);
+    }
+
+    @Override
+    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByReservationUserType(ReservationUserType reservationUserType, int page, int size) {
+        Page<CheckTicketDto> tickets = ticketService.searchTicketsByReservationUserType(reservationUserType, page-1, size);
         Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
         CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
         return ResponseEntity.ok(customResponse);

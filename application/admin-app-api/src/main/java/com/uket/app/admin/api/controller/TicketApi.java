@@ -8,6 +8,7 @@ import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.core.dto.response.ErrorResponse;
+import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.enums.TicketStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -126,6 +127,14 @@ public interface TicketApi {
     @PostMapping("/search/showDate")
     ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByShowDate(
         @RequestBody ShowDateRequest showDateRequest,
+        @RequestParam(defaultValue = "1")int page,
+        @RequestParam(defaultValue = "10")int size
+    );
+
+    @Operation(summary = "사용자 구분으로 티켓 페이지별로 조회 API", description = "티켓을 일반인과 재학생으로 구분해 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @PostMapping("/search/{reservationUserType}")
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByReservationUserType(
+        @PathVariable("reservationUserType")ReservationUserType reservationUserType,
         @RequestParam(defaultValue = "1")int page,
         @RequestParam(defaultValue = "10")int size
     );

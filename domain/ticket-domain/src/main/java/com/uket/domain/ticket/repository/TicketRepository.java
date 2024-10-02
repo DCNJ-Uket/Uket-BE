@@ -2,6 +2,7 @@ package com.uket.domain.ticket.repository;
 
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
+import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.user.entity.Users;
@@ -38,6 +39,6 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     Page<Ticket> findByShowStartDate(LocalDateTime startDate, Pageable pageable);
 
-
+    Page<Ticket> findByReservationType(ReservationUserType userType, Pageable pageable);
 }
 

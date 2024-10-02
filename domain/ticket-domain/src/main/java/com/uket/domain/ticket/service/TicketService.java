@@ -2,6 +2,7 @@ package com.uket.domain.ticket.service;
 
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Reservation;
+import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.event.service.ReservationService;
 import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
@@ -135,6 +136,13 @@ public class TicketService {
     public Page<CheckTicketDto> searchTicketsByShowStartDate(LocalDateTime startDate, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Ticket> tickets = ticketRepository.findByShowStartDate(startDate, pageable);
+        return tickets.map(CheckTicketDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CheckTicketDto> searchTicketsByReservationUserType(ReservationUserType userType, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Ticket> tickets = ticketRepository.findByReservationType(userType, pageable);
         return tickets.map(CheckTicketDto::from);
     }
 
