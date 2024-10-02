@@ -1,6 +1,7 @@
 package com.uket.app.admin.api.controller;
 
 import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
+import com.uket.app.admin.api.dto.request.ShowDateRequest;
 import com.uket.app.admin.api.dto.request.UserNameRequest;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.LocalDateTime;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -119,13 +121,12 @@ public interface TicketApi {
         @RequestParam(defaultValue = "1")int page,
         @RequestParam(defaultValue = "10")int size
     );
-    /*
+
     @Operation(summary = "해당 날짜 공연 티켓 페이지별로 조회 API", description = "해당 날짜의 공연 관련 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
-    @GetMapping("/byShowDate")
+    @PostMapping("/search/showDate")
     ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByShowDate(
-        @RequestBody LocalDateTime showDate,
+        @RequestBody ShowDateRequest showDateRequest,
         @RequestParam(defaultValue = "1")int page,
         @RequestParam(defaultValue = "10")int size
     );
-     */
 }

@@ -2,6 +2,7 @@ package com.uket.app.admin.api.controller.impl;
 
 import com.uket.app.admin.api.controller.TicketApi;
 import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
+import com.uket.app.admin.api.dto.request.ShowDateRequest;
 import com.uket.app.admin.api.dto.request.UserNameRequest;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
@@ -78,11 +79,13 @@ public class TicketController implements TicketApi {
         return ResponseEntity.ok(customResponse);
     }
 
-    /*
+
     @Override
-    public ResponseEntity<Page<TicketResponse>> searchTicketsByShowDate(LocalDateTime showDate, int page, int size) {
-        Page<TicketResponse> ticketResponses = ticketService.searchTicketsByShowStartDate(showDate, page-1, size);
-        return ResponseEntity.ok(ticketResponses);
+    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByShowDate(ShowDateRequest showDateRequest, int page, int size) {
+        Page<CheckTicketDto> tickets = ticketService.searchTicketsByShowStartDate(showDateRequest.showDate(), page-1, size);
+        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
+        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
+        return ResponseEntity.ok(customResponse);
     }
-    */
+
 }
