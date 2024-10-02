@@ -51,16 +51,18 @@ public class TicketController implements TicketApi {
         return ResponseEntity.ok(customResponse);
     }
 
+    @Override
+    public ResponseEntity<CustomPageResponse<TicketResponse>> getTicketsByStatus(TicketStatus status, int page, int size) {
+        Page<CheckTicketDto> tickets = ticketService.getTicketsByStatus(status,page-1, size);
+        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
+        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
+        return ResponseEntity.ok(customResponse);
+    }
+
     /*
     @Override
     public ResponseEntity<Page<TicketResponse>> getTicketsByUserName(String userName, int page, int size) {
         Page<TicketResponse> ticketResponses = ticketService.getTicketsByUserName(userName, page, size);
-        return ResponseEntity.ok(ticketResponses);
-    }
-
-    @Override
-    public ResponseEntity<Page<TicketResponse>> getTicketsByStatus(TicketStatus status, int page, int size) {
-        Page<TicketResponse> ticketResponses = ticketService.getTicketsByStatus(status, page, size);
         return ResponseEntity.ok(ticketResponses);
     }
 
