@@ -2,6 +2,7 @@ package com.uket.app.admin.api.controller.impl;
 
 import com.uket.app.admin.api.controller.TicketApi;
 import com.uket.app.admin.api.dto.request.CreatedAtRequest;
+import com.uket.app.admin.api.dto.request.ModifiedAtRequest;
 import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
 import com.uket.app.admin.api.dto.request.ShowDateRequest;
 import com.uket.app.admin.api.dto.request.UserNameRequest;
@@ -103,6 +104,15 @@ public class TicketController implements TicketApi {
     public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByCreatedAt(CreatedAtRequest createdAtRequest, int page, int size) {
         Timestamp createdAt = createdAtRequest.toTimestamp();
         Page<CheckTicketDto> tickets = ticketService.searchTicketsByCreatedAt(createdAt, page-1, size);
+        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
+        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
+        return ResponseEntity.ok(customResponse);
+    }
+
+    @Override
+    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByModifiedAt(ModifiedAtRequest modifiedAtRequest, int page, int size) {
+        Timestamp modifiedAt = modifiedAtRequest.toTimestamp();
+        Page<CheckTicketDto> tickets = ticketService.searchTicketsByModifiedAt(modifiedAt, page-1, size);
         Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
         CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
         return ResponseEntity.ok(customResponse);

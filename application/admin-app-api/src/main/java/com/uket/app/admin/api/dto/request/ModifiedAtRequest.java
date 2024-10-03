@@ -11,6 +11,6 @@ public record ModifiedAtRequest(
     LocalDateTime modifiedAt
 ) {
     public Timestamp toTimestamp() {
-        return Timestamp.valueOf(modifiedAt.withNano(0));
+        return Timestamp.valueOf(modifiedAt);
     }
 }

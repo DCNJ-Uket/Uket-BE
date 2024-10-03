@@ -13,6 +13,6 @@ public record CreatedAtRequest(
     LocalDateTime createdAt
 ) {
     public Timestamp toTimestamp() {
-        return Timestamp.valueOf(createdAt.withNano(0));
+        return Timestamp.valueOf(createdAt);
     }
 }

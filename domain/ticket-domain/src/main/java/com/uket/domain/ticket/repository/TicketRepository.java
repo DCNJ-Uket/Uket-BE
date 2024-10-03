@@ -46,7 +46,9 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     Page<Ticket> findByCreatedAt(Timestamp createdAt, Pageable pageable);
 
+    Page<Ticket> findByCreatedAtBetween(Timestamp createdAt,Timestamp endTimestamp, Pageable pageable);
     Page<Ticket> findByModifiedAt(Timestamp modifiedAt, Pageable pageable);
 
+    Page<Ticket> findByModifiedAtBetween(Timestamp modifiedAt,Timestamp endTimestamp, Pageable pageable);
 }
 

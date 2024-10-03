@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TicketService {
 
     private final TicketRepository ticketRepository;
@@ -150,7 +152,18 @@ public class TicketService {
     @Transactional(readOnly = true)
     public Page<CheckTicketDto> searchTicketsByCreatedAt(Timestamp createdAt, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Ticket> tickets = ticketRepository.findByCreatedAt(createdAt, pageable);
+        Timestamp endTimestamp = new Timestamp((createdAt.getTime() / 1000 + 1) * 1000);
+        Page<Ticket> tickets = ticketRepository.findByCreatedAtBetween(createdAt, endTimestamp,pageable);
+
+        return tickets.map(CheckTicketDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CheckTicketDto> searchTicketsByModifiedAt(Timestamp modifiedAt, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Timestamp endTimestamp = new Timestamp((modifiedAt.getTime() / 1000 + 1) * 1000);
+        Page<Ticket> tickets = ticketRepository.findByModifiedAtBetween(modifiedAt, endTimestamp,pageable);
+
         return tickets.map(CheckTicketDto::from);
     }
 

@@ -1,6 +1,7 @@
 package com.uket.app.admin.api.controller;
 
 import com.uket.app.admin.api.dto.request.CreatedAtRequest;
+import com.uket.app.admin.api.dto.request.ModifiedAtRequest;
 import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
 import com.uket.app.admin.api.dto.request.ShowDateRequest;
 import com.uket.app.admin.api.dto.request.UserNameRequest;
@@ -141,10 +142,18 @@ public interface TicketApi {
         @RequestParam(defaultValue = "10")int size
     );
 
-    @Operation(summary = "주문일시로 구분해 티켓 페이지별로 조회 API", description = "티켓을 주문일시 구분해 같은 시간에 생성된 티켓을 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @Operation(summary = "주문일시로 구분해 티켓 페이지별로 조회 API", description = "티켓을 주문 일시로 구분해 같은 시간에 생성된 티켓을 조회합니다. 페이지는 1Page부터 시작합니다.")
     @PostMapping("/search/createdAt")
     ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByCreatedAt(
         @RequestBody CreatedAtRequest createdAtRequest,
+        @RequestParam(defaultValue = "1")int page,
+        @RequestParam(defaultValue = "10")int size
+    );
+
+    @Operation(summary = "업데이트일시로 구분해 티켓 페이지별로 조회 API", description = "티켓을 업데이트 일시로 구분해 같은 시간에 생성된 티켓을 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @PostMapping("/search/modifiedAt")
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByModifiedAt(
+        @RequestBody ModifiedAtRequest modifiedAtRequest,
         @RequestParam(defaultValue = "1")int page,
         @RequestParam(defaultValue = "10")int size
     );

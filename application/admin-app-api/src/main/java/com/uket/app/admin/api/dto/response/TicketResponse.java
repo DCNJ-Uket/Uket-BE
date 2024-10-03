@@ -12,8 +12,8 @@ public record TicketResponse(
     String depositorName,
     LocalDateTime showDate,
     LocalDateTime showTime,
-    Timestamp orderDate,
-    Timestamp updatedDate,
+    LocalDateTime orderDate,
+    LocalDateTime updatedDate,
     String ticketStatus,
     String userType
 ) {

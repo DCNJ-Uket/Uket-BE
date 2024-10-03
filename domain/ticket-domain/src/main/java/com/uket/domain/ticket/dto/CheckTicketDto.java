@@ -27,9 +27,9 @@ public record CheckTicketDto(
 
     Long ticketId,
 
-    Timestamp createdAt,
+    LocalDateTime createdAt,
 
-    Timestamp updatedAt
+    LocalDateTime updatedAt
 ) {
     public static CheckTicketDto from(Ticket ticket) {
         Users user = ticket.getUser();
@@ -50,8 +50,8 @@ public record CheckTicketDto(
             .showName(show.getName())
             .eventName(event.getName())
             .ticketId(ticket.getId())
-            .createdAt(ticket.getCreatedAt())
-            .updatedAt(ticket.getModifiedAt())
+            .createdAt(ticket.getCreatedAt().toLocalDateTime())
+            .updatedAt(ticket.getModifiedAt().toLocalDateTime())
             .build();
     }
 }
