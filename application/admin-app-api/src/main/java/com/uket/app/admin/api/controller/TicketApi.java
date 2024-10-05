@@ -1,8 +1,17 @@
 package com.uket.app.admin.api.controller;
 
+import com.uket.app.admin.api.dto.request.CreatedAtRequest;
+import com.uket.app.admin.api.dto.request.ModifiedAtRequest;
+import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
+import com.uket.app.admin.api.dto.request.ShowDateRequest;
+import com.uket.app.admin.api.dto.request.UserNameRequest;
+import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
+import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
+import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.core.dto.response.ErrorResponse;
+import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.enums.TicketStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,11 +20,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.LocalDateTime;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "어드민용 티켓 관리 API", description = "어드민용 티켓 관리 API")
@@ -78,5 +92,27 @@ public interface TicketApi {
     ResponseEntity<UpdateTicketStatusResponse> updateTicketStatus(
             @PathVariable("ticketId") Long ticketId,
             @PathVariable("ticketStatus") TicketStatus ticketStatus
+    );
+
+    @Operation(summary = "전체 티켓 페이지별 조회 API", description = "전체 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @GetMapping("/search/all")
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchAllTickets(
+        @RequestParam(defaultValue = "1")int page,
+        @RequestParam(defaultValue = "10")int size
+    );
+
+    @Operation(summary = "티켓 검색 API", description = "다양한 기준으로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @GetMapping("/search")
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchTickets(
+        @RequestParam TicketSearchType searchType,
+        @RequestParam(required = false) TicketStatus status,
+        @RequestParam(required = false) String userName,
+        @RequestParam(required = false) String phoneNumber,
+        @RequestParam(required = false) LocalDateTime showDate,
+        @RequestParam(required = false) ReservationUserType reservationUserType,
+        @RequestParam(required = false) LocalDateTime createdAt,
+        @RequestParam(required = false) LocalDateTime modifiedAt,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size
     );
 }
