@@ -9,6 +9,7 @@ import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
+import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.enums.TicketStatus;
@@ -100,61 +101,18 @@ public interface TicketApi {
         @RequestParam(defaultValue = "10")int size
     );
 
-    @Operation(summary = "티켓 상태로 티켓 페이지별 조회 API", description = "티켓 상태로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
-    @GetMapping("/search/{ticketStatus}")
-    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByStatus(
-        @PathVariable("ticketStatus") TicketStatus ticketStatus,
-        @RequestParam(defaultValue = "1")int page,
-        @RequestParam(defaultValue = "10")int size
-    );
-
-
-    @Operation(summary = "사용자 이름으로 티켓 페이지별 조회 API", description = "사용자 이름으로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
-    @PostMapping("/search/userName")
-    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByUserName(
-        @RequestBody UserNameRequest userNameRequest,
-        @RequestParam(defaultValue = "1")int page,
-        @RequestParam(defaultValue = "10")int size
-    );
-
-
-    @Operation(summary = "전화번호로 티켓 페이지별 조회 API", description = "전화번호로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
-    @PostMapping("/search/phoneNumber")
-    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByPhoneNumber(
-        @RequestBody PhoneNumberRequest phoneNumberRequest,
-        @RequestParam(defaultValue = "1")int page,
-        @RequestParam(defaultValue = "10")int size
-    );
-
-    @Operation(summary = "해당 날짜 공연 티켓 페이지별로 조회 API", description = "해당 날짜의 공연 관련 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
-    @PostMapping("/search/showDate")
-    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByShowDate(
-        @RequestBody ShowDateRequest showDateRequest,
-        @RequestParam(defaultValue = "1")int page,
-        @RequestParam(defaultValue = "10")int size
-    );
-
-    @Operation(summary = "사용자 구분으로 티켓 페이지별로 조회 API", description = "티켓을 일반인과 재학생으로 구분해 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
-    @PostMapping("/search/{reservationUserType}")
-    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByReservationUserType(
-        @PathVariable("reservationUserType")ReservationUserType reservationUserType,
-        @RequestParam(defaultValue = "1")int page,
-        @RequestParam(defaultValue = "10")int size
-    );
-
-    @Operation(summary = "주문일시로 구분해 티켓 페이지별로 조회 API", description = "티켓을 주문 일시로 구분해 같은 시간에 생성된 티켓을 조회합니다. 페이지는 1Page부터 시작합니다.")
-    @PostMapping("/search/createdAt")
-    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByCreatedAt(
-        @RequestBody CreatedAtRequest createdAtRequest,
-        @RequestParam(defaultValue = "1")int page,
-        @RequestParam(defaultValue = "10")int size
-    );
-
-    @Operation(summary = "업데이트일시로 구분해 티켓 페이지별로 조회 API", description = "티켓을 업데이트 일시로 구분해 같은 시간에 생성된 티켓을 조회합니다. 페이지는 1Page부터 시작합니다.")
-    @PostMapping("/search/modifiedAt")
-    ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByModifiedAt(
-        @RequestBody ModifiedAtRequest modifiedAtRequest,
-        @RequestParam(defaultValue = "1")int page,
-        @RequestParam(defaultValue = "10")int size
+    @Operation(summary = "티켓 검색 API", description = "다양한 기준으로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @GetMapping("/search")
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchTickets(
+        @RequestParam TicketSearchType searchType,
+        @RequestParam(required = false) TicketStatus status,
+        @RequestParam(required = false) String userName,
+        @RequestParam(required = false) String phoneNumber,
+        @RequestParam(required = false) LocalDateTime showDate,
+        @RequestParam(required = false) ReservationUserType reservationUserType,
+        @RequestParam(required = false) LocalDateTime createdAt,
+        @RequestParam(required = false) LocalDateTime modifiedAt,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size
     );
 }

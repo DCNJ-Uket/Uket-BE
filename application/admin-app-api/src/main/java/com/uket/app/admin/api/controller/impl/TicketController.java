@@ -10,6 +10,7 @@ import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
+import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.app.admin.api.service.EnterShowService;
 import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.dto.CheckTicketDto;
@@ -59,63 +60,50 @@ public class TicketController implements TicketApi {
     }
 
     @Override
-    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByStatus(TicketStatus status, int page, int size) {
-        Page<CheckTicketDto> tickets = ticketService.searchTicketsByStatus(status,page-1, size);
+    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTickets(
+        TicketSearchType searchType,
+        TicketStatus status,
+        String userName,
+        String phoneNumber,
+        LocalDateTime showDate,
+        ReservationUserType reservationUserType,
+        LocalDateTime createdAt,
+        LocalDateTime modifiedAt,
+        int page,
+        int size
+    ) {
+        Page<CheckTicketDto> tickets;
+
+        switch (searchType) {
+            case STATUS:
+                tickets = ticketService.searchTicketsByStatus(status, page - 1, size);
+                break;
+            case USER_NAME:
+                tickets = ticketService.searchTicketsByUserName(userName, page - 1, size);
+                break;
+            case PHONE_NUMBER:
+                tickets = ticketService.searchTicketsByPhoneNumber(phoneNumber, page - 1, size);
+                break;
+            case SHOW_DATE:
+                tickets = ticketService.searchTicketsByShowStartDate(showDate, page - 1, size);
+                break;
+            case RESERVATION_USER_TYPE:
+                tickets = ticketService.searchTicketsByReservationUserType(reservationUserType, page - 1, size);
+                break;
+            case CREATED_AT:
+                Timestamp createdAtLocal = Timestamp.valueOf(createdAt);
+                tickets = ticketService.searchTicketsByCreatedAt(createdAtLocal, page - 1, size);
+                break;
+            case MODIFIED_AT:
+                Timestamp modifiedAtLocal = Timestamp.valueOf(modifiedAt);
+                tickets = ticketService.searchTicketsByModifiedAt(modifiedAtLocal, page - 1, size);
+                break;
+            default:
+                throw new IllegalArgumentException("잘못된 검색 타입입니다.");
+        }
+
         Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
         CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
         return ResponseEntity.ok(customResponse);
     }
-
-
-    @Override
-    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByUserName(UserNameRequest userNameRequest, int page, int size) {
-        Page<CheckTicketDto> tickets = ticketService.searchTicketsByUserName(userNameRequest.userName(), page-1, size);
-        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
-        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
-        return ResponseEntity.ok(customResponse);
-    }
-
-    @Override
-    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByPhoneNumber(PhoneNumberRequest phoneNumberRequest, int page, int size) {
-        Page<CheckTicketDto> tickets = ticketService.searchTicketsByPhoneNumber(phoneNumberRequest.phoneNumber(), page-1, size);
-        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
-        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
-        return ResponseEntity.ok(customResponse);
-    }
-
-
-    @Override
-    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByShowDate(ShowDateRequest showDateRequest, int page, int size) {
-        Page<CheckTicketDto> tickets = ticketService.searchTicketsByShowStartDate(showDateRequest.showDate(), page-1, size);
-        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
-        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
-        return ResponseEntity.ok(customResponse);
-    }
-
-    @Override
-    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByReservationUserType(ReservationUserType reservationUserType, int page, int size) {
-        Page<CheckTicketDto> tickets = ticketService.searchTicketsByReservationUserType(reservationUserType, page-1, size);
-        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
-        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
-        return ResponseEntity.ok(customResponse);
-    }
-
-    @Override
-    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByCreatedAt(CreatedAtRequest createdAtRequest, int page, int size) {
-        Timestamp createdAt = createdAtRequest.toTimestamp();
-        Page<CheckTicketDto> tickets = ticketService.searchTicketsByCreatedAt(createdAt, page-1, size);
-        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
-        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
-        return ResponseEntity.ok(customResponse);
-    }
-
-    @Override
-    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTicketsByModifiedAt(ModifiedAtRequest modifiedAtRequest, int page, int size) {
-        Timestamp modifiedAt = modifiedAtRequest.toTimestamp();
-        Page<CheckTicketDto> tickets = ticketService.searchTicketsByModifiedAt(modifiedAt, page-1, size);
-        Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
-        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
-        return ResponseEntity.ok(customResponse);
-    }
-
 }
