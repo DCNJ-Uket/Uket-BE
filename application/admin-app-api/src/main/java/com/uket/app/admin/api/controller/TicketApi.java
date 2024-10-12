@@ -1,10 +1,7 @@
 package com.uket.app.admin.api.controller;
 
-import com.uket.app.admin.api.dto.request.CreatedAtRequest;
-import com.uket.app.admin.api.dto.request.ModifiedAtRequest;
-import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
-import com.uket.app.admin.api.dto.request.ShowDateRequest;
-import com.uket.app.admin.api.dto.request.UserNameRequest;
+
+import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
@@ -21,13 +18,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDateTime;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -105,13 +100,7 @@ public interface TicketApi {
     @GetMapping("/search")
     ResponseEntity<CustomPageResponse<TicketResponse>> searchTickets(
         @RequestParam TicketSearchType searchType,
-        @RequestParam(required = false) TicketStatus status,
-        @RequestParam(required = false) String userName,
-        @RequestParam(required = false) String phoneNumber,
-        @RequestParam(required = false) LocalDateTime showDate,
-        @RequestParam(required = false) ReservationUserType reservationUserType,
-        @RequestParam(required = false) LocalDateTime createdAt,
-        @RequestParam(required = false) LocalDateTime modifiedAt,
+        @ModelAttribute SearchRequest searchRequest,
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "10") int size
     );

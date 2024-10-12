@@ -4,6 +4,7 @@ import com.uket.app.admin.api.controller.TicketApi;
 import com.uket.app.admin.api.dto.request.CreatedAtRequest;
 import com.uket.app.admin.api.dto.request.ModifiedAtRequest;
 import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
+import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.dto.request.ShowDateRequest;
 import com.uket.app.admin.api.dto.request.UserNameRequest;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
@@ -62,13 +63,7 @@ public class TicketController implements TicketApi {
     @Override
     public ResponseEntity<CustomPageResponse<TicketResponse>> searchTickets(
         TicketSearchType searchType,
-        TicketStatus status,
-        String userName,
-        String phoneNumber,
-        LocalDateTime showDate,
-        ReservationUserType reservationUserType,
-        LocalDateTime createdAt,
-        LocalDateTime modifiedAt,
+        SearchRequest searchRequest,
         int page,
         int size
     ) {
@@ -76,26 +71,26 @@ public class TicketController implements TicketApi {
 
         switch (searchType) {
             case STATUS:
-                tickets = ticketService.searchTicketsByStatus(status, page - 1, size);
+                tickets = ticketService.searchTicketsByStatus(searchRequest.status(), page - 1, size);
                 break;
             case USER_NAME:
-                tickets = ticketService.searchTicketsByUserName(userName, page - 1, size);
+                tickets = ticketService.searchTicketsByUserName(searchRequest.userName(), page - 1, size);
                 break;
             case PHONE_NUMBER:
-                tickets = ticketService.searchTicketsByPhoneNumber(phoneNumber, page - 1, size);
+                tickets = ticketService.searchTicketsByPhoneNumber(searchRequest.phoneNumber(), page - 1, size);
                 break;
             case SHOW_DATE:
-                tickets = ticketService.searchTicketsByShowStartDate(showDate, page - 1, size);
+                tickets = ticketService.searchTicketsByShowStartDate(searchRequest.showDate(), page - 1, size);
                 break;
             case RESERVATION_USER_TYPE:
-                tickets = ticketService.searchTicketsByReservationUserType(reservationUserType, page - 1, size);
+                tickets = ticketService.searchTicketsByReservationUserType(searchRequest.reservationUserType(), page - 1, size);
                 break;
             case CREATED_AT:
-                Timestamp createdAtLocal = Timestamp.valueOf(createdAt);
+                Timestamp createdAtLocal = Timestamp.valueOf(searchRequest.createdAt());
                 tickets = ticketService.searchTicketsByCreatedAt(createdAtLocal, page - 1, size);
                 break;
             case MODIFIED_AT:
-                Timestamp modifiedAtLocal = Timestamp.valueOf(modifiedAt);
+                Timestamp modifiedAtLocal = Timestamp.valueOf(searchRequest.modifiedAt());
                 tickets = ticketService.searchTicketsByModifiedAt(modifiedAtLocal, page - 1, size);
                 break;
             default:
