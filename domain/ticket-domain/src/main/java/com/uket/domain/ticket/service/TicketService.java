@@ -135,9 +135,17 @@ public class TicketService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> searchTicketsByShowStartDate(LocalDateTime startDate, Pageable pageable) {
-        Page<Ticket> tickets = ticketRepository.findByShowStartDate(startDate, pageable);
-        return tickets.map(CheckTicketDto::from);
+    public Page<CheckTicketDto> searchTicketsByShowStartDate(String showDate, Pageable pageable) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+            LocalDate showDateLocal = LocalDate.parse(showDate, formatter);
+            LocalDateTime showStart = showDateLocal.atStartOfDay();
+            LocalDateTime showEnd = showStart.withHour(23).withMinute(59).withSecond(59);
+            Page<Ticket> tickets = ticketRepository.findByShowStartDateBetween(showStart, showEnd,pageable);
+            return tickets.map(CheckTicketDto::from);
+        } catch (DateTimeParseException ex) {
+            throw new TicketException(ErrorCode.INVALID_INPUT_DATE_VALUE);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -152,7 +160,7 @@ public class TicketService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
             LocalDate createdAtLocal = LocalDate.parse(createdAt, formatter);
             LocalDateTime createStart = createdAtLocal.atStartOfDay();
-            LocalDateTime createEnd = createStart.plusDays(1);
+            LocalDateTime createEnd = createdAtLocal.atTime(23, 59, 59, 999999999);
             Timestamp createStartTimestamp = Timestamp.valueOf(createStart);
             Timestamp createEndTimestamp = Timestamp.valueOf(createEnd);
 
@@ -169,7 +177,7 @@ public class TicketService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
             LocalDate modifiedAtLocal = LocalDate.parse(modifiedAt, formatter);
             LocalDateTime modifyStart = modifiedAtLocal.atStartOfDay();
-            LocalDateTime modifyEnd = modifyStart.plusDays(1);
+            LocalDateTime modifyEnd = modifiedAtLocal.atTime(23, 59, 59, 999999999);
             Timestamp modifyStartTimestamp = Timestamp.valueOf(modifyStart);
             Timestamp modifyEndTimestamp = Timestamp.valueOf(modifyEnd);
 

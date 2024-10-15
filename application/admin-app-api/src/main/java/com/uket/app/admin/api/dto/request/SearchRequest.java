@@ -18,10 +18,9 @@ public record SearchRequest(
     @Schema(description = "사용자 전화 번호", example = "01011112222")
     @Nullable
     String phoneNumber,
-    @Schema(description = "공연 날짜", example = "2024-10-12T06:06:25")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Schema(description = "공연 날짜", example = "24.09.04")
     @Nullable
-    LocalDateTime showDate,
+    String showDate,
     @Schema(description = "사용자 구분", example = "TICKETING_ALL")
     @Nullable
     ReservationUserType reservationUserType,
