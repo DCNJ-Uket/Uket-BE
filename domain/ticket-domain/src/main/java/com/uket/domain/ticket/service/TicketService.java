@@ -14,7 +14,10 @@ import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -108,63 +111,73 @@ public class TicketService {
 
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> searchAllTickets(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<CheckTicketDto> searchAllTickets(Pageable pageable) {
         Page<Ticket> tickets =  ticketRepository.findAll(pageable);
         return tickets.map(CheckTicketDto::from);
     }
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> searchTicketsByStatus(TicketStatus status, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<CheckTicketDto> searchTicketsByStatus(TicketStatus status, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByStatus(status, pageable);
         return tickets.map(CheckTicketDto::from);
     }
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> searchTicketsByUserName(String userName, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<CheckTicketDto> searchTicketsByUserName(String userName, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByUserName(userName, pageable);
         return tickets.map(CheckTicketDto::from);
     }
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> searchTicketsByPhoneNumber(String phoneNumber, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<CheckTicketDto> searchTicketsByPhoneNumber(String phoneNumber, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByUserUserDetailsPhoneNumber(phoneNumber, pageable);
         return tickets.map(CheckTicketDto::from);
     }
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> searchTicketsByShowStartDate(LocalDateTime startDate, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<CheckTicketDto> searchTicketsByShowStartDate(LocalDateTime startDate, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByShowStartDate(startDate, pageable);
         return tickets.map(CheckTicketDto::from);
     }
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> searchTicketsByReservationUserType(ReservationUserType userType, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<CheckTicketDto> searchTicketsByReservationUserType(ReservationUserType userType, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByReservationType(userType, pageable);
         return tickets.map(CheckTicketDto::from);
     }
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> searchTicketsByCreatedAt(Timestamp createdAt, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Timestamp endTimestamp = new Timestamp((createdAt.getTime() / 1000 + 1) * 1000);
-        Page<Ticket> tickets = ticketRepository.findByCreatedAtBetween(createdAt, endTimestamp,pageable);
+    public Page<CheckTicketDto> searchTicketsByCreatedAt(String createdAt, Pageable pageable) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+            LocalDate createdAtLocal = LocalDate.parse(createdAt, formatter);
+            LocalDateTime createStart = createdAtLocal.atStartOfDay();
+            LocalDateTime createEnd = createStart.plusDays(1);
+            Timestamp createStartTimestamp = Timestamp.valueOf(createStart);
+            Timestamp createEndTimestamp = Timestamp.valueOf(createEnd);
 
-        return tickets.map(CheckTicketDto::from);
+            Page<Ticket> tickets = ticketRepository.findByCreatedAtBetween(createStartTimestamp, createEndTimestamp,pageable);
+            return tickets.map(CheckTicketDto::from);
+        } catch (DateTimeParseException ex) {
+            throw new TicketException(ErrorCode.INVALID_INPUT_DATE_VALUE);
+        }
     }
 
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> searchTicketsByModifiedAt(Timestamp modifiedAt, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Timestamp endTimestamp = new Timestamp((modifiedAt.getTime() / 1000 + 1) * 1000);
-        Page<Ticket> tickets = ticketRepository.findByModifiedAtBetween(modifiedAt, endTimestamp,pageable);
+    public Page<CheckTicketDto> searchTicketsByModifiedAt(String modifiedAt, Pageable pageable) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+            LocalDate modifiedAtLocal = LocalDate.parse(modifiedAt, formatter);
+            LocalDateTime modifyStart = modifiedAtLocal.atStartOfDay();
+            LocalDateTime modifyEnd = modifyStart.plusDays(1);
+            Timestamp modifyStartTimestamp = Timestamp.valueOf(modifyStart);
+            Timestamp modifyEndTimestamp = Timestamp.valueOf(modifyEnd);
 
-        return tickets.map(CheckTicketDto::from);
+            Page<Ticket> tickets = ticketRepository.findByModifiedAtBetween(modifyStartTimestamp, modifyEndTimestamp,pageable);
+            return tickets.map(CheckTicketDto::from);
+        } catch (DateTimeParseException ex) {
+            throw new TicketException(ErrorCode.INVALID_INPUT_DATE_VALUE);
+        }
     }
 
 }

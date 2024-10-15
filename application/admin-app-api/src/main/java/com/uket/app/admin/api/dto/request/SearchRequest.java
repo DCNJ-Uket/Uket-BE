@@ -25,14 +25,12 @@ public record SearchRequest(
     @Schema(description = "사용자 구분", example = "TICKETING_ALL")
     @Nullable
     ReservationUserType reservationUserType,
-    @Schema(description = "티켓 생성 일시", example = "2024-10-12T06:06:25")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @Schema(description = "티켓 생성 일시", example = "24.06.12")
     @Nullable
-    LocalDateTime createdAt,
-    @Schema(description = "티켓 수정 일시", example = "2024-10-12T06:06:25")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    String createdAt,
+    @Schema(description = "티켓 수정 일시", example = "24.06.12")
     @Nullable
-    LocalDateTime modifiedAt
+    String modifiedAt
 
 ) {
 
