@@ -11,7 +11,6 @@ public record CustomPageResponse<T>(
     boolean last,
     long totalElements,
     int totalPages,
-    int numberOfElements,
     boolean empty
 ) {
     public CustomPageResponse(Page<T> page) {
@@ -23,7 +22,6 @@ public record CustomPageResponse<T>(
             page.isLast(),
             page.getTotalElements(),
             page.getTotalPages(),
-            page.getNumberOfElements(),
             page.isEmpty()
         );
     }
