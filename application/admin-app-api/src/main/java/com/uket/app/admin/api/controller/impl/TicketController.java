@@ -7,8 +7,10 @@ import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.app.admin.api.enums.TicketSearchType;
+import com.uket.app.admin.api.exception.AdminException;
 import com.uket.app.admin.api.service.EnterShowService;
 import com.uket.app.admin.api.service.search.TicketSearcher;
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
@@ -64,7 +66,7 @@ public class TicketController implements TicketApi {
     ) {
         Page<TicketResponse> ticketResponses = ticketSearchers.stream()
                 .filter(ticketSearcher -> ticketSearcher.isSupport(searchType))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("지원하지 않는 검색 타입입니다."))
+                .findFirst().orElseThrow(() -> new AdminException(ErrorCode.INVALID_SEARCH_TYPE))
                 .search(searchRequest, PageRequest.of(page - 1, size))
                 .map(TicketResponse::from);
 
