@@ -16,7 +16,7 @@ public class LimitRequestAspect {
     private final Bucket bucket;
 
     public LimitRequestAspect() {
-        Bandwidth limit = Bandwidth.simple(1, Duration.ofMinutes(1));
+        Bandwidth limit = Bandwidth.simple(100, Duration.ofMinutes(1));
         this.bucket = Bucket.builder()
                 .addLimit(limit)
                 .build();
