@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.CharBuffer;
 import java.security.InvalidParameterException;
+import java.time.format.DateTimeParseException;
 import java.util.Enumeration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,17 @@ public class WebExceptionHandler {
         }
 
         log.warn("[AuthException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
+        return ResponseEntity
+                .status(HttpStatus.valueOf(errorCode.getStatus()))
+                .body(ErrorResponse.of(errorCode));
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    ResponseEntity<ErrorResponse> handleDateTimeParseException(HttpServletRequest request,
+            DateTimeParseException exception) {
+        ErrorCode errorCode = ErrorCode.INVALID_INPUT_DATE_VALUE;
+
+        log.warn("[DateTimeParseException] {}: {}", errorCode.getCode(), errorCode.getMessage(), exception);
         return ResponseEntity
                 .status(HttpStatus.valueOf(errorCode.getStatus()))
                 .body(ErrorResponse.of(errorCode));
