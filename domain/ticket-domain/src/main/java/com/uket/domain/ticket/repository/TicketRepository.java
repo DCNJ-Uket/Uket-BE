@@ -14,8 +14,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
@@ -39,7 +37,7 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     Page<Ticket> findByUserName(String userName, Pageable pageable);
 
-    Page<Ticket> findByUserUserDetailsPhoneNumber(String phoneNumber, Pageable pageable);
+    Page<CheckTicketDto> findByUserUserDetailsPhoneNumber(String phoneNumber, Pageable pageable);
 
     Page<Ticket> findByShowStartDateBetween(LocalDateTime startDate,LocalDateTime endDate,Pageable pageable);
 
