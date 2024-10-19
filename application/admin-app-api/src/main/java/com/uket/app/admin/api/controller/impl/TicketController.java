@@ -12,13 +12,16 @@ import com.uket.app.admin.api.exception.AdminException;
 import com.uket.app.admin.api.service.EnterShowService;
 import com.uket.app.admin.api.service.LiveEnterUserDto;
 import com.uket.app.admin.api.service.TicketAdminService;
+import com.uket.core.exception.BaseException;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.ticket.service.TicketService;
-import lombok.RequiredArgsConstructor;
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import java.time.Duration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,12 +29,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 @Controller
-@RequiredArgsConstructor
 public class TicketController implements TicketApi {
 
     private final EnterShowService enterShowService;
     private final TicketService ticketService;
     private final TicketAdminService ticketAdminService;
+    private final Bucket bucket;
+
+    public TicketController(
+            EnterShowService enterShowService,
+            TicketService ticketService,
+            TicketAdminService ticketAdminService
+    ) {
+        this.enterShowService = enterShowService;
+        this.ticketService = ticketService;
+        this.ticketAdminService = ticketAdminService;
+
+        Bandwidth limit = Bandwidth.simple(100, Duration.ofMinutes(1));
+        this.bucket = Bucket.builder()
+                .addLimit(limit)
+                .build();
+    }
 
     @Override
     public ResponseEntity<EnterShowResponse> enterShow(String ticketToken) {
@@ -103,6 +121,10 @@ public class TicketController implements TicketApi {
 
     @Override
     public ResponseEntity<CustomPageResponse<LiveEnterUserResponse>> searchLiveEnterUsers(int page, int size) {
+        if(!bucket.tryConsume(1)){
+            throw new BaseException(ErrorCode.TOO_MANY_REQUEST);
+        }
+
         Page<LiveEnterUserDto> liveEnterUserDtos = ticketAdminService.searchLiveEnterUsers(PageRequest.of(page - 1, size));
 
         CustomPageResponse<LiveEnterUserResponse> customResponse = new CustomPageResponse<>(liveEnterUserDtos.map(LiveEnterUserResponse::from));
