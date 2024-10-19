@@ -41,7 +41,7 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     Page<Ticket> findByUserUserDetailsPhoneNumber(String phoneNumber, Pageable pageable);
 
-    Page<Ticket> findByShowStartDate(LocalDateTime startDate, Pageable pageable);
+    Page<Ticket> findByShowStartDateBetween(LocalDateTime startDate,LocalDateTime endDate,Pageable pageable);
 
     Page<Ticket> findByReservationType(ReservationUserType userType, Pageable pageable);
 

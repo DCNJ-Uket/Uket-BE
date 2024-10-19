@@ -17,6 +17,8 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED(405,"CM0004", "허가되지 않은 메서드입니다."),
     IO_ERROR(500,"CM0005", "I/O 관련 에러입니다. 서버 팀에 문의 부탁드립니다."),
     INVALID_ROLE(400,"CM0006", "권한이 유효하지 않습니다."),
+    INVALID_SEARCH_TYPE(400,"CM0007", "잘못된 검색 타입입니다."),
+    INVALID_INPUT_DATE_VALUE(400,"CM0008", "잘못된 형태의 날짜 입력입니다."),
 
     /**
      * Auth Related Errors
@@ -41,6 +43,7 @@ public enum ErrorCode {
     NOT_MATCH_PASSWORD(400,"AD0002", "올바르지 않은 비밀번호입니다."),
     ALREADY_EXIST_ADMIN(400,"AD0003", "이미 가입된 어드민입니다."),
     NOT_REGISTERED_ADMIN(400,"AD0004", "인가되지 않은 어드민입니다."),
+
 
     /**
      * User Errors

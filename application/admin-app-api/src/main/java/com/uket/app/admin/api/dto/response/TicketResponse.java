@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public record TicketResponse(
     Long ticketId,
     String depositorName,
-    LocalDateTime showDate,
+    String telephone,
     LocalDateTime showTime,
     LocalDateTime orderDate,
     LocalDateTime updatedDate,
@@ -22,7 +22,7 @@ public record TicketResponse(
         return TicketResponse.builder()
             .ticketId(checkTicketDto.ticketId())
             .depositorName(checkTicketDto.userName())
-            .showDate(checkTicketDto.showStartDate())
+            .telephone(checkTicketDto.telephone())
             .showTime(checkTicketDto.enterStartTime())
             .orderDate(checkTicketDto.createdAt())
             .updatedDate(checkTicketDto.updatedAt())
