@@ -4,6 +4,7 @@ package com.uket.app.admin.api.controller;
 import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
+import com.uket.app.admin.api.dto.response.LiveEnterUserResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.app.admin.api.enums.TicketSearchType;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -77,7 +79,7 @@ public interface TicketApi {
                                     """
             )
         }, schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping("/{token}/enter")
+    @PostMapping("/{token}/enter")
     ResponseEntity<EnterShowResponse> enterShow(
         @PathVariable("token") String ticketToken
     );
@@ -103,5 +105,12 @@ public interface TicketApi {
         @ModelAttribute SearchRequest searchRequest,
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "10") int size
+    );
+
+    @Operation(summary = "실시간 입장 내역 조회 API", description = "실시간 입장내역 조회를 합니다. 페이지는 1Page부터 시작합니다.")
+    @GetMapping("/search")
+    ResponseEntity<CustomPageResponse<LiveEnterUserResponse>> searchLiveEnterUsers(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size
     );
 }

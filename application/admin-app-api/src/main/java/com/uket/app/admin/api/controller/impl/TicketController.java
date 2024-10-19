@@ -1,30 +1,23 @@
 package com.uket.app.admin.api.controller.impl;
 
 import com.uket.app.admin.api.controller.TicketApi;
-import com.uket.app.admin.api.dto.request.CreatedAtRequest;
-import com.uket.app.admin.api.dto.request.ModifiedAtRequest;
-import com.uket.app.admin.api.dto.request.PhoneNumberRequest;
 import com.uket.app.admin.api.dto.request.SearchRequest;
-import com.uket.app.admin.api.dto.request.ShowDateRequest;
-import com.uket.app.admin.api.dto.request.UserNameRequest;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
+import com.uket.app.admin.api.dto.response.LiveEnterUserResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.app.admin.api.exception.AdminException;
 import com.uket.app.admin.api.service.EnterShowService;
+import com.uket.app.admin.api.service.LiveEnterUserDto;
+import com.uket.app.admin.api.service.TicketAdminService;
 import com.uket.core.exception.ErrorCode;
-import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.ticket.service.TicketService;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +31,7 @@ public class TicketController implements TicketApi {
 
     private final EnterShowService enterShowService;
     private final TicketService ticketService;
+    private final TicketAdminService ticketAdminService;
 
     @Override
     public ResponseEntity<EnterShowResponse> enterShow(String ticketToken) {
@@ -104,6 +98,14 @@ public class TicketController implements TicketApi {
 
         Page<TicketResponse> ticketResponses = tickets.map(TicketResponse::from);
         CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
+        return ResponseEntity.ok(customResponse);
+    }
+
+    @Override
+    public ResponseEntity<CustomPageResponse<LiveEnterUserResponse>> searchLiveEnterUsers(int page, int size) {
+        Page<LiveEnterUserDto> liveEnterUserDtos = ticketAdminService.searchLiveEnterUsers(PageRequest.of(page - 1, size));
+
+        CustomPageResponse<LiveEnterUserResponse> customResponse = new CustomPageResponse<>(liveEnterUserDtos.map(LiveEnterUserResponse::from));
         return ResponseEntity.ok(customResponse);
     }
 }
