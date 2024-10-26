@@ -1,7 +1,13 @@
 package com.uket.app.admin.api.controller;
 
+
+import com.uket.app.admin.api.dto.request.SearchRequest;
+import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
+import com.uket.app.admin.api.dto.response.LiveEnterUserResponse;
+import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
+import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.ticket.enums.TicketStatus;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,9 +19,12 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "어드민용 티켓 관리 API", description = "어드민용 티켓 관리 API")
@@ -68,7 +77,7 @@ public interface TicketApi {
                                     """
             )
         }, schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping("/{token}/enter")
+    @PostMapping("/{token}/enter")
     ResponseEntity<EnterShowResponse> enterShow(
         @PathVariable("token") String ticketToken
     );
@@ -78,5 +87,28 @@ public interface TicketApi {
     ResponseEntity<UpdateTicketStatusResponse> updateTicketStatus(
             @PathVariable("ticketId") Long ticketId,
             @PathVariable("ticketStatus") TicketStatus ticketStatus
+    );
+
+    @Operation(summary = "전체 티켓 페이지별 조회 API", description = "전체 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @GetMapping("/search/all")
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchAllTickets(
+        @RequestParam(defaultValue = "1")int page,
+        @RequestParam(defaultValue = "10")int size
+    );
+
+    @Operation(summary = "티켓 검색 API", description = "다양한 기준으로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
+    @GetMapping("/search")
+    ResponseEntity<CustomPageResponse<TicketResponse>> searchTickets(
+        @RequestParam TicketSearchType searchType,
+        @ModelAttribute SearchRequest searchRequest,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size
+    );
+
+    @Operation(summary = "실시간 입장 내역 조회 API", description = "실시간 입장내역 조회를 합니다. 페이지는 1Page부터 시작합니다.")
+    @GetMapping("/live/enter-users")
+    ResponseEntity<CustomPageResponse<LiveEnterUserResponse>> searchLiveEnterUsers(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size
     );
 }

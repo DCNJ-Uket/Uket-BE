@@ -13,7 +13,8 @@ import lombok.Builder;
 @Builder
 public record CheckTicketDto(
     String userName,
-    LocalDateTime showDate,
+    String telephone,
+    LocalDateTime showStartDate,
     LocalDateTime enterStartTime,
     LocalDateTime enterEndTime,
     String showLocation,
@@ -27,7 +28,9 @@ public record CheckTicketDto(
 
     Long ticketId,
 
-    Timestamp createdAt
+    LocalDateTime createdAt,
+
+    LocalDateTime updatedAt
 ) {
     public static CheckTicketDto from(Ticket ticket) {
         Users user = ticket.getUser();
@@ -37,7 +40,8 @@ public record CheckTicketDto(
 
         return CheckTicketDto.builder()
             .userName(user.getName())
-            .showDate(show.getStartDate())
+            .telephone(user.getUserDetails().getPhoneNumber())
+            .showStartDate(show.getStartDate())
             .enterStartTime(reservation.getStartTime())
             .enterEndTime(reservation.getEndTime())
             .showLocation(show.getLocation())
@@ -48,7 +52,8 @@ public record CheckTicketDto(
             .showName(show.getName())
             .eventName(event.getName())
             .ticketId(ticket.getId())
-            .createdAt(ticket.getCreatedAt())
+            .createdAt(ticket.getCreatedAt().toLocalDateTime())
+            .updatedAt(ticket.getModifiedAt().toLocalDateTime())
             .build();
     }
 }

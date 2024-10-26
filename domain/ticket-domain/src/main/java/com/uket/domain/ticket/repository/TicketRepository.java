@@ -2,12 +2,18 @@ package com.uket.domain.ticket.repository;
 
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
+import com.uket.domain.event.enums.ReservationUserType;
+import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.user.entity.Users;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
@@ -26,5 +32,19 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
     List<Ticket> findAllByUserId(Long userId);
 
     List<Ticket> findAllByUserIdAndStatusNot(Long userId, TicketStatus status);
+
+    Page<Ticket> findByStatus(TicketStatus status, Pageable pageable);
+
+    Page<Ticket> findByUserName(String userName, Pageable pageable);
+
+    Page<CheckTicketDto> findByUserUserDetailsPhoneNumber(String phoneNumber, Pageable pageable);
+
+    Page<Ticket> findByShowStartDateBetween(LocalDateTime startDate,LocalDateTime endDate,Pageable pageable);
+
+    Page<Ticket> findByReservationType(ReservationUserType userType, Pageable pageable);
+
+    Page<Ticket> findByCreatedAtBetween(Timestamp createdAt,Timestamp endTimestamp, Pageable pageable);
+
+    Page<Ticket> findByModifiedAtBetween(Timestamp modifiedAt,Timestamp endTimestamp, Pageable pageable);
 }
 
