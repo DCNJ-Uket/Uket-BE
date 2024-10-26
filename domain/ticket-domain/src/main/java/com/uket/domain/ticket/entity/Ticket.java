@@ -60,15 +60,9 @@ public class Ticket extends DeletableBaseEntity {
     private TicketStatus status;
     private LocalDateTime paymentAt;
     private String ticketNo;
-    private LocalDateTime enterAt;
 
     public void cancel() {
         this.status = TicketStatus.RESERVATION_CANCEL;
-    }
-
-    public void enter() {
-        this.status = TicketStatus.FINISH_ENTER;
-        this.enterAt = LocalDateTime.now();
     }
 
     public Ticket updateStatus(TicketStatus ticketStatus) {
