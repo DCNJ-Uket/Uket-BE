@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
+@Transactional(readOnly = true)
 public class TicketSearcherByPhoneNumber extends TicketSearcher{
 
     public TicketSearcherByPhoneNumber(TicketRepository ticketRepository) {
