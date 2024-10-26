@@ -22,7 +22,6 @@ dependencies {
     implementation project(":domain:ticket-domain")
     implementation project(":domain:admin-auth-domain")
     implementation project(":domain:user-domain")
-    implementation project(":domain:event-domain")
 }
 
 tasks.named('test') {

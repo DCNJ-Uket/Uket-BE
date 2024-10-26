@@ -23,7 +23,6 @@ public class EnterShowService {
     private final JwtTicketUtil jwtTicketUtil;
     private final TicketService ticketService;
 
-    @Transactional
     public TicketDto enterShow(String ticketToken) {
         tokenValidator.validateExpiredQRToken(ticketToken);
         tokenValidator.validateQRTokenCategory(JWT_PAYLOAD_VALUE_TICKET, ticketToken);
@@ -34,8 +33,6 @@ public class EnterShowService {
 
         validateBeforePaymentTicket(ticket.getStatus());
         validateAlreadyEnterTicket(ticket.getStatus());
-
-        ticket.enter();
 
         return TicketDto.from(ticket);
     }
