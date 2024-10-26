@@ -2,21 +2,17 @@ package com.uket.app.admin.api.service.search;
 
 import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.enums.TicketSearchType;
-import com.uket.core.exception.ErrorCode;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
-import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TicketSearcherByCreatedAt extends TicketSearcher{
@@ -31,6 +27,7 @@ public class TicketSearcherByCreatedAt extends TicketSearcher{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<CheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
         LocalDate createdAtLocal = searchRequest.createdAt();
         if(createdAtLocal == null){

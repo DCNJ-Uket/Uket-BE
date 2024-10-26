@@ -8,6 +8,7 @@ import com.uket.domain.ticket.repository.TicketRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TicketSearcherByStatus extends TicketSearcher{
@@ -22,6 +23,7 @@ public class TicketSearcherByStatus extends TicketSearcher{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<CheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByStatus(searchRequest.status(), pageable);
         return tickets.map(CheckTicketDto::from);

@@ -8,6 +8,7 @@ import com.uket.domain.ticket.repository.TicketRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TicketSearcherByUserName extends TicketSearcher{
@@ -22,6 +23,7 @@ public class TicketSearcherByUserName extends TicketSearcher{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<CheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByUserName(searchRequest.userName(), pageable);
         return tickets.map(CheckTicketDto::from);

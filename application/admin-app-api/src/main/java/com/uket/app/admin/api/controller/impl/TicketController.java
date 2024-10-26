@@ -15,7 +15,6 @@ import com.uket.app.admin.api.service.search.TicketSearcher;
 import com.uket.app.admin.api.service.LiveEnterUserDto;
 import com.uket.app.admin.api.service.TicketAdminService;
 import com.uket.core.exception.ErrorCode;
-import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;

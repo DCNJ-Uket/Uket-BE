@@ -5,10 +5,10 @@ import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.repository.TicketRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TicketSearcherByReservationUserType extends TicketSearcher{
@@ -23,6 +23,7 @@ public class TicketSearcherByReservationUserType extends TicketSearcher{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<CheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByReservationType(searchRequest.reservationUserType(), pageable);
         return tickets.map(CheckTicketDto::from);
