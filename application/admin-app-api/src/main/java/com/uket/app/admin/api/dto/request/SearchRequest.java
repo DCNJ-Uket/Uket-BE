@@ -15,9 +15,9 @@ public record SearchRequest(
     @Nullable
     String userName,
 
-    @Schema(description = "사용자 전화 번호", example = "01011112222")
+    @Schema(description = "전화 번호 뒷자리 4자리", example = "4015")
     @Nullable
-    String phoneNumber,
+    String phoneNumberLastFourDigits,
     @Schema(description = "공연 날짜", example = "24.09.04")
     @DateTimeFormat(pattern = "yy.MM.dd")
     @Nullable

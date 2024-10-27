@@ -22,7 +22,7 @@ public record TicketResponse(
         return TicketResponse.builder()
             .ticketId(checkTicketDto.ticketId())
             .depositorName(checkTicketDto.userName())
-            .telephone(checkTicketDto.telephone())
+            .telephone(checkTicketDto.phoneNumber())
             .showTime(checkTicketDto.enterStartTime())
             .orderDate(checkTicketDto.createdAt())
             .updatedDate(checkTicketDto.updatedAt())
