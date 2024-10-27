@@ -42,7 +42,10 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
     @Query("SELECT t FROM Ticket t WHERE t.user.userDetails.phoneNumber LIKE %:lastFourDigits")
     Page<Ticket> findByPhoneNumberEndingWith(@Param("lastFourDigits") String lastFourDigits, Pageable pageable);
 
-    Page<Ticket> findByShowStartDateBetween(LocalDateTime startDate,LocalDateTime endDate,Pageable pageable);
+    @Query("SELECT t FROM Ticket t WHERE t.show.startDate >= :showStart AND t.show.startDate < :showEnd")
+    Page<Ticket> findByShowStartDateBetween(@Param("showStart") LocalDateTime showStart,
+        @Param("showEnd") LocalDateTime showEnd,
+        Pageable pageable);
 
     Page<Ticket> findByReservationType(ReservationUserType userType, Pageable pageable);
 

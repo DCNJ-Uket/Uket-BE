@@ -23,7 +23,7 @@ public record TicketResponse(
             .ticketId(checkTicketDto.ticketId())
             .depositorName(checkTicketDto.userName())
             .telephone(checkTicketDto.phoneNumber())
-            .showTime(checkTicketDto.enterStartTime())
+            .showTime(checkTicketDto.showStartDate())
             .orderDate(checkTicketDto.createdAt())
             .updatedDate(checkTicketDto.updatedAt())
             .ticketStatus(checkTicketDto.ticketStatus())
