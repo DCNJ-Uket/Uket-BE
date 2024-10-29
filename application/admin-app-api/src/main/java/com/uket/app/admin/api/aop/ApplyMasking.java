@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApplyMasking {
     Class<?> typeValue() default CustomPageResponse.class;
+    Class<?> genericTypeValue() default Void.class;
 }

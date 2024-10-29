@@ -1,5 +1,6 @@
 package com.uket.app.admin.api.dto.response;
 
+import com.uket.app.admin.api.aop.MaskingUtil;
 import com.uket.app.admin.api.enums.MaskingType;
 import com.uket.app.admin.api.aop.Mask;
 import com.uket.domain.ticket.dto.CheckTicketDto;
@@ -33,5 +34,21 @@ public record TicketResponse(
             .ticketStatus(checkTicketDto.ticketStatus())
             .userType(checkTicketDto.userType())
             .build();
+    }
+
+    public TicketResponse withMaskedValues() {
+        String maskedDepositorName = MaskingUtil.MaskingOf(MaskingType.NAME, this.depositorName);
+        String maskedTelephone = MaskingUtil.MaskingOf(MaskingType.PHONE, this.telephone);
+
+        return new TicketResponse(
+            this.ticketId,
+            maskedDepositorName,
+            maskedTelephone,
+            this.showTime,
+            this.orderDate,
+            this.updatedDate,
+            this.ticketStatus,
+            this.userType
+        );
     }
 }

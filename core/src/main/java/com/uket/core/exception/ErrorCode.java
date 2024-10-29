@@ -85,6 +85,7 @@ public enum ErrorCode {
     NOT_FOUND_TICKET(404, "TI0011", "해당 사용자에 해당하는 티켓이 존재하지 않습니다."),
     BEFORE_PAYMENT_TICKET(400,"TI0012","입금이 완료되지 않은 티켓입니다."),
     ALREADY_ENTER_TICKET(400,"TI0013","이미 입장이 완료된 티켓입니다."),
+    NOT_REGISTERED_TICKET_MASKING_TYPE(400, "T10014", "지원되지않는 타입의 마스킹 요청입니다."),
 
     /**
      * QR Errors

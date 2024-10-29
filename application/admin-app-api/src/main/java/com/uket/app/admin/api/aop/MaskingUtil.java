@@ -20,12 +20,11 @@ public class MaskingUtil {
     }
 
     private static String phoneNumberMaskOf(String value){
-        // 010-****-1234
-        String regex = "(\\d{2,3})-?(\\d{3,4})-?(\\d{4})$";
-        Matcher matcher = Pattern.compile(regex).matcher(value);
-        if(matcher.find()) {
-            String maskedValue =  matcher.group(0).replaceAll(matcher.group(2),"****");
-            return maskedValue;
+        // 010****1234 마스킹
+        String regex = "(\\d{3})(\\d{4})(\\d{4})";
+        Matcher matcher = Pattern.compile(regex).matcher(value.replaceAll("-", ""));
+        if (matcher.find()) {
+            return matcher.group(1) + "****" + matcher.group(3);
         }
         return value;
     }

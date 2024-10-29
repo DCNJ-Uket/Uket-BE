@@ -1,5 +1,6 @@
 package com.uket.app.admin.api.dto.response;
 
+import com.uket.app.admin.api.aop.MaskingUtil;
 import com.uket.app.admin.api.enums.MaskingType;
 import com.uket.app.admin.api.aop.Mask;
 import com.uket.app.admin.api.service.LiveEnterUserDto;
@@ -33,6 +34,19 @@ public record LiveEnterUserResponse(
                 liveEnterUserDto.ticketDate(),
                 liveEnterUserDto.phoneNumber(),
                 liveEnterUserDto.ticketStatus()
+        );
+    }
+
+    public LiveEnterUserResponse withMaskedValues() {
+        String maskedName = MaskingUtil.MaskingOf(MaskingType.NAME, this.name);
+        String maskedPhoneNumber = MaskingUtil.MaskingOf(MaskingType.PHONE, this.phoneNumber);
+
+        return new LiveEnterUserResponse(
+            this.enterTime,
+            maskedName,
+            this.ticketDate,
+            maskedPhoneNumber,
+            this.ticketStatus
         );
     }
 }
