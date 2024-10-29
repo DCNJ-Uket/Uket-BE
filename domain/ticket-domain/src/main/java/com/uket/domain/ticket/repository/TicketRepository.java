@@ -14,6 +14,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
@@ -37,9 +39,13 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     Page<Ticket> findByUserName(String userName, Pageable pageable);
 
-    Page<CheckTicketDto> findByUserUserDetailsPhoneNumber(String phoneNumber, Pageable pageable);
+    @Query("SELECT t FROM Ticket t WHERE t.user.userDetails.phoneNumber LIKE %:lastFourDigits")
+    Page<Ticket> findByPhoneNumberEndingWith(@Param("lastFourDigits") String lastFourDigits, Pageable pageable);
 
-    Page<Ticket> findByShowStartDateBetween(LocalDateTime startDate,LocalDateTime endDate,Pageable pageable);
+    @Query("SELECT t FROM Ticket t WHERE t.show.startDate >= :showStart AND t.show.startDate < :showEnd")
+    Page<Ticket> findByShowStartDateBetween(@Param("showStart") LocalDateTime showStart,
+        @Param("showEnd") LocalDateTime showEnd,
+        Pageable pageable);
 
     Page<Ticket> findByReservationType(ReservationUserType userType, Pageable pageable);
 

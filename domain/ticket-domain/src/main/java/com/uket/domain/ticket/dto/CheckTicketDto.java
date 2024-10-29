@@ -13,7 +13,7 @@ import lombok.Builder;
 @Builder
 public record CheckTicketDto(
     String userName,
-    String telephone,
+    String phoneNumber,
     LocalDateTime showStartDate,
     LocalDateTime enterStartTime,
     LocalDateTime enterEndTime,
@@ -40,7 +40,7 @@ public record CheckTicketDto(
 
         return CheckTicketDto.builder()
             .userName(user.getName())
-            .telephone(user.getUserDetails().getPhoneNumber())
+            .phoneNumber(user.getUserDetails().getPhoneNumber())
             .showStartDate(show.getStartDate())
             .enterStartTime(reservation.getStartTime())
             .enterEndTime(reservation.getEndTime())

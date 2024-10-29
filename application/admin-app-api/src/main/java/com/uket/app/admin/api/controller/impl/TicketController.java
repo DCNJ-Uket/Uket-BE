@@ -10,6 +10,7 @@ import com.uket.app.admin.api.dto.response.TicketResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.app.admin.api.exception.AdminException;
+import com.uket.app.admin.api.aop.ApplyMasking;
 import com.uket.app.admin.api.service.EnterShowService;
 import com.uket.app.admin.api.service.search.TicketSearcher;
 import com.uket.app.admin.api.service.LiveEnterUserDto;
@@ -54,6 +55,7 @@ public class TicketController implements TicketApi {
     }
 
     @Override
+    @ApplyMasking(typeValue = TicketResponse.class)
     public ResponseEntity<CustomPageResponse<TicketResponse>> searchAllTickets(int page, int size) {
         Page<TicketResponse> ticketResponses = ticketService.searchAllTickets(PageRequest.of(page - 1, size))
                 .map(TicketResponse::from);
@@ -63,6 +65,7 @@ public class TicketController implements TicketApi {
     }
 
     @Override
+    @ApplyMasking(typeValue = TicketResponse.class)
     public ResponseEntity<CustomPageResponse<TicketResponse>> searchTickets(
             TicketSearchType searchType,
             SearchRequest searchRequest,
@@ -81,6 +84,7 @@ public class TicketController implements TicketApi {
 
     @Override
     @LimitRequest
+    @ApplyMasking(typeValue = LiveEnterUserResponse.class)
     public ResponseEntity<CustomPageResponse<LiveEnterUserResponse>> searchLiveEnterUsers(int page, int size) {
         Page<LiveEnterUserDto> liveEnterUserDtos = ticketAdminService.searchLiveEnterUsers(PageRequest.of(page - 1, size));
 

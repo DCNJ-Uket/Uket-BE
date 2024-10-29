@@ -3,6 +3,7 @@ package com.uket.app.admin.api.service.search;
 import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.domain.ticket.dto.CheckTicketDto;
+import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.repository.TicketRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ public class TicketSearcherByPhoneNumber extends TicketSearcher{
     @Override
     @Transactional(readOnly = true)
     public Page<CheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
-        return ticketRepository.findByUserUserDetailsPhoneNumber(searchRequest.phoneNumber(), pageable);
+        Page<Ticket> tickets = ticketRepository.findByPhoneNumberEndingWith(searchRequest.phoneNumberLastFourDigits(), pageable);
+        return tickets.map(CheckTicketDto::from);
     }
 }
