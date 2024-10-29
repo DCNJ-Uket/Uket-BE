@@ -1,15 +1,19 @@
 package com.uket.app.admin.api.dto.response;
 
+import com.uket.app.admin.api.enums.MaskingType;
+import com.uket.app.admin.api.aop.Mask;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
-import java.sql.Timestamp;
 
 @Builder
 public record TicketResponse(
     Long ticketId,
+
+    @Mask(type = MaskingType.NAME)
     String depositorName,
+    @Mask(type = MaskingType.PHONE)
     String telephone,
     LocalDateTime showTime,
     LocalDateTime orderDate,

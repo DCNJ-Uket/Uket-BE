@@ -1,5 +1,7 @@
 package com.uket.app.admin.api.dto.response;
 
+import com.uket.app.admin.api.enums.MaskingType;
+import com.uket.app.admin.api.aop.Mask;
 import com.uket.app.admin.api.service.LiveEnterUserDto;
 import com.uket.domain.ticket.enums.TicketStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,12 +12,14 @@ public record LiveEnterUserResponse(
         LocalDateTime enterTime,
 
         @Schema(description = "입금자명")
+        @Mask(type = MaskingType.NAME)
         String name,
 
         @Schema(description = "티켓 날짜")
         LocalDateTime ticketDate,
 
         @Schema(description = "전화번호")
+        @Mask(type = MaskingType.PHONE)
         String phoneNumber,
 
         @Schema(description = "티켓 상태")
