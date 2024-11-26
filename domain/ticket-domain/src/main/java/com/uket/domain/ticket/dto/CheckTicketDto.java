@@ -27,8 +27,7 @@ public record CheckTicketDto(
 
     Long ticketId,
 
-    Timestamp createdAt,
-    String depositUrl
+    Timestamp createdAt
 ) {
     public static CheckTicketDto from(Ticket ticket) {
         Users user = ticket.getUser();
@@ -50,7 +49,6 @@ public record CheckTicketDto(
             .eventName(event.getName())
             .ticketId(ticket.getId())
             .createdAt(ticket.getCreatedAt())
-            .depositUrl(event.getDepositUrl())
             .build();
     }
 }
