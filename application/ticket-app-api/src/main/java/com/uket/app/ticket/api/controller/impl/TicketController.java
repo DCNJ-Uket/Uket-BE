@@ -5,9 +5,12 @@ import com.uket.app.ticket.api.dto.request.TicketingRequest;
 import com.uket.app.ticket.api.dto.response.CancelTicketResponse;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.app.ticket.api.service.QRCodeService;
+import com.uket.app.ticket.api.service.TicketInfoService;
 import com.uket.app.ticket.api.service.TicketingService;
+import com.uket.domain.event.entity.Events;
 import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
+import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -21,6 +24,7 @@ public class TicketController implements TicketApi {
     private final TicketService ticketService;
     private final TicketingService ticketingService;
     private final QRCodeService qrCodeService;
+    private final TicketInfoService ticketInfoService;
 
     @Override
     public ResponseEntity<TicketingResponse> ticketing(Long userId, TicketingRequest request) {
@@ -53,5 +57,11 @@ public class TicketController implements TicketApi {
 
         CancelTicketResponse cancelTicketResponse = CancelTicketResponse.of(cancelTicket);
         return ResponseEntity.ok(cancelTicketResponse);
+    }
+
+    @Override
+    public ResponseEntity<String> getDepositUrl(Long userId, Long ticketId) {
+        String depositUrl = ticketInfoService.getDepositUrlFromTicket(ticketId);
+        return ResponseEntity.ok(depositUrl);
     }
 }
