@@ -19,4 +19,9 @@ public class TicketInfoService {
         List<Ticket> tickets = ticketService.findAllTicketsByUserId(userId);
         return tickets.stream().map(CheckTicketDto::from).toList();
     }
+
+    public String getDepositUrlFromTicket(Long ticketId) {
+        Ticket ticket = ticketService.findById(ticketId);
+        return ticket.getEvent().getDepositUrl();
+    }
 }
