@@ -61,7 +61,7 @@ public class TicketController implements TicketApi {
 
     @Override
     public ResponseEntity<String> getDepositUrl(Long userId, Long ticketId) {
-        String depositUrl = ticketInfoService.getDepositUrlFromTicket(ticketId);
+        String depositUrl = ticketService.getDepositUrlFromTicket(ticketId);
         return ResponseEntity.ok(depositUrl);
     }
 }
