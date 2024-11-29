@@ -100,6 +100,8 @@ public class TicketService {
     public String getDepositUrlFromTicket(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+        if(!ticket.getStatus().equals(TicketStatus.BEFORE_PAYMENT))
+            throw new TicketException(ErrorCode.NOT_BEFORE_PAYMENT_TICKET);
         return ticket.getDepositUrl();
     }
 
