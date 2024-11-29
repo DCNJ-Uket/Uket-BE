@@ -69,4 +69,8 @@ public class Ticket extends DeletableBaseEntity {
         this.status = ticketStatus;
         return this;
     }
+
+    public String getDepositUrl() {
+        return event.getDepositUrl();
+    }
 }

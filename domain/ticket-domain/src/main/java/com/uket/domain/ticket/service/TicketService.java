@@ -100,7 +100,7 @@ public class TicketService {
     public String getDepositUrlFromTicket(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
-        return ticket.getEvent().getDepositUrl();
+        return ticket.getDepositUrl();
     }
 
 }
