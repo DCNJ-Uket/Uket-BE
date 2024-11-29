@@ -194,7 +194,7 @@ class TicketInfoServiceTest {
                 .build());
 
         //when
-        String depositUrl = ticketInfoService.getDepositUrlFromTicket(ticket1.getId());
+        String depositUrl = ticketService.getDepositUrlFromTicket(ticket1.getId());
 
         //then
         assertThat(depositUrl).isEqualTo("example.com");
