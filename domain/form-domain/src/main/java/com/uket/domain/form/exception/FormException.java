@@ -1,7 +1,10 @@
 package com.uket.domain.form.exception;
 
-public class FormException extends RuntimeException {
-    public FormException(String message) {
-        super(message);
+import com.uket.core.exception.BaseException;
+import com.uket.core.exception.ErrorCode;
+
+public class FormException extends BaseException {
+    public FormException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }

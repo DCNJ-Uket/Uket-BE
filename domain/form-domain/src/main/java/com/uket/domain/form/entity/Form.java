@@ -1,5 +1,6 @@
 package com.uket.domain.form.entity;
 
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.form.exception.FormException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +14,7 @@ public class Form {
 
     public Answer submitAnswer(String response) {
         if(response.isEmpty())
-            throw new FormException("");
+            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
         return new Answer(-1L, id, response);
     }
 }

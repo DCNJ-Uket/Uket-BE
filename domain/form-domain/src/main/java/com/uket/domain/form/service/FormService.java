@@ -1,5 +1,6 @@
 package com.uket.domain.form.service;
 
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.form.entity.Answer;
 import com.uket.domain.form.entity.Survey;
 import com.uket.domain.form.exception.FormException;
@@ -18,12 +19,12 @@ public class FormService {
 
     public Survey findById(int surveyId) {
         return surveyRepository.findById(surveyId)
-                .orElseThrow(() -> new FormException(""));
+                .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
     }
 
     public void submitResponse(int surveyId, Map<Long, String> responses) {
         Survey survey = surveyRepository.findById(surveyId)
-                .orElseThrow(() -> new FormException(""));
+                .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
 
         List<Answer> answers = survey.submitAnswers(responses);
 

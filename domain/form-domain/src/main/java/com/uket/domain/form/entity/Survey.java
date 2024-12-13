@@ -1,5 +1,6 @@
 package com.uket.domain.form.entity;
 
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.form.exception.FormException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class Survey {
         for(Form form : forms) {
             String response = responses.get(form.getId());
             if(response == null)
-                throw new FormException("");
+                throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
 
             answers.add(form.submitAnswer(response));
         }
