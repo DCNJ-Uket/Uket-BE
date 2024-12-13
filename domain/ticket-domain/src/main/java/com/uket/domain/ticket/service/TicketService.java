@@ -12,6 +12,7 @@ import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -95,4 +96,13 @@ public class TicketService {
         Ticket updatedTicket = ticket.updateStatus(ticketStatus);
         return ticketRepository.save(updatedTicket);
     }
+
+    public String getDepositUrlFromTicket(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+        if(!ticket.getStatus().equals(TicketStatus.BEFORE_PAYMENT))
+            throw new TicketException(ErrorCode.NOT_BEFORE_PAYMENT_TICKET);
+        return ticket.getEvent().getDepositUrl();
+    }
+
 }

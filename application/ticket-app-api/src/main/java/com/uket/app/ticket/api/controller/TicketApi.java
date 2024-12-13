@@ -137,4 +137,25 @@ public interface TicketApi {
         @PathVariable("id")
         Long ticketId
     );
+
+    @GetMapping("/{id}/depositUrl")
+    @Operation(summary = "입금 링크 조회 API", description = "축제에 대한 입금 링크를 조회할 수 있습니다")
+    @ApiResponse(responseCode = "404", description = "BAD REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "TI0009", description = "티켓의 아이디가 잘못된 경우 발생합니다.",
+                            value = """
+                                    {"code": "TI0009", "message": "해당 티켓을 찾을 수 없습니다. 티켓 아이디를 다시 확인해주세요."}
+                                    """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
+    ResponseEntity<String> getDepositUrl(
+        @Parameter(hidden = true)
+        @LoginUserId
+        Long userId,
+
+        @PathVariable("id")
+        Long ticketId
+    );
+
 }
