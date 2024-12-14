@@ -11,8 +11,10 @@ public class DropdownForm implements Form {
     private String question;
     private List<String> items;
 
-    public void validateAnswer(DropdownAnswer answer) {
-        if(0 < answer.getSelectedItem() && answer.getSelectedItem() < items.size())
+    @Override
+    public void validateAnswer(Answer answer) {
+        DropdownAnswer dropdownAnswer = (DropdownAnswer) answer;
+        if(0 < dropdownAnswer.getSelectedItem() && dropdownAnswer.getSelectedItem() < items.size())
             throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
     }
 }

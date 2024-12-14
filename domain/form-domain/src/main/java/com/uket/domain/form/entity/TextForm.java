@@ -11,7 +11,9 @@ public class TextForm implements Form {
     private Long id;
     private String question;
 
-    public void validateAnswer(TextAnswer textAnswer) {
+    @Override
+    public void validateAnswer(Answer answer) {
+        TextAnswer textAnswer = (TextAnswer) answer;
         if(textAnswer.getContent().isEmpty())
             throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
     }
