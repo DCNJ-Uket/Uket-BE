@@ -13,7 +13,10 @@ public class DropdownForm implements Form {
 
     @Override
     public void validateAnswer(Answer answer) {
+        if(!(answer instanceof DropdownAnswer))
+            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
         DropdownAnswer dropdownAnswer = (DropdownAnswer) answer;
+
         if(0 < dropdownAnswer.getSelectedItem() && dropdownAnswer.getSelectedItem() < items.size())
             throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
     }
