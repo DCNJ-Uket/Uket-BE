@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TextForm {
+public class TextForm implements Form {
     private Long id;
     private String question;
 

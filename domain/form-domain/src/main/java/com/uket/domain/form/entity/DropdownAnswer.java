@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class DropdownAnswer {
+public class DropdownAnswer implements Answer {
     private Long id;
     private Long formId;
     private Integer selectedItem;

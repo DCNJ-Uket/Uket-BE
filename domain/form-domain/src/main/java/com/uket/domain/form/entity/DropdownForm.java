@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class DropdownForm {
+public class DropdownForm implements Form {
     private Long id;
     private String question;
     private List<String> items;

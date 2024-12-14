@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TextAnswer {
+public class TextAnswer implements Answer {
     private Long id;
     private Long formId;
     private String content;
