@@ -7,7 +7,7 @@ import lombok.Builder;
 public record TextFormDto(
          Long id,
          String question
-) {
+) implements FormDto {
     public static TextFormDto from(TextForm textForm) {
         return TextFormDto.builder()
                 .id(textForm.getId())

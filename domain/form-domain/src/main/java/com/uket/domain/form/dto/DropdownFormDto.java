@@ -9,7 +9,7 @@ public record DropdownFormDto(
          Long id,
          String question,
          List<String> items
-) {
+) implements FormDto {
     public static DropdownFormDto from(DropdownForm form) {
         return DropdownFormDto.builder()
                 .id(form.getId())
