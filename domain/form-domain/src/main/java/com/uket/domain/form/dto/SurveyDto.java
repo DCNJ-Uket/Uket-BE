@@ -12,7 +12,7 @@ public record SurveyDto(
     public static SurveyDto from(Survey survey) {
         return SurveyDto.builder()
                 .id(survey.getId())
-                .forms(survey.getForms().stream().map(FormDto::from).toList())
+                .forms(survey.getTextForms().stream().map(FormDto::from).toList())
                 .build();
     }
 }

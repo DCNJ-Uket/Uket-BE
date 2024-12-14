@@ -7,12 +7,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Form {
+public class TextForm {
     private Long id;
     private String question;
 
-    public void validateAnswer(Answer answer) {
-        if(answer.getContent().isEmpty())
+    public void validateAnswer(TextAnswer textAnswer) {
+        if(textAnswer.getContent().isEmpty())
             throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
     }
 }
