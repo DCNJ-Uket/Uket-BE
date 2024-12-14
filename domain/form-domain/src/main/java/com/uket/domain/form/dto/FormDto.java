@@ -6,14 +6,12 @@ import lombok.Builder;
 @Builder
 public record FormDto(
          Long id,
-         String question,
-         String answer
+         String question
 ) {
     public static FormDto from(Form form) {
         return FormDto.builder()
                 .id(form.getId())
                 .question(form.getQuestion())
-                .answer(form.getAnswer())
                 .build();
     }
 }

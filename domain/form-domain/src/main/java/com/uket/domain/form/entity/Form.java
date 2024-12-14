@@ -10,11 +10,9 @@ import lombok.Getter;
 public class Form {
     private Long id;
     private String question;
-    private String answer;
 
-    public Answer submitAnswer(String response) {
-        if(response.isEmpty())
+    public void validateAnswer(Answer answer) {
+        if(answer.getContent().isEmpty())
             throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
-        return new Answer(-1L, id, response);
     }
 }
