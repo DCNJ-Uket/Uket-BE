@@ -5,6 +5,7 @@ import com.uket.domain.form.exception.FormException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,17 +15,14 @@ public class Survey {
     private Long id;
     private List<Form> forms;
 
-    public List<Answer> submitAnswers(Map<Long, String> responses) {
-        List<Answer> answers = new ArrayList<>();
-
+    public void validateAnswers(List<Answer> answers) {
+        Map<Long, Answer> answerMap = answers.stream()
+                .collect(Collectors.toMap(Answer::getFormId, answer -> answer));
         for(Form form : forms) {
-            String response = responses.get(form.getId());
-            if(response == null)
+            Answer answer = answerMap.get(form.getId());
+            if(answer == null)
                 throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
-
-            answers.add(form.submitAnswer(response));
+            form.validateAnswer(answer);
         }
-
-        return answers;
     }
 }

@@ -22,12 +22,10 @@ public class FormService {
                 .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
     }
 
-    public void submitResponse(int surveyId, Map<Long, String> responses) {
+    public void submitResponse(int surveyId, List<Answer> answers) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
-
-        List<Answer> answers = survey.submitAnswers(responses);
-
+        survey.validateAnswers(answers);
         answers.forEach(answerRepository::save);
     }
 }
