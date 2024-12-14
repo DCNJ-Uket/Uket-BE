@@ -4,12 +4,12 @@ import com.uket.domain.form.entity.TextForm;
 import lombok.Builder;
 
 @Builder
-public record FormDto(
+public record TextFormDto(
          Long id,
          String question
 ) {
-    public static FormDto from(TextForm textForm) {
-        return FormDto.builder()
+    public static TextFormDto from(TextForm textForm) {
+        return TextFormDto.builder()
                 .id(textForm.getId())
                 .question(textForm.getQuestion())
                 .build();
