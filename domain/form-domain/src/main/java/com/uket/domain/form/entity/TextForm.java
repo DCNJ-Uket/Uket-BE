@@ -9,6 +9,10 @@ import org.w3c.dom.Text;
 @Getter
 @AllArgsConstructor
 public class TextForm extends Form {
+    @Override
+    Answer createAnswer(String response) {
+        return new TextAnswer(-1L, this.getId(), this.getQuestion(), response);
+    }
 
 //    @Override
 //    public void validateAnswer(Answer answer) {

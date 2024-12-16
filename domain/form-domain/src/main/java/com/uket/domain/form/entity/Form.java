@@ -7,4 +7,6 @@ public abstract class Form {
     private Long id;
     private FormType formType;
     private String question;
+
+    abstract Answer createAnswer(String response);
 }

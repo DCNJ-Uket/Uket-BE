@@ -11,6 +11,11 @@ import lombok.Getter;
 public class DropdownForm extends Form {
     private List<String> items;
 
+    @Override
+    Answer createAnswer(String response) {
+        return new DropdownAnswer(-1L, this.getId(), this.getQuestion(), response, items.size());
+    }
+
 //    @Override
 //    public void validateAnswer(Answer answer) {
 //        if(!(answer instanceof DropdownAnswer))
