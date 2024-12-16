@@ -25,7 +25,7 @@ public class FormService {
     public void submitResponse(int surveyId, List<Answer> answers) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
-        survey.validateAnswers(answers);
+//        survey.validateAnswers(answers);
         answers.forEach(answerRepository::save);
     }
 }

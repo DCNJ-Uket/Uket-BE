@@ -1,6 +1,10 @@
 package com.uket.domain.form.entity;
 
-public interface Form {
-    Long getId();
-    void validateAnswer(Answer answer);
+import lombok.Getter;
+
+@Getter
+public abstract class Form {
+    private Long id;
+    private FormType formType;
+    private String question;
 }

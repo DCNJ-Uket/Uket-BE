@@ -8,18 +8,16 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class DropdownForm implements Form {
-    private Long id;
-    private String question;
+public class DropdownForm extends Form {
     private List<String> items;
 
-    @Override
-    public void validateAnswer(Answer answer) {
-        if(!(answer instanceof DropdownAnswer))
-            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
-        DropdownAnswer dropdownAnswer = (DropdownAnswer) answer;
-
-        if(0 < dropdownAnswer.getSelectedItem() && dropdownAnswer.getSelectedItem() < items.size())
-            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
-    }
+//    @Override
+//    public void validateAnswer(Answer answer) {
+//        if(!(answer instanceof DropdownAnswer))
+//            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+//        DropdownAnswer dropdownAnswer = (DropdownAnswer) answer;
+//
+//        if(0 < dropdownAnswer.getSelectedItem() && dropdownAnswer.getSelectedItem() < items.size())
+//            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+//    }
 }

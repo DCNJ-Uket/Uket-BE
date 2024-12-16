@@ -1,17 +1,22 @@
 package com.uket.domain.form.dto;
 
+import com.uket.domain.form.entity.Form;
+import com.uket.domain.form.entity.FormType;
 import com.uket.domain.form.entity.TextForm;
 import lombok.Builder;
+import org.w3c.dom.Text;
 
 @Builder
 public record TextFormDto(
          Long id,
+         FormType formType,
          String question
 ) implements FormDto {
-    public static TextFormDto from(TextForm textForm) {
+    public static TextFormDto from(TextForm form) {
         return TextFormDto.builder()
-                .id(textForm.getId())
-                .question(textForm.getQuestion())
+                .id(form.getId())
+                .formType(form.getFormType())
+                .question(form.getQuestion())
                 .build();
     }
 }
