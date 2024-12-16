@@ -13,16 +13,6 @@ public class DropdownForm extends Form {
 
     @Override
     Answer createAnswer(String response) {
-        return new DropdownAnswer(-1L, this.getId(), this.getQuestion(), response, items.size());
+        return new DropdownAnswer(this.getId(), this.getQuestion(), response, items.size());
     }
-
-//    @Override
-//    public void validateAnswer(Answer answer) {
-//        if(!(answer instanceof DropdownAnswer))
-//            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
-//        DropdownAnswer dropdownAnswer = (DropdownAnswer) answer;
-//
-//        if(0 < dropdownAnswer.getSelectedItem() && dropdownAnswer.getSelectedItem() < items.size())
-//            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
-//    }
 }

@@ -1,15 +1,29 @@
 package com.uket.domain.form.entity;
 
-import lombok.AllArgsConstructor;
+import com.uket.domain.core.entity.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
-public abstract class Answer {
+public abstract class Answer extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "answer_id")
     private Long id;
+
     private Long formId;
     private String question;
     private String response;
+
+    public Answer(Long formId, String question, String response) {
+        this.formId = formId;
+        this.question = question;
+        this.response = response;
+    }
 
     abstract public void validate();
 }

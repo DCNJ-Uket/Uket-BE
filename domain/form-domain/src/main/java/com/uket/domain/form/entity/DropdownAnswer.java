@@ -11,8 +11,8 @@ import lombok.Getter;
 public class DropdownAnswer extends Answer {
     private Integer itemSize;
 
-    public DropdownAnswer(Long id, Long formId, String question, String response, Integer items) {
-        super(id, formId, question, response);
+    public DropdownAnswer(Long formId, String question, String response, Integer items) {
+        super(formId, question, response);
         this.itemSize = items;
     }
 
