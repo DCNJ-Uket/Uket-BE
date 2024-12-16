@@ -1,10 +1,8 @@
 package com.uket.domain.form.dto;
 
-import com.uket.domain.form.entity.Form;
 import com.uket.domain.form.entity.FormType;
 import com.uket.domain.form.entity.TextForm;
 import lombok.Builder;
-import org.w3c.dom.Text;
 
 @Builder
 public record TextFormDto(

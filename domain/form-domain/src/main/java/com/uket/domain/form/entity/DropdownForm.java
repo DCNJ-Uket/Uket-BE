@@ -1,7 +1,5 @@
 package com.uket.domain.form.entity;
 
-import com.uket.core.exception.ErrorCode;
-import com.uket.domain.form.exception.FormException;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

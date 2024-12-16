@@ -1,6 +1,5 @@
 package com.uket.domain.form.dto;
 
-import com.uket.domain.form.entity.Form;
 import com.uket.domain.form.entity.Survey;
 import java.util.List;
 import lombok.Builder;
