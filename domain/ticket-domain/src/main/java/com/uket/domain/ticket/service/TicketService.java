@@ -97,6 +97,7 @@ public class TicketService {
         return ticketRepository.save(updatedTicket);
     }
 
+    @Transactional(readOnly = true)
     public String getDepositUrlFromTicket(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
