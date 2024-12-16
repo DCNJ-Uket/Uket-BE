@@ -1,7 +1,6 @@
 package com.uket.domain.form.entity;
 
 import com.uket.core.exception.ErrorCode;
-import com.uket.domain.form.dto.SurveyDto;
 import com.uket.domain.form.dto.UserResponseDto;
 import com.uket.domain.form.exception.FormException;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class Survey {
     private Long id;
     private List<Form> forms;
 
-    public List<Answer> handleUserResponse(List<UserResponseDto> responseDtos) {
+    public List<Answer> createAnswers(List<UserResponseDto> responseDtos) {
         List<Answer> answers = new ArrayList<>();
 
         Map<Long, Form> formMap = forms.stream().collect(Collectors.toMap(Form::getId, form -> form));
