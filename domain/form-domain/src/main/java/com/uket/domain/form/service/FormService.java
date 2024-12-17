@@ -7,6 +7,7 @@ import com.uket.domain.form.entity.Survey;
 import com.uket.domain.form.exception.FormException;
 import com.uket.domain.form.repository.AnswerRepository;
 import com.uket.domain.form.repository.SurveyRepository;
+import com.uket.domain.user.entity.Users;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,10 @@ public class FormService {
                 .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
     }
 
-    public void submitResponse(int surveyId, Long userId, List<UserResponseDto> userResponses) {
+    public void submitResponse(int surveyId, Users user, List<UserResponseDto> userResponses) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
-        List<Answer> answers = survey.createAnswers(userId, userResponses);
+        List<Answer> answers = survey.createAnswers(user, userResponses);
         answers.forEach(Answer::validate);
         answers.forEach(answerRepository::save);
     }

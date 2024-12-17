@@ -2,14 +2,15 @@ package com.uket.domain.form.entity;
 
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.form.exception.FormException;
+import com.uket.domain.user.entity.Users;
 import lombok.Getter;
 
 @Getter
 public class DropdownAnswer extends Answer {
     private Integer itemSize;
 
-    public DropdownAnswer(Long formId, Long userId, String question, String response, Integer items) {
-        super(formId, userId, question, response);
+    public DropdownAnswer(Form form, Users user, String question, String response, Integer items) {
+        super(form, user, question, response);
         this.itemSize = items;
     }
 

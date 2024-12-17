@@ -1,5 +1,6 @@
 package com.uket.domain.form.entity;
 
+import com.uket.domain.user.entity.Users;
 import lombok.Getter;
 
 @Getter
@@ -8,5 +9,5 @@ public abstract class Form {
     private FormType formType;
     private String question;
 
-    abstract Answer createAnswer(Long userId, String response);
+    abstract Answer createAnswer(Users user, String response);
 }

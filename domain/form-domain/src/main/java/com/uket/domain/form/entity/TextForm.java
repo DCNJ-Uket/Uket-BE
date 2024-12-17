@@ -1,5 +1,6 @@
 package com.uket.domain.form.entity;
 
+import com.uket.domain.user.entity.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -7,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class TextForm extends Form {
     @Override
-    Answer createAnswer(Long userId, String response) {
-        return new TextAnswer(this.getId(), userId, this.getQuestion(), response);
+    Answer createAnswer(Users user, String response) {
+        return new TextAnswer(this, user, this.getQuestion(), response);
     }
 }
