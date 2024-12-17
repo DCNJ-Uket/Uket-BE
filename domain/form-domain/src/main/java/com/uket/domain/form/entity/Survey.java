@@ -1,20 +1,38 @@
 package com.uket.domain.form.entity;
 
 import com.uket.core.exception.ErrorCode;
+import com.uket.domain.core.entity.BaseEntity;
 import com.uket.domain.form.dto.UserResponseDto;
 import com.uket.domain.form.exception.FormException;
 import com.uket.domain.user.entity.Users;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import lombok.Generated;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.web.WebProperties.Resources.Chain.Strategy;
 
+@Entity
+@NoArgsConstructor
 @Getter
 @AllArgsConstructor
-public class Survey {
+public class Survey extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "survey_id")
     private Long id;
+
+    @OneToMany(mappedBy = "form_id")
     private List<Form> forms;
 
     public List<Answer> createAnswers(Users user, List<UserResponseDto> responseDtos) {
