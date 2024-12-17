@@ -16,7 +16,7 @@ public class Survey {
     private Long id;
     private List<Form> forms;
 
-    public List<Answer> createAnswers(List<UserResponseDto> responseDtos) {
+    public List<Answer> createAnswers(Long userId, List<UserResponseDto> responseDtos) {
         List<Answer> answers = new ArrayList<>();
 
         Map<Long, Form> formMap = forms.stream().collect(Collectors.toMap(Form::getId, form -> form));
@@ -24,7 +24,7 @@ public class Survey {
             Form f = formMap.get(responseDto.formId());
             if(f == null)
                 throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
-            answers.add(f.createAnswer(responseDto.response()));
+            answers.add(f.createAnswer(userId, responseDto.response()));
         }
 
         return answers;

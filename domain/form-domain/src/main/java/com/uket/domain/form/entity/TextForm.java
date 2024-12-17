@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class TextForm extends Form {
     @Override
-    Answer createAnswer(String response) {
-        return new TextAnswer(this.getId(), this.getQuestion(), response);
+    Answer createAnswer(Long userId, String response) {
+        return new TextAnswer(this.getId(), userId, this.getQuestion(), response);
     }
 }

@@ -8,5 +8,5 @@ public abstract class Form {
     private FormType formType;
     private String question;
 
-    abstract Answer createAnswer(String response);
+    abstract Answer createAnswer(Long userId, String response);
 }

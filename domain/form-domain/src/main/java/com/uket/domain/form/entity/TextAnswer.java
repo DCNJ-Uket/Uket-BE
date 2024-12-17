@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 public class TextAnswer extends Answer {
 
-    public TextAnswer(Long formId, String question, String response) {
-        super(formId, question, response);
+    public TextAnswer(Long formId, Long userId, String question, String response) {
+        super(formId, userId, question, response);
     }
 
     @Override

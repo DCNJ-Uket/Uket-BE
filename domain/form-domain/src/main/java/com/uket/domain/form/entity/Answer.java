@@ -14,13 +14,14 @@ public abstract class Answer extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_id")
     private Long id;
-
     private Long formId;
+    private Long userId;
     private String question;
     private String response;
 
-    public Answer(Long formId, String question, String response) {
+    public Answer(Long formId, Long userId, String question, String response) {
         this.formId = formId;
+        this.userId = userId;
         this.question = question;
         this.response = response;
     }

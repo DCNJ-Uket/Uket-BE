@@ -10,7 +10,7 @@ public class DropdownForm extends Form {
     private List<String> items;
 
     @Override
-    Answer createAnswer(String response) {
-        return new DropdownAnswer(this.getId(), this.getQuestion(), response, items.size());
+    Answer createAnswer(Long userId, String response) {
+        return new DropdownAnswer(this.getId(), userId, this.getQuestion(), response, items.size());
     }
 }
