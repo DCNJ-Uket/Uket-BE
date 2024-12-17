@@ -120,7 +120,7 @@ spring:
       port: ${REDIS_AUTH_PORT}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://ec2-13-125-152-230.ap-northeast-2.compute.amazonaws.com:3306/uket?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    url: ${DEV_MYSQL_URL}
     username: ${DEV_MYSQL_USERNAME}
     password: ${DEV_MYSQL_PASSWORD}
   jpa:
