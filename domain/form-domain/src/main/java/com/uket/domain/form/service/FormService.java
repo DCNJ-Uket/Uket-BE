@@ -18,16 +18,16 @@ public class FormService {
     private final SurveyRepository surveyRepository;
     private final AnswerRepository answerRepository;
 
-    public Survey findById(int surveyId) {
+    public Survey findById(long surveyId) {
         return surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
     }
 
-    public void submitResponse(int surveyId, Users user, List<UserResponseDto> userResponses) {
+    public void submitResponse(long surveyId, Users user, List<UserResponseDto> userResponses) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
         List<Answer> answers = survey.createAnswers(user, userResponses);
         answers.forEach(Answer::validate);
-        answers.forEach(answerRepository::save);
+        answerRepository.saveAll(answers);
     }
 }

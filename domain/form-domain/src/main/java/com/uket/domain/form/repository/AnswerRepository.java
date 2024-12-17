@@ -1,10 +1,7 @@
 package com.uket.domain.form.repository;
 
 import com.uket.domain.form.entity.Answer;
-import com.uket.domain.form.entity.Form;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AnswerRepository {
-    Optional<Form> findById(int id);
-    void save(Answer answer);
+public interface AnswerRepository extends JpaRepository<Answer, Long> {
 }
