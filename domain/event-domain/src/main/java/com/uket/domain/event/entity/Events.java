@@ -38,6 +38,7 @@ public class Events extends BaseEntity {
     private LocalDate endDate;
     private String location;
     private String depositUrl;
+    private String accountDetail;
 
     public void updateUniversity(University university) {
         this.university = university;
