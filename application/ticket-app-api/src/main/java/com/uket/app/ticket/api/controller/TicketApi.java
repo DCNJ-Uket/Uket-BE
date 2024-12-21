@@ -1,22 +1,19 @@
 package com.uket.app.ticket.api.controller;
 
+import com.uket.app.ticket.api.dto.response.AccountInfoResponse;
 import com.uket.app.ticket.api.dto.request.TicketingRequest;
 import com.uket.app.ticket.api.dto.response.CancelTicketResponse;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.auth.config.userid.LoginUserId;
-import com.uket.domain.ticket.dto.CancelTicketDto;
-import com.uket.domain.ticket.dto.CheckTicketDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -138,7 +135,7 @@ public interface TicketApi {
         Long ticketId
     );
 
-    @GetMapping("/{id}/depositUrl")
+    @GetMapping("/{id}/accountInfo")
     @Operation(summary = "입금 링크 조회 API", description = "축제에 대한 입금 링크를 조회할 수 있습니다")
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
             mediaType = "application/json",
@@ -163,7 +160,7 @@ public interface TicketApi {
                                     """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
-    ResponseEntity<String> getDepositUrl(
+    ResponseEntity<AccountInfoResponse> getAccountInfo(
         @Parameter(hidden = true)
         @LoginUserId
         Long userId,
