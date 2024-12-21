@@ -140,12 +140,26 @@ public interface TicketApi {
 
     @GetMapping("/{id}/depositUrl")
     @Operation(summary = "입금 링크 조회 API", description = "축제에 대한 입금 링크를 조회할 수 있습니다")
-    @ApiResponse(responseCode = "404", description = "BAD REQUEST", content = @Content(
+    @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
             mediaType = "application/json",
             examples = {
                     @ExampleObject(name = "TI0009", description = "티켓의 아이디가 잘못된 경우 발생합니다.",
                             value = """
                                     {"code": "TI0009", "message": "해당 티켓을 찾을 수 없습니다. 티켓 아이디를 다시 확인해주세요."}
+                                    """
+                    ),
+                    @ExampleObject(name = "TI0015", description = "해당 이벤트에 설정된 입금 링크가 존재하지 않는 경우 발생합니다.",
+                            value = """
+                                    {"code": "TI0015", "message": "입금 링크가 존재하지 않습니다."}
+                                    """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "TI0014", description = "입금 링크가 필요하지 않은 티켓일 때 발생합니다.",
+                            value = """
+                                    {"code": "TI0014", "message": "입금이 완료되었거나, 입금이 필요 없는 티켓입니다."}
                                     """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
