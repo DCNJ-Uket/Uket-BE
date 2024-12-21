@@ -136,7 +136,7 @@ public interface TicketApi {
     );
 
     @GetMapping("/{id}/accountInfo")
-    @Operation(summary = "입금 링크 조회 API", description = "축제에 대한 입금 링크를 조회할 수 있습니다")
+    @Operation(summary = "계좌 정보 조회 API", description = "축제에 대한 계좌 정보를 조회할 수 있습니다")
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
             mediaType = "application/json",
             examples = {
