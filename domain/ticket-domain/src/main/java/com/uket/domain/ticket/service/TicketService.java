@@ -103,7 +103,12 @@ public class TicketService {
                 .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
         if(!ticket.getStatus().equals(TicketStatus.BEFORE_PAYMENT))
             throw new TicketException(ErrorCode.NOT_BEFORE_PAYMENT_TICKET);
-        return ticket.getEvent().getDepositUrl();
+
+        String depositUrl = ticket.getEvent().getDepositUrl();
+        if(depositUrl==null || depositUrl.isEmpty())
+            throw new TicketException(ErrorCode.NOT_FOUND_DEPOSIT_URL);
+
+        return depositUrl;
     }
 
 }

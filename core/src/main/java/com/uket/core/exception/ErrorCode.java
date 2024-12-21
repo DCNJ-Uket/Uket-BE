@@ -82,6 +82,7 @@ public enum ErrorCode {
     BEFORE_PAYMENT_TICKET(400,"TI0012","입금이 완료되지 않은 티켓입니다."),
     ALREADY_ENTER_TICKET(400,"TI0013","이미 입장이 완료된 티켓입니다."),
     NOT_BEFORE_PAYMENT_TICKET(400,"TI0014","입금이 완료되었거나, 입금이 필요 없는 티켓입니다."),
+    NOT_FOUND_DEPOSIT_URL(404,"TI0015","입금 링크가 존재하지 않습니다."),
 
     /**
      * QR Errors
