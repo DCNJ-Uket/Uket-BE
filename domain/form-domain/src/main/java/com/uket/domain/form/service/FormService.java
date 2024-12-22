@@ -25,13 +25,13 @@ public class FormService {
 
     public Survey findById(long surveyId) {
         return surveyRepository.findById(surveyId)
-                .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
+                .orElseThrow(() -> new FormException(ErrorCode.NOT_FOUND_SURVEY));
     }
 
     @Transactional
     public void submitResponse(long surveyId, Users user, List<FormResponseDto> responses) {
         Survey survey = surveyRepository.findById(surveyId)
-                .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
+                .orElseThrow(() -> new FormException(ErrorCode.NOT_FOUND_SURVEY));
 
         List<Answer> answers = createAnswers(survey.getForms(), user, responses);
         answers.forEach(Answer::validate);
@@ -44,7 +44,7 @@ public class FormService {
         for(FormResponseDto res : responses) {
             Form f = formMap.get(res.formId());
             if(f == null)
-                throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+                throw new FormException(ErrorCode.NOT_FOUND_FORM);
             answers.add(new Answer(f, user, res.response()));
         }
         return answers;

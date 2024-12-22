@@ -50,9 +50,9 @@ public class Answer extends BaseEntity {
         if(this.form.getFormType().equals(FormType.TEXT)) {
 
             if (this.response == null)
-                throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+                throw new FormException(ErrorCode.NOT_FOUND_RESPONSE);
             if (this.form.isOverMaxLength(this.response.length()))
-                throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+                throw new FormException(ErrorCode.EXCEED_MAX_LENGTH);
 
         } else if(this.form.getFormType().equals(FormType.DROPDOWN)) {
 
@@ -60,10 +60,10 @@ public class Answer extends BaseEntity {
             try {
                 index = Integer.parseInt(response);
             } catch(NumberFormatException e) {
-                throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+                throw new FormException(ErrorCode.NOT_A_NUMBER);
             }
             if(!this.form.containsInOptions(index))
-                throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+                throw new FormException(ErrorCode.NOT_IN_RANGE);
 
         }
     }
