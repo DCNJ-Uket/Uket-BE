@@ -24,8 +24,4 @@ public class Option extends BaseEntity {
     private Form form;
 
     private String value;
-
-    boolean isSameValue(String v) {
-        return value.equals(v);
-    }
 }
