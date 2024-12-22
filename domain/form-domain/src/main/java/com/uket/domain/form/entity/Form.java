@@ -14,11 +14,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Getter
 public class Form extends BaseEntity {
 
@@ -42,7 +46,8 @@ public class Form extends BaseEntity {
 
     public boolean containsInOptions(int index) {
         int optionCount = this.options.size();
-        return index < 0 || index > optionCount;
+        System.out.println(optionCount);
+        return 0 <= index && index < optionCount;
     }
 
     public boolean isOverMaxLength(int length) {
