@@ -2,14 +2,6 @@ package com.uket.domain.form.dto;
 
 import com.uket.domain.form.entity.Form;
 import com.uket.domain.form.entity.FormType;
-import com.uket.domain.form.entity.Option;
-import com.uket.domain.form.entity.Survey;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.Builder;
 

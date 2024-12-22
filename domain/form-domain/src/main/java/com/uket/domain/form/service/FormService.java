@@ -8,7 +8,6 @@ import com.uket.domain.form.entity.Survey;
 import com.uket.domain.form.exception.FormException;
 import com.uket.domain.form.repository.AnswerRepository;
 import com.uket.domain.form.repository.SurveyRepository;
-import com.uket.domain.user.dto.UserDto;
 import com.uket.domain.user.entity.Users;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
 @Service

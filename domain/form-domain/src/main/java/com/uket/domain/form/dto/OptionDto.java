@@ -1,10 +1,6 @@
 package com.uket.domain.form.dto;
 
-import com.uket.domain.form.entity.Form;
 import com.uket.domain.form.entity.Option;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 
 @Builder

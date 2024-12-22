@@ -1,9 +1,7 @@
 package com.uket.domain.form.entity;
 
 import com.uket.domain.core.entity.BaseEntity;
-import com.uket.domain.user.entity.Users;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
