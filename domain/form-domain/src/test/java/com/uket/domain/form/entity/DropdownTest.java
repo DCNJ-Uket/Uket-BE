@@ -18,7 +18,7 @@ public class DropdownTest {
                 .options(new ArrayList<>())
                 .build();
 
-        Option option = Option.builder()
+        Options option = Options.builder()
                 .id(1L)
                 .form(form)
                 .value("이00")
@@ -46,7 +46,7 @@ public class DropdownTest {
                 .options(new ArrayList<>())
                 .build();
 
-        Option option = Option.builder()
+        Options option = Options.builder()
                 .id(1L)
                 .form(form)
                 .value("이00")
@@ -74,7 +74,7 @@ public class DropdownTest {
                 .options(new ArrayList<>())
                 .build();
 
-        Option option = Option.builder()
+        Options option = Options.builder()
                 .id(1L)
                 .form(form)
                 .value("이00")

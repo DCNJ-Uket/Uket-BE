@@ -39,7 +39,7 @@ public class Form extends BaseEntity {
     private FormType formType;
 
     @OneToMany(mappedBy = "form")
-    private List<Option> options;
+    private List<Options> options;
 
     private String question;
     private Integer maxLength;
