@@ -40,4 +40,14 @@ public class Form extends BaseEntity {
     private List<Option> options;
 
     private String question;
+    private Integer maxLength;
+
+    public boolean containsInOptions(int index) {
+        int optionCount = this.options.size();
+        return index < 0 || index > optionCount;
+    }
+
+    public boolean isOverMaxLength(int length) {
+        return length > maxLength;
+    }
 }

@@ -36,7 +36,6 @@ public class Answer extends BaseEntity {
     private Users user;
 
     private String response;
-    private static Integer MAX_LENGTH = 500;
 
     public Answer(Form form, Users user, String response) {
         this.form = form;
@@ -46,12 +45,13 @@ public class Answer extends BaseEntity {
 
     public void validate() {
         if(this.form.getFormType().equals(FormType.TEXT)) {
+
             if (this.response == null)
                 throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
-            if (this.response.length() > MAX_LENGTH)
+            if (this.form.isOverMaxLength(this.response.length()))
                 throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+
         } else if(this.form.getFormType().equals(FormType.DROPDOWN)) {
-            int optionCount = this.form.getOptions().size();
 
             int index;
             try {
@@ -59,9 +59,9 @@ public class Answer extends BaseEntity {
             } catch(NumberFormatException e) {
                 throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
             }
-
-            if(index < 0 || index > optionCount)
+            if(!this.form.containsInOptions(index))
                 throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+
         }
     }
 }

@@ -19,7 +19,8 @@ public record FormDto(
         Long surveyId,
         FormType formType,
         List<OptionDto> options,
-        String question
+        String question,
+        Integer maxLength
 ) {
     public static FormDto from(Form form) {
         return FormDto.builder()
@@ -28,6 +29,7 @@ public record FormDto(
                 .formType(form.getFormType())
                 .options(form.getOptions().stream().map(OptionDto::from).toList())
                 .question(form.getQuestion())
+                .maxLength(form.getMaxLength())
                 .build();
     }
 }
