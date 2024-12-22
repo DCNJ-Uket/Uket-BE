@@ -25,7 +25,7 @@ public abstract class Answer extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "form_id")
     private Form form;
 
     @ManyToOne(fetch = FetchType.LAZY)
