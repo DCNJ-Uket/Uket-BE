@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public abstract class Form extends BaseEntity {
+public class Form extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +34,4 @@ public abstract class Form extends BaseEntity {
     private FormType formType;
 
     private String question;
-
-    abstract Answer createAnswer(Users user, String response);
 }

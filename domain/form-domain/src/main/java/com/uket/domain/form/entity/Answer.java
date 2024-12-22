@@ -1,6 +1,8 @@
 package com.uket.domain.form.entity;
 
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.core.entity.BaseEntity;
+import com.uket.domain.form.exception.FormException;
 import com.uket.domain.user.entity.Users;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public abstract class Answer extends BaseEntity {
+public class Answer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,15 +34,19 @@ public abstract class Answer extends BaseEntity {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    private String question;
     private String response;
+    private static Integer MAX_LENGTH = 500;
 
-    public Answer(Form form, Users user, String question, String response) {
+    public Answer(Form form, Users user, String response) {
         this.form = form;
         this.user = user;
-        this.question = question;
         this.response = response;
     }
 
-    abstract public void validate();
+    public void validate() {
+        if(this.response == null)
+            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+        if(this.response.length() > MAX_LENGTH)
+            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+    }
 }
