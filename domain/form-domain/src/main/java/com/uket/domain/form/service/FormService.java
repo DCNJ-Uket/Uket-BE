@@ -10,6 +10,7 @@ import com.uket.domain.form.repository.AnswerRepository;
 import com.uket.domain.form.repository.SurveyRepository;
 import com.uket.domain.user.dto.UserDto;
 import com.uket.domain.user.entity.Users;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class FormService {
                 .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
     }
 
+    @Transactional
     public void submitResponse(long surveyId, Users user, List<FormResponseDto> responses) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new FormException(ErrorCode.UNKNOWN_SERVER_ERROR));
