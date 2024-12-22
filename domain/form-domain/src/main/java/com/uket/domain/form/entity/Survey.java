@@ -24,6 +24,6 @@ public class Survey extends BaseEntity {
     @Column(name = "survey_id")
     private Long id;
 
-    @OneToMany(mappedBy = "form_id")
+    @OneToMany(mappedBy = "survey")
     private List<Form> forms;
 }

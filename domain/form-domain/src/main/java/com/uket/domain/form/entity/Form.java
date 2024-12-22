@@ -38,7 +38,7 @@ public class Form extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private FormType formType;
 
-    @OneToMany(mappedBy = "form_id")
+    @OneToMany(mappedBy = "form")
     private List<Option> options;
 
     private String question;
