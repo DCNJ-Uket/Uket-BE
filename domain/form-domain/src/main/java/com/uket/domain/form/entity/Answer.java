@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,9 +45,23 @@ public class Answer extends BaseEntity {
     }
 
     public void validate() {
-        if(this.response == null)
-            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
-        if(this.response.length() > MAX_LENGTH)
-            throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+        if(this.form.getFormType().equals(FormType.TEXT)) {
+            if (this.response == null)
+                throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+            if (this.response.length() > MAX_LENGTH)
+                throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+        } else if(this.form.getFormType().equals(FormType.DROPDOWN)) {
+            int optionCount = this.form.getOptions().size();
+
+            int index;
+            try {
+                index = Integer.parseInt(response);
+            } catch(NumberFormatException e) {
+                throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+            }
+
+            if(index < 0 || index > optionCount)
+                throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+        }
     }
 }
