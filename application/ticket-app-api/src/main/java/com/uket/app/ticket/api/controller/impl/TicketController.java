@@ -61,11 +61,4 @@ public class TicketController implements TicketApi {
         return ResponseEntity.ok(cancelTicketResponse);
     }
 
-    @Override
-    public ResponseEntity<AccountInfoResponse> getAccountInfo(Long userId, Long ticketId) {
-        ticketService.checkTicketOwner(userId, ticketId);
-        AccountInfoDto accountInfoDto = ticketService.getAccountInfo(ticketId);
-        AccountInfoResponse accountInfoResponse = AccountInfoResponse.of(accountInfoDto);
-        return ResponseEntity.ok(accountInfoResponse);
-    }
 }

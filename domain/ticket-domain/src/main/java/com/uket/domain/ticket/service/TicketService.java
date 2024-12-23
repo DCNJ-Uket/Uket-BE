@@ -98,18 +98,4 @@ public class TicketService {
         return ticketRepository.save(updatedTicket);
     }
 
-    @Transactional(readOnly = true)
-    public AccountInfoDto getAccountInfo(Long ticketId) {
-        Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
-        if(!ticket.getStatus().equals(TicketStatus.BEFORE_PAYMENT))
-            throw new TicketException(ErrorCode.NOT_BEFORE_PAYMENT_TICKET);
-
-        String accountNumber = ticket.getEvent().getAccountNumber();
-        String accountOwner = ticket.getEvent().getAccountOwner();
-        String depositUrl = ticket.getEvent().getDepositUrl();
-
-        return AccountInfoDto.of(accountNumber, accountOwner, depositUrl);
-    }
-
 }
