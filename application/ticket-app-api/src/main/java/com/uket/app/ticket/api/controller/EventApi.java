@@ -76,18 +76,9 @@ public interface EventApi {
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
             mediaType = "application/json",
             examples = {
-                    @ExampleObject(name = "TI0009", description = "티켓의 아이디가 잘못된 경우 발생합니다.",
+                    @ExampleObject(name = "EV0001", description = "축제의 아이디가 잘못된 경우 발생합니다.",
                             value = """
-                                    {"code": "TI0009", "message": "해당 티켓을 찾을 수 없습니다. 티켓 아이디를 다시 확인해주세요."}
-                                    """
-                    )
-            }, schema = @Schema(implementation = ErrorResponse.class)))
-    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "TI0014", description = "입금 링크가 필요하지 않은 티켓일 때 발생합니다.",
-                            value = """
-                                    {"code": "TI0014", "message": "입금이 완료되었거나, 입금이 필요 없는 티켓입니다."}
+                                    {"code": "EV0001", "message": "해당 축제를 찾을 수 없습니다."}
                                     """
                     )
             }, schema = @Schema(implementation = ErrorResponse.class)))
