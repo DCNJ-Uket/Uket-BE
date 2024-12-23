@@ -1,5 +1,7 @@
 package com.uket.app.ticket.api.controller;
 
+import com.uket.app.ticket.api.dto.response.AccountInfoResponse;
+import com.uket.app.ticket.api.dto.response.AccountResponse;
 import com.uket.app.ticket.api.dto.response.ShowResponse;
 import com.uket.app.ticket.api.dto.response.ReservationResponse;
 import com.uket.core.dto.response.ErrorResponse;
@@ -67,5 +69,34 @@ public interface EventApi {
 
             @PathVariable("reservationUserType")
             String userType
+    );
+
+    @GetMapping("/{id}/account")
+    @Operation(summary = "계좌 정보 조회 API", description = "축제에 대한 계좌 정보를 조회할 수 있습니다")
+    @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "TI0009", description = "티켓의 아이디가 잘못된 경우 발생합니다.",
+                            value = """
+                                    {"code": "TI0009", "message": "해당 티켓을 찾을 수 없습니다. 티켓 아이디를 다시 확인해주세요."}
+                                    """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "TI0014", description = "입금 링크가 필요하지 않은 티켓일 때 발생합니다.",
+                            value = """
+                                    {"code": "TI0014", "message": "입금이 완료되었거나, 입금이 필요 없는 티켓입니다."}
+                                    """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
+    ResponseEntity<AccountResponse> getAccount(
+            @Parameter(hidden = true)
+            @LoginUserId
+            Long userId,
+
+            @PathVariable("id")
+            Long eventId
     );
 }
