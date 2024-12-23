@@ -50,8 +50,9 @@ public class EventController implements EventApi {
 
     @Override
     public ResponseEntity<AccountResponse> getAccount(Long userId, Long eventId) {
-        Events event = eventService.findById(eventId);
-        AccountResponse accountResponse = AccountResponse.from(event.getAccount());
+        Account account = eventService.findAccountByEventId(eventId);
+        AccountResponse accountResponse = AccountResponse.from(account);
         return ResponseEntity.ok(accountResponse);
     }
+
 }
