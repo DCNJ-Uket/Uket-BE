@@ -38,7 +38,15 @@ public class S3ImageUrlConverter {
         return universities.stream()
                 .map(universityDto -> {
                     String logoUrl = s3Service.getUniversityLogo(universityDto.logoUrl());
-                    return UniversityDto.updateLogoUrl(universityDto, logoUrl);
+                    Events currentEvent = universityEventService.getCurrentEventOfUniversity(universityDto.id());
+
+                    return UniversityDto.builder()
+                            .id(universityDto.id())
+                            .name(universityDto.name())
+                            .logoUrl(logoUrl)
+                            .startDate(currentEvent.getStartDate())
+                            .endDate(currentEvent.getEndDate())
+                            .build();
                 }).toList();
     }
 }
