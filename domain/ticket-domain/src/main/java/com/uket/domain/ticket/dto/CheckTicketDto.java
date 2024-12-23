@@ -26,6 +26,7 @@ public record CheckTicketDto(
     String eventName,
 
     Long ticketId,
+    Long eventId,
 
     Timestamp createdAt
 ) {
@@ -48,6 +49,7 @@ public record CheckTicketDto(
             .showName(show.getName())
             .eventName(event.getName())
             .ticketId(ticket.getId())
+            .eventId(ticket.getEvent().getId())
             .createdAt(ticket.getCreatedAt())
             .build();
     }

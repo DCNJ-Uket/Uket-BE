@@ -3,6 +3,7 @@ package com.uket.domain.ticket.service;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.service.ReservationService;
+import com.uket.domain.ticket.dto.AccountInfoDto;
 import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
@@ -95,15 +96,6 @@ public class TicketService {
 
         Ticket updatedTicket = ticket.updateStatus(ticketStatus);
         return ticketRepository.save(updatedTicket);
-    }
-
-    @Transactional(readOnly = true)
-    public String getDepositUrlFromTicket(Long ticketId) {
-        Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
-        if(!ticket.getStatus().equals(TicketStatus.BEFORE_PAYMENT))
-            throw new TicketException(ErrorCode.NOT_BEFORE_PAYMENT_TICKET);
-        return ticket.getEvent().getDepositUrl();
     }
 
 }

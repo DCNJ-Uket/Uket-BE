@@ -1,5 +1,7 @@
 package com.uket.app.ticket.api.controller;
 
+import com.uket.app.ticket.api.dto.response.AccountInfoResponse;
+import com.uket.app.ticket.api.dto.response.AccountResponse;
 import com.uket.app.ticket.api.dto.response.ShowResponse;
 import com.uket.app.ticket.api.dto.response.ReservationResponse;
 import com.uket.core.dto.response.ErrorResponse;
@@ -67,5 +69,25 @@ public interface EventApi {
 
             @PathVariable("reservationUserType")
             String userType
+    );
+
+    @GetMapping("/{id}/account")
+    @Operation(summary = "계좌 정보 조회 API", description = "축제에 대한 계좌 정보를 조회할 수 있습니다")
+    @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "EV0001", description = "축제의 아이디가 잘못된 경우 발생합니다.",
+                            value = """
+                                    {"code": "EV0001", "message": "해당 축제를 찾을 수 없습니다."}
+                                    """
+                    )
+            }, schema = @Schema(implementation = ErrorResponse.class)))
+    ResponseEntity<AccountResponse> getAccount(
+            @Parameter(hidden = true)
+            @LoginUserId
+            Long userId,
+
+            @PathVariable("id")
+            Long eventId
     );
 }
