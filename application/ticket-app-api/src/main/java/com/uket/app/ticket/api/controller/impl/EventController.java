@@ -1,10 +1,13 @@
 package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.EventApi;
+import com.uket.app.ticket.api.dto.response.AccountResponse;
 import com.uket.app.ticket.api.dto.response.ShowResponse;
 import com.uket.app.ticket.api.dto.response.ReservationResponse;
 import com.uket.domain.event.dto.ShowDto;
 import com.uket.domain.event.dto.ReservationDto;
+import com.uket.domain.event.entity.Account;
+import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.event.service.EventService;
 import com.uket.domain.event.service.ShowService;
@@ -44,4 +47,12 @@ public class EventController implements EventApi {
         ReservationResponse response = ReservationResponse.of(showName, reservations);
         return ResponseEntity.ok(response);
     }
+
+    @Override
+    public ResponseEntity<AccountResponse> getAccount(Long userId, Long eventId) {
+        Account account = eventService.findAccountByEventId(eventId);
+        AccountResponse accountResponse = AccountResponse.from(account);
+        return ResponseEntity.ok(accountResponse);
+    }
+
 }
