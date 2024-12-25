@@ -26,6 +26,9 @@ public class RotateTokenService {
         tokenDetails.put(REDIS_KEY_USER_ID, userId.toString());
         redisTemplate.opsForHash().putAll(refreshTokenKey, tokenDetails);
         redisTemplate.expire(refreshTokenKey, Duration.ofHours(2));
+
+        //Access Token -> Refresh Token 역참조 데이터 추가
+        redisTemplate.opsForValue().set(accessToken, refreshToken, Duration.ofHours(2));
     }
 
     public Long getUserIdForToken(String refreshToken) {
