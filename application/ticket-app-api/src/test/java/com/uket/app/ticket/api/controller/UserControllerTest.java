@@ -18,6 +18,7 @@ import com.uket.domain.user.enums.UserRole;
 import com.uket.domain.user.service.UserService;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import com.uket.modules.jwt.constants.JwtValues;
+import com.uket.modules.redis.service.RotateTokenService;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
@@ -28,6 +29,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -54,6 +56,8 @@ class UserControllerTest {
     @Autowired
     private JwtAuthTokenUtil jwtAuthTokenUtil;
 
+    @Autowired
+    private RotateTokenService rotateTokenService;
     private Users user;
 
     @BeforeEach
@@ -78,6 +82,7 @@ class UserControllerTest {
         UserRegisterRequest request = new UserRegisterRequest("홍길동",
                 "01012341234", "건국대학교", "abc123@konkuk.ac.kr","컴퓨터공학부", "12341234");
         AuthToken authToken = authTokenGenerator.generateAuthToken(user);
+        rotateTokenService.storeToken(authToken.refreshToken(), authToken.accessToken(), user.getId());
         String accessToken = String.join("", JwtValues.JWT_AUTHORIZATION_VALUE_PREFIX, authToken.accessToken());
 
         ResultActions perform = mockMvc.perform(
@@ -100,6 +105,7 @@ class UserControllerTest {
         UserRegisterRequest request = new UserRegisterRequest("홍길동",
                 "01012341234", "건국대학교", "abc123@konkuk.ac.kr","컴퓨터공학부", "12341234");
         AuthToken authToken = authTokenGenerator.generateAuthToken(user);
+        rotateTokenService.storeToken(authToken.refreshToken(), authToken.accessToken(), user.getId());
         String accessToken = String.join("", JwtValues.JWT_AUTHORIZATION_VALUE_PREFIX, authToken.accessToken());
 
         ResultActions perform = mockMvc.perform(
