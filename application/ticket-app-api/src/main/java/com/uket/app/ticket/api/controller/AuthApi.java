@@ -3,6 +3,7 @@ package com.uket.app.ticket.api.controller;
 import com.uket.app.ticket.api.dto.request.LoginRequest;
 import com.uket.app.ticket.api.dto.request.TokenReissueRequest;
 import com.uket.app.ticket.api.dto.response.AuthResponse;
+import com.uket.app.ticket.api.dto.response.LogoutResponse;
 import com.uket.app.ticket.api.dto.response.TokenResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,12 +12,15 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -100,5 +104,23 @@ public interface AuthApi {
     ResponseEntity<TokenResponse> reissue(
             @Valid
             @RequestBody TokenReissueRequest request
+    );
+
+
+
+    @Operation(summary = "로그아웃", description = "로그아웃을 진행합니다.")
+    @SecurityRequirement(name = "JWT")
+    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
+        mediaType = "application/json",
+        examples = {
+            @ExampleObject(name = "RD0001", description = "로그아웃이 진행되어 이미 refreshToken이 만료된 유저가 재로그아웃 요청을 시도할 경우 발생합니다.",
+                value = """
+                                    {"code": "RD0001", "message": "RefreshToken이 만료되었거나 유효하지 않습니다. 확인 부탁드립니다."}
+                                    """
+            )
+        }, schema = @Schema(implementation = ErrorResponse.class)))
+    @PostMapping("/logout")
+    ResponseEntity<LogoutResponse> logout(
+        HttpServletRequest request
     );
 }

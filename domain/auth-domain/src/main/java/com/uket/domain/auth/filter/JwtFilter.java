@@ -9,6 +9,7 @@ import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.auth.validator.TokenValidator;
 import com.uket.domain.user.dto.UserDto;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
+import com.uket.modules.redis.service.RotateTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
     private final TokenValidator tokenValidator;
     private final ObjectMapper objectMapper;
+    private final RotateTokenService rotateTokenService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -42,6 +44,11 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
         accessToken = accessToken.replace(JWT_AUTHORIZATION_VALUE_PREFIX, "");
+
+        if(rotateTokenService.checkLogout(accessToken)) {
+            filterChain.doFilter(request,response);
+            return;
+        }
 
         if (validateAccessToken(response,accessToken)) {
             Authentication authentication = new JWTTokenAuthentication(accessToken, generateUserDto(accessToken));

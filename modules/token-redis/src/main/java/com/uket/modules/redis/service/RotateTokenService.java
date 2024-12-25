@@ -31,6 +31,22 @@ public class RotateTokenService {
         redisTemplate.opsForValue().set(accessToken, refreshToken, Duration.ofHours(2));
     }
 
+    public void deleteTokens(String accessToken) {
+        String refreshToken = redisTemplate.opsForValue().get(accessToken);
+        if (refreshToken == null) {
+            throw new RedisException(RedisErrorCode.INVALID_OR_EXPIRED_REFRESH_TOKEN);
+        }
+
+        final String refreshTokenKey = "refreshToken:" + refreshToken;
+        redisTemplate.delete(refreshTokenKey);
+        redisTemplate.delete(accessToken);
+    }
+
+    public boolean checkLogout(String accessToken) {
+        String refreshToken = redisTemplate.opsForValue().get(accessToken);
+        return refreshToken == null;
+    }
+
     public Long getUserIdForToken(String refreshToken) {
         String refreshTokenKey = "refreshToken:" + refreshToken;
         String userIdAsString = (String) redisTemplate.opsForHash().get(refreshTokenKey, "userId");
@@ -48,7 +64,14 @@ public class RotateTokenService {
 
     private void deleteTokenIfExist(String refreshToken) {
         final String refreshTokenKey = "refreshToken:" + refreshToken;
-        redisTemplate.delete(refreshTokenKey);
+
+        if (Boolean.TRUE.equals(redisTemplate.hasKey(refreshTokenKey))) {
+            Map<Object, Object> tokenDetails = redisTemplate.opsForHash().entries(refreshTokenKey);
+            String existingAccessToken = (String) tokenDetails.get(REDIS_KEY_ACCESS_TOKEN);
+
+            redisTemplate.delete(existingAccessToken);
+            redisTemplate.delete(refreshTokenKey);
+        }
     }
 
     public void validateRefreshToken(String refreshToken) {

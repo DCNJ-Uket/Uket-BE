@@ -2,6 +2,7 @@ package com.uket.app.ticket.api.service;
 
 import static com.uket.modules.jwt.constants.JwtValues.JWT_PAYLOAD_VALUE_REFRESH;
 
+import com.uket.app.ticket.api.dto.response.LogoutResponse;
 import com.uket.app.ticket.api.util.AuthTokenGenerator;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.auth.dto.response.userinfo.OAuth2UserInfoResponse;
@@ -48,6 +49,14 @@ public class AuthService {
         rotateTokenService.storeToken(authToken.refreshToken(), authToken.accessToken(),newUser.getId());
         return authToken;
     }
+
+    @Transactional
+    public LogoutResponse logout(String token) {
+        String accessToken = token.replace("Bearer ", "");
+        rotateTokenService.deleteTokens(accessToken);
+        return LogoutResponse.builder().success(true).build();
+    }
+
 
     public AuthToken reissue(String accessToken, String refreshToken) {
 

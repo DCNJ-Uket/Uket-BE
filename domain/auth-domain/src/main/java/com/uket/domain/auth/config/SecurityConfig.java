@@ -86,8 +86,8 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
                 )
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/api/v1/auth").permitAll()
-                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/login/**").permitAll()
+                        .requestMatchers("/api/v1/auth/reissue").permitAll()
                         .requestMatchers("/api/v1/universities/**").permitAll()
                         .requestMatchers("/api/v1/events/{id}/shows").permitAll()
                 )
