@@ -13,6 +13,7 @@ import com.uket.domain.university.service.UniversityService;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +57,9 @@ public class EventService {
     @Transactional(readOnly = true)
     public Account findAccountByEventId(Long eventId) {
         Events event = findById(eventId);
-        return event.getAccount();
+        Account account = event.getAccount();
+        Hibernate.initialize(account);
+
+        return account;
     }
 }
