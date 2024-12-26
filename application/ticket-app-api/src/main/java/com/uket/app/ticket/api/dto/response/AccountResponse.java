@@ -15,6 +15,7 @@ public record AccountResponse(
                 .accountNumber(account.getAccountNumber())
                 .accountOwner(account.getAccountOwner())
                 .depositUrl(account.getDepositUrl())
+                .ticketPrice(account.getTicketPrice())
                 .build();
     }
 }
