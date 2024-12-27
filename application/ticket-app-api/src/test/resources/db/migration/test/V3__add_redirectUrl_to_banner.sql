@@ -1,0 +1,1 @@
+ALTER TABLE banner ADD COLUMN redirect_url VARCHAR(255);
