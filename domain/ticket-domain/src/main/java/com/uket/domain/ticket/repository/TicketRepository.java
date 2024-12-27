@@ -26,5 +26,7 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
     List<Ticket> findAllByUserId(Long userId);
 
     List<Ticket> findAllByUserIdAndStatusNot(Long userId, TicketStatus status);
+
+    void deleteAllByUserId(Long userId);
 }
 

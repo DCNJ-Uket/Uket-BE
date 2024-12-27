@@ -78,6 +78,11 @@ public class TicketService {
     }
 
     @Transactional
+    public void deleteAllUserTickets(Long userId) {
+        ticketRepository.deleteAllByUserId(userId);
+    }
+
+    @Transactional
     public CancelTicketDto cancelTicketByUserIdAndId(Long userId, Long ticketId) {
         Ticket ticket = ticketRepository.findByUserIdAndId(userId, ticketId)
                 .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));

@@ -3,6 +3,8 @@ package com.uket.domain.user.service;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.user.dto.CreateUserDto;
+import com.uket.domain.user.dto.UserDeleteDto;
+import com.uket.domain.user.dto.UserDto;
 import com.uket.domain.user.dto.UserInfoDto;
 import com.uket.domain.user.entity.UserDetails;
 import com.uket.domain.user.entity.Users;
@@ -42,6 +44,14 @@ public class UserService {
                 .build();
 
         return userRepository.save(newUser);
+    }
+
+    @Transactional
+    public UserDeleteDto deleteUser(Long userId) {
+        Users user = userRepository.findById(userId)
+            .orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
+        userRepository.delete(user);
+        return UserDeleteDto.of(user);
     }
 
     public Users findById(Long userId) {

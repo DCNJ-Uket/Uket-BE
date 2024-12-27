@@ -7,6 +7,7 @@ import com.uket.app.ticket.api.dto.response.ListResponse;
 import com.uket.core.dto.response.ErrorResponse;
 import com.uket.domain.auth.config.userid.LoginUserId;
 import com.uket.domain.ticket.dto.CheckTicketDto;
+import com.uket.domain.user.dto.UserDeleteDto;
 import com.uket.domain.user.dto.UserInfoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -111,5 +112,26 @@ public interface UserApi {
             @LoginUserId Long userId,
 
             @RequestBody UserInfoUpdateRequest request
+    );
+
+    @PostMapping("/delete")
+    @Operation(summary = "회원탈퇴", description = "회원탈퇴를 진행합니다.")
+    @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
+        mediaType = "application/json",
+        examples = {
+            @ExampleObject(name = "UN0001", description = "서버에서 대학 default 값 설정이 잘못된 경우 발생합니다.",
+                value = """
+                                    {"code": "UN0001", "message": "해당 대학을 찾을 수 없습니다."}
+                                    """
+            ),
+            @ExampleObject(name = "US0001", description = "토큰에 담긴 UserId에 대한 사용자를 찾을 수 없을 때 발생합니다.",
+                value = """
+                                    {"code": "US0001", "message": "해당 사용자를 찾을 수 없습니다."}
+                                    """
+            )
+        }, schema = @Schema(implementation = ErrorResponse.class)))
+    ResponseEntity<UserDeleteDto> delete(
+        @Parameter(hidden = true)
+        @LoginUserId Long userId
     );
 }
