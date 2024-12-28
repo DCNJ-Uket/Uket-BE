@@ -104,6 +104,6 @@ public class FormServiceTest {
         when(answerRepository.saveAll(any())).thenReturn(null);
 
         //then
-        assertDoesNotThrow(() -> formService.submitResponse(survey.getId(), user, responses));
+        assertDoesNotThrow(() -> formService.submitResponse(survey.getId(), user.getId(), responses));
     }
 }

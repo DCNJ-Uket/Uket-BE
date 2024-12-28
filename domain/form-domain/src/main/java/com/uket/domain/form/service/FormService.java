@@ -9,6 +9,8 @@ import com.uket.domain.form.exception.FormException;
 import com.uket.domain.form.repository.AnswerRepository;
 import com.uket.domain.form.repository.SurveyRepository;
 import com.uket.domain.user.entity.Users;
+import com.uket.domain.user.exception.UserException;
+import com.uket.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,20 +24,24 @@ import org.springframework.stereotype.Service;
 public class FormService {
     private final SurveyRepository surveyRepository;
     private final AnswerRepository answerRepository;
+    private final UserRepository userRepository;
 
-    public Survey findById(long surveyId) {
+    public Survey findById(Long surveyId) {
         return surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new FormException(ErrorCode.NOT_FOUND_SURVEY));
     }
 
     @Transactional
-    public void submitResponse(long surveyId, Users user, List<FormResponseDto> responses) {
+    public List<Answer> submitResponse(Long surveyId, Long userId, List<FormResponseDto> responses) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new FormException(ErrorCode.NOT_FOUND_SURVEY));
 
+        Users user = userRepository.findById(userId)
+            .orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
+
         List<Answer> answers = createAnswers(survey.getForms(), user, responses);
         answers.forEach(Answer::validate);
-        answerRepository.saveAll(answers);
+        return answerRepository.saveAll(answers);
     }
 
     private List<Answer> createAnswers(List<Form> forms, Users user, List<FormResponseDto> responses) {

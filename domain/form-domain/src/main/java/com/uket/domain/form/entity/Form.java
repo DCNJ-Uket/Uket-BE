@@ -44,10 +44,10 @@ public class Form extends BaseEntity {
     private String question;
     private Integer maxLength;
 
-    public boolean containsInOptions(int index) {
-        int optionCount = this.options.size();
-        System.out.println(optionCount);
-        return 0 <= index && index < optionCount;
+    public boolean containsInOptions(String response) {
+        //true -> contains
+        return options.stream()
+            .anyMatch(option -> option.getValue().equals(response));
     }
 
     public boolean isOverMaxLength(int length) {

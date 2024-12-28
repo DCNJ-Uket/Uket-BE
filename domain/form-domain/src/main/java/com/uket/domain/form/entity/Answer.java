@@ -55,16 +55,8 @@ public class Answer extends BaseEntity {
                 throw new FormException(ErrorCode.EXCEED_MAX_LENGTH);
 
         } else if(this.form.getFormType().equals(FormType.DROPDOWN)) {
-
-            int index;
-            try {
-                index = Integer.parseInt(response);
-            } catch(NumberFormatException e) {
-                throw new FormException(ErrorCode.NOT_A_NUMBER);
-            }
-            if(!this.form.containsInOptions(index))
+            if(!this.form.containsInOptions(this.response))
                 throw new FormException(ErrorCode.NOT_IN_RANGE);
-
         }
     }
 }
