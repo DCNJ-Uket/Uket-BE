@@ -28,7 +28,7 @@ public class DropdownTest {
         Answer answer = Answer.builder()
                 .id(1L)
                 .form(form)
-                .response("0")
+                .response("이00")
                 .build();
 
         //when

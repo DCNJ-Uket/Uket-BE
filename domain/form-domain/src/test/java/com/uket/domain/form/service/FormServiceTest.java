@@ -14,6 +14,7 @@ import com.uket.domain.form.exception.FormException;
 import com.uket.domain.form.repository.AnswerRepository;
 import com.uket.domain.form.repository.SurveyRepository;
 import com.uket.domain.user.entity.Users;
+import com.uket.domain.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,9 @@ public class FormServiceTest {
 
     @Mock
     private AnswerRepository answerRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
 
     @Test
@@ -92,6 +96,7 @@ public class FormServiceTest {
 
         Users user = Users.builder()
                 .id(1L)
+                .name("홍길동")
                 .build();
 
         List<FormResponseDto> responses = List.of(
@@ -101,6 +106,7 @@ public class FormServiceTest {
 
         //when
         when(surveyRepository.findById(1L)).thenReturn(Optional.of(survey));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(answerRepository.saveAll(any())).thenReturn(null);
 
         //then
