@@ -4,6 +4,7 @@ import com.uket.app.ticket.api.controller.EventApi;
 import com.uket.app.ticket.api.dto.response.AccountResponse;
 import com.uket.app.ticket.api.dto.response.ShowResponse;
 import com.uket.app.ticket.api.dto.response.ReservationResponse;
+import com.uket.app.ticket.api.dto.response.SurveyResponse;
 import com.uket.domain.event.dto.ShowDto;
 import com.uket.domain.event.dto.ReservationDto;
 import com.uket.domain.event.entity.Account;
@@ -12,6 +13,8 @@ import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.event.service.EventService;
 import com.uket.domain.event.service.ShowService;
 import com.uket.domain.event.service.ReservationService;
+import com.uket.domain.form.dto.FormDto;
+import com.uket.domain.form.entity.Survey;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,14 @@ public class EventController implements EventApi {
         List<ShowDto> shows = showService.findByEventId(eventId);
 
         ShowResponse response = ShowResponse.of(reservationUserType, universityName, shows);
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<SurveyResponse> getSurveys(Long eventId) {
+        Survey survey = eventService.findSurveyById(eventId);
+        List<FormDto> forms = survey.getForms().stream().map(FormDto::from).toList();
+        SurveyResponse response = SurveyResponse.from(survey, forms);
         return ResponseEntity.ok(response);
     }
 
