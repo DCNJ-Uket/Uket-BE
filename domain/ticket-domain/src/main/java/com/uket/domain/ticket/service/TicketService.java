@@ -106,6 +106,8 @@ public class TicketService {
             throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
         } else if (ticketStatus == TicketStatus.EXPIRED) {
             throw new TicketException(ErrorCode.EXPIRED_TICKET);
+        } else if (ticketStatus == TicketStatus.FINISH_ENTER) {
+            throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
         }
     }
 
