@@ -1,13 +1,19 @@
 package com.uket.app.ticket.api.util;
 
+import com.uket.app.ticket.api.dto.response.ActiveUniversitiesResponse;
 import com.uket.app.ticket.api.service.UniversityEventService;
+import com.uket.core.exception.BaseException;
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.dto.BannerDto;
+import com.uket.domain.event.dto.ShowDto;
 import com.uket.domain.event.entity.Banner;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.repository.BannerRepository;
+import com.uket.domain.event.service.ShowService;
 import com.uket.domain.university.dto.UniversityDto;
 import com.uket.modules.aws.s3.service.S3Service;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,6 +23,7 @@ import org.springframework.stereotype.Component;
 public class S3ImageUrlConverter {
 
     private final S3Service s3Service;
+    private final ShowService showService;
     private final UniversityEventService universityEventService;
     private final BannerRepository bannerRepository;
 
@@ -31,7 +38,7 @@ public class S3ImageUrlConverter {
                 }).toList();
     }
 
-    public List<UniversityDto> getUniversitiesByDate(LocalDate date) {
+    public List<ActiveUniversitiesResponse> getUniversitiesByDate(LocalDate date) {
 
         List<UniversityDto> universities = universityEventService.getUniversitiesByDate(date);
 
@@ -39,13 +46,15 @@ public class S3ImageUrlConverter {
                 .map(universityDto -> {
                     String logoUrl = s3Service.getUniversityLogo(universityDto.logoUrl());
                     Events currentEvent = universityEventService.getCurrentEventOfUniversity(universityDto.id());
+                    ShowDto show = showService.findByEventId(currentEvent.getId()).stream()
+                            .min(Comparator.comparing(ShowDto::startDate))
+                            .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_SHOW));
 
-                    return UniversityDto.builder()
+                    return ActiveUniversitiesResponse.builder()
                             .id(universityDto.id())
                             .name(universityDto.name())
                             .logoUrl(logoUrl)
-                            .startDate(currentEvent.getStartDate())
-                            .endDate(currentEvent.getEndDate())
+                            .startDateTime(show.startDate().toLocalDateTime())
                             .build();
                 }).toList();
     }
