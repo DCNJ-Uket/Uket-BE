@@ -4,4 +4,5 @@ import com.uket.domain.form.entity.Answer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
+    Answer findAnswerByFormIdAndUserId(Long formId, Long userId);
 }

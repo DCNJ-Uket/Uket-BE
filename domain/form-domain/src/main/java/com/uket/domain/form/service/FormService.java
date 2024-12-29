@@ -1,6 +1,7 @@
 package com.uket.domain.form.service;
 
 import com.uket.core.exception.ErrorCode;
+import com.uket.domain.form.dto.AnswerDto;
 import com.uket.domain.form.dto.FormResponseDto;
 import com.uket.domain.form.dto.OptionDto;
 import com.uket.domain.form.entity.Answer;
@@ -39,6 +40,11 @@ public class FormService {
 
     public List<Form> findFormsBySurveyId(Long surveyId) {
         return formRepository.findBySurveyId(surveyId);
+    }
+
+    public AnswerDto findAnswerByFormIdAndUserId(Long formId, Long userId) {
+        Answer answer = answerRepository.findAnswerByFormIdAndUserId(formId, userId);
+        return AnswerDto.from(answer);
     }
 
     public List<OptionDto> findOptionsByFormId(Long formId) {

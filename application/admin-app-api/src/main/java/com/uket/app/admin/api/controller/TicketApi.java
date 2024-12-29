@@ -1,6 +1,7 @@
 package com.uket.app.admin.api.controller;
 
 
+import com.uket.app.admin.api.dto.CheckTicketingDto;
 import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
@@ -91,7 +92,7 @@ public interface TicketApi {
 
     @Operation(summary = "전체 티켓 페이지별 조회 API", description = "전체 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
     @GetMapping("/search/all")
-    ResponseEntity<CustomPageResponse<TicketResponse>> searchAllTickets(
+    ResponseEntity<CustomPageResponse<CheckTicketingDto>> searchAllTickets(
         @RequestParam(defaultValue = "1")int page,
         @RequestParam(defaultValue = "10")int size
     );

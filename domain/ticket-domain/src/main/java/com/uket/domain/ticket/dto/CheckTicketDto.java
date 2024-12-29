@@ -26,6 +26,7 @@ public record CheckTicketDto(
 
     Long ticketId,
     Long eventId,
+    Long userId,
 
     LocalDateTime createdAt,
 
@@ -52,6 +53,7 @@ public record CheckTicketDto(
             .eventName(event.getName())
             .ticketId(ticket.getId())
             .eventId(ticket.getEvent().getId())
+            .userId(user.getId())
             .createdAt(ticket.getCreatedAt().toLocalDateTime())
             .updatedAt(ticket.getModifiedAt().toLocalDateTime())
             .build();
