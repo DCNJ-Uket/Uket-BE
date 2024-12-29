@@ -31,7 +31,7 @@ public interface SurveyApi {
     @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(
         mediaType = "application/json",
         examples = {
-            @ExampleObject(name = "FO0001", description = "질문지를 찾을 수 없는경우에 발생하는 오류입니다.",
+            @ExampleObject(name = "FO0001", description = "질문묶음를 찾을 수 없는경우에 발생하는 오류입니다.",
                 value = """
                                     {"code": "FO0001", "message": "해당 질문지를 찾을 수 없습니다. 질문지 아이디를 다시 확인해주세요."}
                                     """
@@ -39,6 +39,11 @@ public interface SurveyApi {
             @ExampleObject(name = "US0001", description = "해당 유저를 찾을 수 없는 경우에 발생하는 오류입니다.",
                 value = """
                                     {"code": "US0001", "message": "해당 사용자를 찾을 수 없습니다."}
+                                    """
+            ),
+            @ExampleObject(name = "FO0002", description = "질문 묶음에 있는 질문을 찾을 수 없는 경우에 발생하는 오류입니다.",
+                value = """
+                                    {"code": "FO0002", "message": "해당 질문을 찾을 수 없습니다. 질문 아이디를 다시 확인해주세요."}
                                     """
             ),
             @ExampleObject(name = "FO0003", description = "질문에 대한 응답이 없는경우에 발생합니다.",
