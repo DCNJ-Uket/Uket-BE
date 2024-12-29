@@ -23,6 +23,7 @@ dependencies {
 	implementation project(":domain:university-domain")
 	implementation project(":domain:event-domain")
 	implementation project(":domain:ticket-domain")
+	implementation project(":domain:terms-domain")
 
 	implementation project(":modules:jwt-provider")
 	implementation project(":modules:aws-s3")
