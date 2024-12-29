@@ -11,10 +11,10 @@ public record SurveyResponse(
     List<FormDto> forms
 
 ) {
-    public static SurveyResponse from(Survey survey, List<FormDto> forms) {
+    public static SurveyResponse from(Survey survey, List<FormDto> formDtos) {
         return SurveyResponse.builder()
             .surveyId(survey.getId())
-            .forms(forms)
+            .forms(formDtos)
             .build();
     }
 }

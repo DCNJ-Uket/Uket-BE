@@ -14,12 +14,12 @@ public record FormDto(
         String question,
         Integer maxLength
 ) {
-    public static FormDto from(Form form) {
+    public static FormDto from(Form form, List<OptionDto> options) {
         return FormDto.builder()
                 .id(form.getId())
                 .surveyId(form.getSurvey().getId())
                 .formType(form.getFormType())
-                .options(form.getOptions().stream().map(OptionDto::from).toList())
+                .options(options)
                 .question(form.getQuestion())
                 .maxLength(form.getMaxLength())
                 .build();

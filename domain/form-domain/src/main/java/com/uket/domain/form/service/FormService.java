@@ -2,11 +2,15 @@ package com.uket.domain.form.service;
 
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.form.dto.FormResponseDto;
+import com.uket.domain.form.dto.OptionDto;
 import com.uket.domain.form.entity.Answer;
 import com.uket.domain.form.entity.Form;
+import com.uket.domain.form.entity.Options;
 import com.uket.domain.form.entity.Survey;
 import com.uket.domain.form.exception.FormException;
 import com.uket.domain.form.repository.AnswerRepository;
+import com.uket.domain.form.repository.FormRepository;
+import com.uket.domain.form.repository.OptionsRepository;
 import com.uket.domain.form.repository.SurveyRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.exception.UserException;
@@ -25,10 +29,25 @@ public class FormService {
     private final SurveyRepository surveyRepository;
     private final AnswerRepository answerRepository;
     private final UserRepository userRepository;
+    private final FormRepository formRepository;
+    private final OptionsRepository optionsRepository;
 
     public Survey findById(Long surveyId) {
         return surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new FormException(ErrorCode.NOT_FOUND_SURVEY));
+    }
+
+    public List<Form> findFormsBySurveyId(Long surveyId) {
+        return formRepository.findBySurveyId(surveyId);
+    }
+
+    public List<OptionDto> findOptionsByFormId(Long formId) {
+        List<OptionDto> optionDtos = new ArrayList<>();
+        List<Options> options = optionsRepository.findByFormId(formId);
+        for(Options option : options) {
+            optionDtos.add(OptionDto.from(option));
+        }
+        return optionDtos;
     }
 
     @Transactional

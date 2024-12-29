@@ -9,10 +9,10 @@ public record SurveyDto(
     Long id,
     List<FormDto> forms
 ) {
-    public static SurveyDto from(Survey survey) {
+    public static SurveyDto from(Survey survey, List<FormDto> forms) {
         return SurveyDto.builder()
                 .id(survey.getId())
-                .forms(survey.getForms().stream().map(FormDto::from).toList())
+                .forms(forms)
                 .build();
     }
 }
