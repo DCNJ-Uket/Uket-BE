@@ -71,7 +71,7 @@ class TicketInfoServiceTest {
         Events konkuk = eventRepository.save(Events.builder()
             .university(university)
             .startDate(LocalDate.now())
-            .endDate(LocalDate.now())
+            .endDate(LocalDate.now().plusDays(1))
             .location("건국대 노천극장")
             .build()
         );
@@ -130,7 +130,7 @@ class TicketInfoServiceTest {
             .ticketNo(UUID.randomUUID().toString())
             .build());
 
-        List<CheckTicketDto> tickets = ticketInfoService.getUserTickets(user.getId());
+        List<CheckTicketDto> tickets = ticketInfoService.getUserTickets(user.getId(), LocalDate.now());
 
         assertThat(tickets).hasSize(1);
     }
