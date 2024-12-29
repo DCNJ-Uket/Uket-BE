@@ -13,6 +13,7 @@ import com.uket.domain.event.service.ShowService;
 import com.uket.domain.university.dto.UniversityDto;
 import com.uket.modules.aws.s3.service.S3Service;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -46,16 +47,21 @@ public class S3ImageUrlConverter {
                 .map(universityDto -> {
                     String logoUrl = s3Service.getUniversityLogo(universityDto.logoUrl());
                     Events currentEvent = universityEventService.getCurrentEventOfUniversity(universityDto.id());
-                    ShowDto show = showService.findByEventId(currentEvent.getId()).stream()
-                            .min(Comparator.comparing(ShowDto::startDate))
-                            .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_SHOW));
+                    LocalDateTime firstShowStartDateTime = getFirstShowStartDateTime(currentEvent);
 
                     return ActiveUniversitiesResponse.builder()
                             .id(universityDto.id())
                             .name(universityDto.name())
                             .logoUrl(logoUrl)
-                            .startDateTime(show.startDate().toLocalDateTime())
+                            .startDateTime(firstShowStartDateTime)
                             .build();
                 }).toList();
+    }
+
+    private LocalDateTime getFirstShowStartDateTime(Events currentEvent) {
+        return showService.findByEventId(currentEvent.getId()).stream()
+                .min(Comparator.comparing(ShowDto::startDate))
+                .orElseThrow(() -> new BaseException(ErrorCode.NOT_FOUND_SHOW))
+                .startDate().toLocalDateTime();
     }
 }
