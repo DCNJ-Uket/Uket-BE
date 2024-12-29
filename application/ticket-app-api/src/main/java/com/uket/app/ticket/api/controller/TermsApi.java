@@ -32,7 +32,7 @@ public interface TermsApi {
     );
 
     @PostMapping("/api/v1/terms/agreement")
-    @Operation(summary = "약관 목록 조회 API", description = "회원가입 시 필요한 약관 목록을 조회할 수 있습니다.")
+    @Operation(summary = "약관 동의 API", description = "회원가입 시 약관 동의를 할 수 있습니다.")
     ResponseEntity<ListResponse<TermsAgreementResponse>> agreeTerms(
             @LoginUserId
             @Parameter(hidden = true)
