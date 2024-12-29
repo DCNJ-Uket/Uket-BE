@@ -30,6 +30,8 @@ dependencies {
 	implementation project(":modules:token-redis")
 	implementation project(":modules:qrcode-provider")
 	implementation project(":modules:lock-redis")
+
+	implementation project(":domain:form-domain")
 }
 
 tasks.named('test') {
