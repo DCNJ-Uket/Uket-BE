@@ -36,4 +36,22 @@ public class TermsSign extends BaseEntity {
 
     @Column(name = "agreed_at")
     private LocalDateTime agreedAt;
+
+    public static TermsSign agree(Long userId, Long termsId){
+        return TermsSign.builder()
+                .userId(userId)
+                .termsId(termsId)
+                .isAgreed(true)
+                .agreedAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static TermsSign agreeNot(Long userId, Long termsId){
+        return TermsSign.builder()
+                .userId(userId)
+                .termsId(termsId)
+                .isAgreed(false)
+                .agreedAt(LocalDateTime.now())
+                .build();
+    }
 }
