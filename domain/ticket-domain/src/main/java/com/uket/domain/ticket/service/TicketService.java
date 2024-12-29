@@ -94,6 +94,18 @@ public class TicketService {
         return new CancelTicketDto(ticket.getId(), ticket.getStatus().getValue(), ticket.getReservation().getId());
     }
 
+    public void validateTicketStatus(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+
+        TicketStatus ticketStatus = ticket.getStatus();
+
+        if(ticketStatus == TicketStatus.FINISH_ENTER) {
+            throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
+        } else if (ticketStatus == TicketStatus.EXPIRED) {
+            throw new TicketException(ErrorCode.EXPIRED_TICKET);
+        }
+    }
 
     public Ticket updateTicketStatus(Long ticketId, TicketStatus ticketStatus) {
         Ticket ticket = ticketRepository.findById(ticketId)
