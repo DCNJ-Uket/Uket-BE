@@ -8,6 +8,7 @@ import lombok.Builder;
 public record TicketDto(
         Long ticketId,
         Long userId,
+        Long eventId,
         String userName,
         TicketStatus status,
         String msg
@@ -17,6 +18,7 @@ public record TicketDto(
         return TicketDto.builder()
                 .ticketId(ticket.getId())
                 .userId(ticket.getUser().getId())
+                .eventId(ticket.getEvent().getId())
                 .userName(ticket.getUser().getName())
                 .status(ticket.getStatus())
                 .msg(ticket.getStatus().getMsg())

@@ -2,7 +2,6 @@ package com.uket.domain.ticket.service;
 
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Reservation;
-import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.event.service.ReservationService;
 import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
@@ -13,17 +12,11 @@ import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +64,7 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
+    @Transactional(readOnly = true)
     public Ticket findById(Long ticketId) {
         return ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
@@ -82,8 +76,14 @@ public class TicketService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Ticket> findAllTicketsByUserId(Long userId) {
         return ticketRepository.findAllByUserIdAndStatusNot(userId, TicketStatus.RESERVATION_CANCEL);
+    }
+
+    @Transactional
+    public void deleteAllUserTickets(Long userId) {
+        ticketRepository.deleteAllByUserId(userId);
     }
 
     @Transactional
