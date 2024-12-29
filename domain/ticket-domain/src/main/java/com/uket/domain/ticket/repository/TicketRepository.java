@@ -5,9 +5,13 @@ import com.uket.domain.event.entity.Shows;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.user.entity.Users;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
@@ -28,5 +32,14 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
     List<Ticket> findAllByUserIdAndStatusNot(Long userId, TicketStatus status);
 
     void deleteAllByUserId(Long userId);
+
+    @Query("SELECT t FROM Ticket t " +
+        "WHERE t.user.id = :userId " +
+        "AND t.status NOT IN (:cancelled, :expired) " +
+        "AND (t.event.endDate > :now)")
+    List<Ticket> findValidTicketsByUserId(@Param("userId") Long userId,
+        @Param("cancelled") TicketStatus cancelled,
+        @Param("expired") TicketStatus expired,
+        @Param("now") LocalDate now);
 }
 

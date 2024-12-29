@@ -12,6 +12,8 @@ import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -73,8 +75,8 @@ public class TicketService {
     }
 
     @Transactional(readOnly = true)
-    public List<Ticket> findAllTicketsByUserId(Long userId) {
-        return ticketRepository.findAllByUserIdAndStatusNot(userId, TicketStatus.RESERVATION_CANCEL);
+    public List<Ticket> findAllTicketsByUserId(Long userId, LocalDate now) {
+        return ticketRepository.findValidTicketsByUserId(userId, TicketStatus.RESERVATION_CANCEL, TicketStatus.EXPIRED, now);
     }
 
     @Transactional

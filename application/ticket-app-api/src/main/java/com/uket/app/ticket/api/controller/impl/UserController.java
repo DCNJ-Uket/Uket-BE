@@ -17,6 +17,8 @@ import com.uket.domain.user.dto.UserInfoDto;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserDetailsService;
 import com.uket.domain.user.service.UserService;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +57,8 @@ public class UserController implements UserApi {
 
     @Override
     public ResponseEntity<ListResponse<CheckTicketDto>> getUserTickets(Long userId) {
-        List<CheckTicketDto> tickets = ticketInfoService.getUserTickets(userId);
+        LocalDate now = LocalDate.now();
+        List<CheckTicketDto> tickets = ticketInfoService.getUserTickets(userId, now);
         ListResponse<CheckTicketDto> response = ListResponse.from(tickets);
         return ResponseEntity.ok(response);
     }
