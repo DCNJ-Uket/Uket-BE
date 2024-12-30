@@ -19,7 +19,7 @@ public class TicketSearchService {
     private final FormService formService;
     private final EventService eventService;
 
-    public List<CheckTicketingDto> searchAllAnswersByTickets(List<CheckTicketDto> tickets) {
+    public List<CheckTicketingDto> searchAllUserAnswersFromTickets(List<CheckTicketDto> tickets) {
         if(tickets.isEmpty())
             return List.of();
 

@@ -107,6 +107,7 @@ public class TicketService {
         return ticketRepository.save(updatedTicket);
     }
 
+    @Transactional
     public Page<CheckTicketDto> searchAllTickets(Pageable pageable) {
         Page<Ticket> tickets =  ticketRepository.findAll(pageable);
         return tickets.map(CheckTicketDto::from);

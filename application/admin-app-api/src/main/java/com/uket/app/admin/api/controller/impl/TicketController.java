@@ -69,8 +69,8 @@ public class TicketController implements TicketApi {
     @ApplyMasking(typeValue = TicketResponse.class)
     public ResponseEntity<CustomPageResponse<CheckTicketingDto>> searchAllTickets(int page, int size) {
         // 1. JWT가 유효한지 확인, 어드민 계정인지 확인 -> 생략
-        // 2. 해당 어드민 계정이 관리하는 event get -> 생략 & 대체
-        // 3. ticket list get -> tickets
+        // 2. 해당 어드민 계정이 관리하는 event get -> 필드 추가 방식이 적합해보임 -> 생략 & 대체
+        // 3. ticket list get(이때 어드민 계정이 관리하는 event로 필터링 추가해야함) -> tickets
         // 4. ticket 소유자마다, 해당 event에 대한 answer list get
         // 5. 3, 4번의 내용을 합치기
 
@@ -78,7 +78,7 @@ public class TicketController implements TicketApi {
         Page<CheckTicketDto> ticketsPage = ticketService.searchAllTickets(pageRequest);
 
         List<CheckTicketDto> tickets = ticketsPage.getContent();
-        List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllAnswersByTickets(tickets);
+        List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllUserAnswersFromTickets(tickets);
 
         CustomPageResponse<CheckTicketingDto> customResponse =
                 new CustomPageResponse<>(
