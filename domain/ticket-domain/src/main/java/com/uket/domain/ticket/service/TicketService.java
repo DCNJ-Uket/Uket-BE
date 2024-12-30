@@ -79,6 +79,10 @@ public class TicketService {
 
     @Transactional
     public void deleteAllUserTickets(Long userId) {
+        List<Ticket> tickets = ticketRepository.findAllByUserIdAndStatusNotWithReservation(userId, TicketStatus.RESERVATION_CANCEL);
+        for(Ticket ticket : tickets) {
+            this.decreaseReservedCount(ticket.getReservation().getId());
+        }
         ticketRepository.deleteAllByUserId(userId);
     }
 
