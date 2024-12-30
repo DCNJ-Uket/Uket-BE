@@ -41,5 +41,9 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
         @Param("cancelled") TicketStatus cancelled,
         @Param("expired") TicketStatus expired,
         @Param("now") LocalDate now);
+
+    @Query("SELECT t FROM Ticket t JOIN FETCH t.reservation r WHERE t.user.id = :userId AND t.status <> :status")
+    List<Ticket> findAllByUserIdAndStatusNotWithReservation(@Param("userId") Long userId, @Param("status") TicketStatus status);
+
 }
 
