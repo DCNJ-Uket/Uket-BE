@@ -1,0 +1,39 @@
+package com.uket.app.admin.api.service;
+
+import com.uket.app.admin.api.dto.CheckTicketingDto;
+import com.uket.domain.event.service.EventService;
+import com.uket.domain.form.dto.AnswerDto;
+import com.uket.domain.form.entity.Form;
+import com.uket.domain.form.entity.Survey;
+import com.uket.domain.form.service.FormService;
+import com.uket.domain.ticket.dto.CheckTicketDto;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class TicketSearchService {
+    private final FormService formService;
+    private final EventService eventService;
+
+    public List<CheckTicketingDto> searchAllAnswersByTickets(List<CheckTicketDto> tickets) {
+        if(tickets.isEmpty())
+            return List.of();
+
+        Long eventId = tickets.getFirst().eventId();
+        Survey survey = eventService.findSurveyById(eventId);
+        List<Form> forms = formService.findFormsBySurveyId(survey.getId());
+
+        return tickets.stream()
+                .map(ticket -> {
+                    Long userId = ticket.userId();
+                    List<AnswerDto> answers = forms.stream()
+                            .map(form -> formService.findAnswerByFormIdAndUserId(form.getId(), userId))
+                            .toList();
+                    return CheckTicketingDto.of(ticket, answers);
+                }).toList();
+    }
+}

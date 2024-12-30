@@ -13,14 +13,12 @@ import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.app.admin.api.exception.AdminException;
 import com.uket.app.admin.api.aop.ApplyMasking;
 import com.uket.app.admin.api.service.EnterShowService;
+import com.uket.app.admin.api.service.TicketSearchService;
 import com.uket.app.admin.api.service.search.TicketSearcher;
-import com.uket.app.admin.api.service.LiveEnterUserDto;
+import com.uket.app.admin.api.dto.LiveEnterUserDto;
 import com.uket.app.admin.api.service.TicketAdminService;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.service.EventService;
-import com.uket.domain.form.dto.AnswerDto;
-import com.uket.domain.form.entity.Form;
-import com.uket.domain.form.entity.Survey;
 import com.uket.domain.form.service.FormService;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
@@ -47,6 +45,7 @@ public class TicketController implements TicketApi {
     private final EventService eventService;
     private final FormService formService;
     private final UserService userService;
+    private final TicketSearchService ticketSearchService;
 
     @Override
     public ResponseEntity<EnterShowResponse> enterShow(String ticketToken) {
@@ -72,27 +71,24 @@ public class TicketController implements TicketApi {
         // 1. JWT가 유효한지 확인, 어드민 계정인지 확인 -> 생략
         // 2. 해당 어드민 계정이 관리하는 event get -> 생략 & 대체
         // 3. ticket list get -> tickets
-        // 4. ticket 소유자마다, 해당 event에 대한 answer list get ->
+        // 4. ticket 소유자마다, 해당 event에 대한 answer list get
         // 5. 3, 4번의 내용을 합치기
 
-        Page<CheckTicketDto> ticketsPage = ticketService.searchAllTickets(PageRequest.of(page - 1, size));
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        Page<CheckTicketDto> ticketsPage = ticketService.searchAllTickets(pageRequest);
+
         List<CheckTicketDto> tickets = ticketsPage.getContent();
+        List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllAnswersByTickets(tickets);
 
-        Long eventId = tickets.getFirst().eventId();
-        Survey survey = eventService.findSurveyById(eventId);
-        List<Form> forms = formService.findFormsBySurveyId(survey.getId());
+        CustomPageResponse<CheckTicketingDto> customResponse =
+                new CustomPageResponse<>(
+                        new PageImpl<>(
+                                ticketingDtos,
+                                pageRequest,
+                                ticketsPage.getTotalElements()
+                        )
+                );
 
-        List<CheckTicketingDto> ticketingDtos = tickets.stream()
-                .map(ticket -> {
-                    Long userId = ticket.userId();
-                    List<AnswerDto> answers = forms.stream()
-                            .map(form -> formService.findAnswerByFormIdAndUserId(form.getId(), userId))
-                            .toList();
-                    return CheckTicketingDto.of(ticket, answers);
-                }).toList();
-
-        CustomPageResponse<CheckTicketingDto> customResponse = new CustomPageResponse<>(new PageImpl<CheckTicketingDto>(ticketingDtos, PageRequest.of(page - 1, size),
-                ticketsPage.getTotalElements()));
         return ResponseEntity.ok(customResponse);
     }
 
@@ -118,9 +114,11 @@ public class TicketController implements TicketApi {
     @LimitRequest
     @ApplyMasking(typeValue = LiveEnterUserResponse.class)
     public ResponseEntity<CustomPageResponse<LiveEnterUserResponse>> searchLiveEnterUsers(int page, int size) {
-        Page<LiveEnterUserDto> liveEnterUserDtos = ticketAdminService.searchLiveEnterUsers(PageRequest.of(page - 1, size));
+        Page<LiveEnterUserDto> liveEnterUserDtos = ticketAdminService.searchLiveEnterUsers(
+                PageRequest.of(page - 1, size));
 
-        CustomPageResponse<LiveEnterUserResponse> customResponse = new CustomPageResponse<>(liveEnterUserDtos.map(LiveEnterUserResponse::from));
+        CustomPageResponse<LiveEnterUserResponse> customResponse = new CustomPageResponse<>(
+                liveEnterUserDtos.map(LiveEnterUserResponse::from));
         return ResponseEntity.ok(customResponse);
     }
 }

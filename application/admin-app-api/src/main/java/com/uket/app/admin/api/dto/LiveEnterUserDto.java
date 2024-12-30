@@ -1,4 +1,4 @@
-package com.uket.app.admin.api.service;
+package com.uket.app.admin.api.dto;
 
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
