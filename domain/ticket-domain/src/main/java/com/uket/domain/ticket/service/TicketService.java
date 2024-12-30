@@ -12,6 +12,8 @@ import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -74,7 +76,8 @@ public class TicketService {
 
     @Transactional(readOnly = true)
     public List<Ticket> findAllTicketsByUserId(Long userId) {
-        return ticketRepository.findAllByUserIdAndStatusNot(userId, TicketStatus.RESERVATION_CANCEL);
+        List<TicketStatus> excludedStatuses = List.of(TicketStatus.RESERVATION_CANCEL, TicketStatus.EXPIRED);
+        return ticketRepository.findValidTicketsByUserId(userId, excludedStatuses);
     }
 
     @Transactional
@@ -98,6 +101,20 @@ public class TicketService {
         return new CancelTicketDto(ticket.getId(), ticket.getStatus().getValue(), ticket.getReservation().getId());
     }
 
+    public void validateTicketStatus(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+
+        TicketStatus ticketStatus = ticket.getStatus();
+
+        if(ticketStatus == TicketStatus.FINISH_ENTER) {
+            throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
+        } else if (ticketStatus == TicketStatus.EXPIRED) {
+            throw new TicketException(ErrorCode.EXPIRED_TICKET);
+        } else if (ticketStatus == TicketStatus.FINISH_ENTER) {
+            throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
+        }
+    }
 
     public Ticket updateTicketStatus(Long ticketId, TicketStatus ticketStatus) {
         Ticket ticket = ticketRepository.findById(ticketId)

@@ -13,6 +13,7 @@ import com.uket.domain.ticket.dto.AccountInfoDto;
 import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
+import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -54,6 +55,7 @@ public class TicketController implements TicketApi {
 
     @Override
     public ResponseEntity<CancelTicketResponse> cancelTicket(Long userId, Long ticketId) {
+        ticketService.validateTicketStatus(ticketId);
         CancelTicketDto cancelTicket = ticketService.cancelTicketByUserIdAndId(userId, ticketId);
         ticketService.decreaseReservedCount(cancelTicket.reservationId());
 
