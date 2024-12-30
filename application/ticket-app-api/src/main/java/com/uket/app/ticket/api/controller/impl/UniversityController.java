@@ -1,6 +1,7 @@
 package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.UniversityApi;
+import com.uket.app.ticket.api.dto.response.ActiveUniversitiesResponse;
 import com.uket.app.ticket.api.dto.response.CertifiableUniversityResponse;
 import com.uket.app.ticket.api.dto.response.CurrentEventResponse;
 import com.uket.app.ticket.api.dto.response.ListResponse;
@@ -25,13 +26,13 @@ public class UniversityController implements UniversityApi {
     private final S3ImageUrlConverter s3ImageUrlConverter;
 
     @Override
-    public ResponseEntity<ListResponse<UniversityDto>> getUniversities() {
+    public ResponseEntity<ListResponse<ActiveUniversitiesResponse>> getUniversities() {
 
         LocalDate now = LocalDate.now();
 
-        List<UniversityDto> universities = s3ImageUrlConverter.getUniversitiesByDate(now);
+        List<ActiveUniversitiesResponse> universities = s3ImageUrlConverter.getUniversitiesByDate(now);
 
-        ListResponse<UniversityDto> response = ListResponse.from(universities);
+        ListResponse<ActiveUniversitiesResponse> response = ListResponse.from(universities);
         return ResponseEntity.ok(response);
     }
 
