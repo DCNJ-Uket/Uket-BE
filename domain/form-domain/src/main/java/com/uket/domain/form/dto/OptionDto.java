@@ -5,14 +5,12 @@ import lombok.Builder;
 
 @Builder
 public record OptionDto(
-        Long id,
-        Long formId,
+        Long optionId,
         String value
 ) {
     public static OptionDto from(Options option) {
         return OptionDto.builder()
-                .id(option.getId())
-                .formId(option.getForm().getId())
+                .optionId(option.getId())
                 .value(option.getValue())
                 .build();
     }

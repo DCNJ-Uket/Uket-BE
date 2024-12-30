@@ -7,8 +7,7 @@ import lombok.Builder;
 
 @Builder
 public record FormDto(
-        Long id,
-        Long surveyId,
+        Long formId,
         FormType formType,
         List<OptionDto> options,
         String question,
@@ -16,8 +15,7 @@ public record FormDto(
 ) {
     public static FormDto from(Form form, List<OptionDto> options) {
         return FormDto.builder()
-                .id(form.getId())
-                .surveyId(form.getSurvey().getId())
+                .formId(form.getId())
                 .formType(form.getFormType())
                 .options(options)
                 .question(form.getQuestion())
