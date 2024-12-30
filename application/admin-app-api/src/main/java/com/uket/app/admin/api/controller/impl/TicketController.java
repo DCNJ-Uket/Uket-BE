@@ -8,6 +8,7 @@ import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.LiveEnterUserResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
+import com.uket.app.admin.api.dto.response.TicketingResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.app.admin.api.exception.AdminException;
@@ -67,7 +68,7 @@ public class TicketController implements TicketApi {
 
     @Override
     @ApplyMasking(typeValue = TicketResponse.class)
-    public ResponseEntity<CustomPageResponse<CheckTicketingDto>> searchAllTickets(int page, int size) {
+    public ResponseEntity<CustomPageResponse<TicketingResponse>> searchAllTickets(int page, int size) {
         // 1. JWT가 유효한지 확인, 어드민 계정인지 확인 -> 생략
         // 2. 해당 어드민 계정이 관리하는 event get -> 필드 추가 방식이 적합해보임 -> 생략 & 대체
         // 3. ticket list get(이때 어드민 계정이 관리하는 event로 필터링 추가해야함) -> tickets
@@ -80,10 +81,10 @@ public class TicketController implements TicketApi {
         List<CheckTicketDto> tickets = ticketsPage.getContent();
         List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllUserAnswersFromTickets(tickets);
 
-        CustomPageResponse<CheckTicketingDto> customResponse =
+        CustomPageResponse<TicketingResponse> customResponse =
                 new CustomPageResponse<>(
                         new PageImpl<>(
-                                ticketingDtos,
+                                ticketingDtos.stream().map(TicketingResponse::from).toList(),
                                 pageRequest,
                                 ticketsPage.getTotalElements()
                         )
@@ -94,19 +95,31 @@ public class TicketController implements TicketApi {
 
     @Override
     @ApplyMasking(typeValue = TicketResponse.class)
-    public ResponseEntity<CustomPageResponse<TicketResponse>> searchTickets(
+    public ResponseEntity<CustomPageResponse<TicketingResponse>> searchTickets(
             TicketSearchType searchType,
             SearchRequest searchRequest,
             int page,
             int size
     ) {
-        Page<TicketResponse> ticketResponses = ticketSearchers.stream()
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+
+        Page<CheckTicketDto> ticketsPage = ticketSearchers.stream()
                 .filter(ticketSearcher -> ticketSearcher.isSupport(searchType))
                 .findFirst().orElseThrow(() -> new AdminException(ErrorCode.INVALID_SEARCH_TYPE))
-                .search(searchRequest, PageRequest.of(page - 1, size))
-                .map(TicketResponse::from);
+                .search(searchRequest, PageRequest.of(page - 1, size));
 
-        CustomPageResponse<TicketResponse> customResponse = new CustomPageResponse<>(ticketResponses);
+        List<CheckTicketDto> tickets = ticketsPage.getContent();
+        List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllUserAnswersFromTickets(tickets);
+
+        CustomPageResponse<TicketingResponse> customResponse =
+                new CustomPageResponse<>(
+                        new PageImpl<>(
+                                ticketingDtos.stream().map(TicketingResponse::from).toList(),
+                                pageRequest,
+                                ticketsPage.getTotalElements()
+                        )
+                );
+
         return ResponseEntity.ok(customResponse);
     }
 
