@@ -75,8 +75,9 @@ public class TicketService {
     }
 
     @Transactional(readOnly = true)
-    public List<Ticket> findAllTicketsByUserId(Long userId, LocalDate now) {
-        return ticketRepository.findValidTicketsByUserId(userId, TicketStatus.RESERVATION_CANCEL, TicketStatus.EXPIRED, now);
+    public List<Ticket> findAllTicketsByUserId(Long userId) {
+        List<TicketStatus> excludedStatuses = List.of(TicketStatus.RESERVATION_CANCEL, TicketStatus.EXPIRED);
+        return ticketRepository.findValidTicketsByUserId(userId, excludedStatuses);
     }
 
     @Transactional

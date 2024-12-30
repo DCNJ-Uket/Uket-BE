@@ -130,7 +130,7 @@ class TicketInfoServiceTest {
             .ticketNo(UUID.randomUUID().toString())
             .build());
 
-        List<CheckTicketDto> tickets = ticketInfoService.getUserTickets(user.getId(), LocalDate.now());
+        List<CheckTicketDto> tickets = ticketInfoService.getUserTickets(user.getId());
 
         assertThat(tickets).hasSize(1);
     }

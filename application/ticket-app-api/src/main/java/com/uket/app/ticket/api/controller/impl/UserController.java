@@ -57,8 +57,7 @@ public class UserController implements UserApi {
 
     @Override
     public ResponseEntity<ListResponse<CheckTicketDto>> getUserTickets(Long userId) {
-        LocalDate now = LocalDate.now();
-        List<CheckTicketDto> tickets = ticketInfoService.getUserTickets(userId, now);
+        List<CheckTicketDto> tickets = ticketInfoService.getUserTickets(userId);
         ListResponse<CheckTicketDto> response = ListResponse.from(tickets);
         return ResponseEntity.ok(response);
     }

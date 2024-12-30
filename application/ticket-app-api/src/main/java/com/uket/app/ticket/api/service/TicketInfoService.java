@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class TicketInfoService {
     private final TicketService ticketService;
-    public List<CheckTicketDto> getUserTickets(Long userId, LocalDate now) {
-        List<Ticket> tickets = ticketService.findAllTicketsByUserId(userId, now);
+    public List<CheckTicketDto> getUserTickets(Long userId) {
+        List<Ticket> tickets = ticketService.findAllTicketsByUserId(userId);
         return tickets.stream().map(CheckTicketDto::from).toList();
     }
 }
