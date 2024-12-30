@@ -21,4 +21,9 @@ public class TermsSignService {
         return termsSignRepository.findLatestByUserIdAndTermsIds(userId, termsIds).stream()
                 .collect(Collectors.toMap(TermsSign::getTermsId, TermsSign::getIsAgreed));
     }
+
+    @Transactional
+    public List<TermsSign> saveAll(List<TermsSign> termsSigns){
+        return termsSignRepository.saveAll(termsSigns);
+    }
 }

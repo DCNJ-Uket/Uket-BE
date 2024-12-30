@@ -1,9 +1,13 @@
 package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.TermsApi;
+import com.uket.app.ticket.api.dto.request.TermsAgreementRequest;
 import com.uket.app.ticket.api.dto.response.ListResponse;
+import com.uket.app.ticket.api.dto.response.TermsAgreementResponse;
 import com.uket.app.ticket.api.dto.response.TermsResponse;
+import com.uket.app.ticket.api.service.TermsAgreementService;
 import com.uket.domain.terms.entity.Terms;
+import com.uket.domain.terms.entity.TermsSign;
 import com.uket.domain.terms.service.DocumentService;
 import com.uket.domain.terms.service.TermsService;
 import com.uket.domain.terms.service.TermsSignService;
@@ -20,6 +24,7 @@ public class TermsController implements TermsApi {
     private final TermsService termsService;
     private final TermsSignService termsSignService;
     private final DocumentService documentService;
+    private final TermsAgreementService termsAgreementService;
 
     @Override
     public ResponseEntity<ListResponse<TermsResponse>> getTerms(Long userId) {
@@ -30,6 +35,16 @@ public class TermsController implements TermsApi {
         List<TermsResponse> termsResponses = getTermsResponse(activeTerms, termsSignMap, linkMap);
 
         return ResponseEntity.ok(ListResponse.from(termsResponses));
+    }
+
+    @Override
+    public ResponseEntity<ListResponse<TermsAgreementResponse>> agreeTerms(Long userId, List<TermsAgreementRequest> requests) {
+        List<TermsSign> termsSigns = termsAgreementService.agreeTerms(userId, requests);
+        List<TermsAgreementResponse> termsAgreementResponse = termsSigns.stream()
+                .map(TermsAgreementResponse::from)
+                .toList();
+
+        return ResponseEntity.ok(ListResponse.from(termsAgreementResponse));
     }
 
     private List<Long> getTermsIds(List<Terms> activeTerms) {

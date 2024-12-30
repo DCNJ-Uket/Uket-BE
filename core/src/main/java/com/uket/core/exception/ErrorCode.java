@@ -83,6 +83,12 @@ public enum ErrorCode {
     ALREADY_ENTER_TICKET(400,"TI0013","이미 입장이 완료된 티켓입니다."),
 
     /**
+     * Terms Errors
+     */
+    NOT_FOUND_TERMS(404, "TE0001", "약관을 찾을 수 없습니다."),
+    NOT_VALID_TERMS_AGREEMENT(400, "TE0002", "필수 문서는 동의가 필수입니다."),
+
+    /**
      * QR Errors
      */
     NOT_QR_TOKEN(400, "QR0001", "QR과 관련없는 다른 유형의 토큰이 입력되었습니다."),

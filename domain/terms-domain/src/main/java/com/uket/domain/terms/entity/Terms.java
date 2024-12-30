@@ -1,6 +1,8 @@
 package com.uket.domain.terms.entity;
 
 
+import com.uket.core.exception.BaseException;
+import com.uket.core.exception.ErrorCode;
 import com.uket.domain.core.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,4 +41,14 @@ public class Terms extends BaseEntity {
 
     @Column(name = "is_active")
     private Boolean isActive;
+
+    public void checkMandatory(Boolean isAgreed) {
+        if (type != TermsType.MANDATORY) {
+            return;
+        }
+
+        if(Boolean.FALSE.equals(isAgreed)){
+            throw new BaseException(ErrorCode.NOT_VALID_TERMS_AGREEMENT);
+        }
+    }
 }
