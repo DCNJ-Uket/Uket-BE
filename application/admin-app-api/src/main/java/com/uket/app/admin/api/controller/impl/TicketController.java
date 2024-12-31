@@ -67,7 +67,7 @@ public class TicketController implements TicketApi {
     }
 
     @Override
-    @ApplyMasking(typeValue = TicketResponse.class)
+    @ApplyMasking(typeValue = TicketingResponse.class)
     public ResponseEntity<CustomPageResponse<TicketingResponse>> searchAllTickets(int page, int size) {
         // 1. JWT가 유효한지 확인, 어드민 계정인지 확인 -> 생략
         // 2. 해당 어드민 계정이 관리하는 event get -> 필드 추가 방식이 적합해보임 -> 생략 & 대체
@@ -94,7 +94,7 @@ public class TicketController implements TicketApi {
     }
 
     @Override
-    @ApplyMasking(typeValue = TicketResponse.class)
+    @ApplyMasking(typeValue = TicketingResponse.class)
     public ResponseEntity<CustomPageResponse<TicketingResponse>> searchTickets(
             TicketSearchType searchType,
             SearchRequest searchRequest,
