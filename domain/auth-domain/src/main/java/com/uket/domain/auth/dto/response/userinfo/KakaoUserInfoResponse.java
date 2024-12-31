@@ -31,7 +31,7 @@ public class KakaoUserInfoResponse implements OAuth2UserInfoResponse {
 
     @Override
     public String getName() {
-        return account.get("name").toString();
+        return profile.get("nickname").toString();
     }
 
     @Override
