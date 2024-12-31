@@ -5,6 +5,7 @@ import com.uket.app.admin.api.aop.MaskingUtil;
 import com.uket.app.admin.api.dto.CheckTicketingDto;
 import com.uket.app.admin.api.enums.MaskingType;
 import com.uket.domain.form.dto.AnswerDto;
+import com.uket.domain.form.dto.FormAnswerDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +24,7 @@ public record TicketingResponse(
     LocalDateTime updatedDate,
     String ticketStatus,
     String userType,
-    List<AnswerDto> answers
+    List<FormAnswerDto> formAnswers
 ) {
 
     public static TicketingResponse from(CheckTicketingDto checkTicketingDto) {
@@ -36,7 +37,7 @@ public record TicketingResponse(
             .updatedDate(checkTicketingDto.ticket().updatedAt())
             .ticketStatus(checkTicketingDto.ticket().ticketStatus())
             .userType(checkTicketingDto.ticket().userType())
-            .answers(checkTicketingDto.answers())
+            .formAnswers(checkTicketingDto.formAnswers())
             .build();
     }
 
@@ -53,7 +54,7 @@ public record TicketingResponse(
             this.updatedDate,
             this.ticketStatus,
             this.userType,
-            this.answers
+            this.formAnswers
         );
     }
 }
