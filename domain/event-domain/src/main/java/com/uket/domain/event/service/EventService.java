@@ -7,11 +7,15 @@ import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.event.exception.EventException;
 import com.uket.domain.event.repository.AccountRepository;
 import com.uket.domain.event.repository.EventRepository;
+import com.uket.domain.form.dto.FormDto;
+import com.uket.domain.form.dto.OptionDto;
+import com.uket.domain.form.entity.Survey;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.exception.UniversityException;
 import com.uket.domain.university.service.UniversityService;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
@@ -30,6 +34,12 @@ public class EventService {
     public Events findById(Long eventId) {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventException(ErrorCode.NOT_FOUND_EVENT));
+    }
+
+    public Survey findSurveyById(Long eventId) {
+        Events event = eventRepository.findById(eventId)
+            .orElseThrow(() -> new EventException(ErrorCode.NOT_FOUND_EVENT));
+        return event.getSurvey();
     }
 
     public String findUniversityNameByEventId(Long eventId) {

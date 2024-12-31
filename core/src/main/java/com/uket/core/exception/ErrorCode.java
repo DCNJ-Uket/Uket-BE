@@ -81,13 +81,30 @@ public enum ErrorCode {
     NOT_FOUND_TICKET(404, "TI0011", "해당 사용자에 해당하는 티켓이 존재하지 않습니다."),
     BEFORE_PAYMENT_TICKET(400,"TI0012","입금이 완료되지 않은 티켓입니다."),
     ALREADY_ENTER_TICKET(400,"TI0013","이미 입장이 완료된 티켓입니다."),
+    EXPIRED_TICKET(400, "TI0014", "기간이 지나 이미 만료된 티켓입니다."),
+
+    /**
+     * Terms Errors
+     */
+    NOT_FOUND_TERMS(404, "TE0001", "약관을 찾을 수 없습니다."),
+    NOT_VALID_TERMS_AGREEMENT(400, "TE0002", "필수 문서는 동의가 필수입니다."),
 
     /**
      * QR Errors
      */
     NOT_QR_TOKEN(400, "QR0001", "QR과 관련없는 다른 유형의 토큰이 입력되었습니다."),
     EXPIRED_QR_TOKEN(403, "QR0002", "QR code의 유효 기간이 만료되었습니다. 재발급 부탁드립니다."),
-    NOT_VALID_QR(401, "QR0003", "QR code의 토큰이 유효하지않습니다. 변조되었을 가능성이 있으니 개발자에게 문의 부탁드립니다.");
+    NOT_VALID_QR(401, "QR0003", "QR code의 토큰이 유효하지않습니다. 변조되었을 가능성이 있으니 개발자에게 문의 부탁드립니다."),
+
+    /**
+     * Form Errors
+     */
+    NOT_FOUND_SURVEY(404, "FO0001", "해당 질문지를 찾을 수 없습니다. 질문지 아이디를 다시 확인해주세요."),
+    NOT_FOUND_FORM(404, "FO0002", "해당 질문을 찾을 수 없습니다. 질문 아이디를 다시 확인해주세요."),
+    NOT_FOUND_RESPONSE(404, "FO0003", "해당 질문에 대한 응답이 없습니다."),
+    EXCEED_MAX_LENGTH(400, "FO0004", "질문에 대한 응답이 최대 길이를 초과했습니다."),
+    NOT_A_NUMBER(400, "FO0005", "질문에 대한 응답이 숫자 형태가 아닌 문자열입니다"),
+    NOT_IN_RANGE(400, "FO0006", "질문에 대한 응답이 목록에 없습니다.");
 
     private final int status;
     private final String code;

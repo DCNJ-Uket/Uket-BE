@@ -9,12 +9,17 @@ import com.uket.app.ticket.api.service.TicketInfoService;
 import com.uket.app.ticket.api.service.TicketingService;
 import com.uket.app.ticket.api.service.UserRegisterService;
 import com.uket.domain.auth.dto.response.AuthToken;
+import com.uket.domain.form.service.FormService;
 import com.uket.domain.ticket.dto.CheckTicketDto;
+import com.uket.domain.ticket.service.TicketService;
 import com.uket.domain.user.dto.CreateUserDetailsDto;
+import com.uket.domain.user.dto.UserDeleteDto;
 import com.uket.domain.user.dto.UserInfoDto;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserDetailsService;
 import com.uket.domain.user.service.UserService;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +35,8 @@ public class UserController implements UserApi {
     private final UserDetailsService userDetailsService;
     private final UserRegisterService userRegisterService;
     private final TicketInfoService ticketInfoService;
+    private final TicketService ticketService;
+    private final FormService formService;
 
     @Override
     public ResponseEntity<AuthResponse> register(Long userId, UserRegisterRequest request) {
@@ -62,6 +69,14 @@ public class UserController implements UserApi {
         UserInfoDto userInfoDto = userDetailsService.updateUserInfo(userId, request.depositorName(), request.phoneNumber());
 
         return ResponseEntity.ok(userInfoDto);
+    }
+
+    @Override
+    public ResponseEntity<UserDeleteDto> delete(Long userId) {
+        ticketService.deleteAllUserTickets(userId);
+        formService.deleteAnswers(userId);
+        UserDeleteDto userDeleteDto = userService.deleteUser(userId);
+        return ResponseEntity.ok(userDeleteDto);
     }
 
     private CreateUserDetailsDto generateCreateUserDetailsDto(UserRegisterRequest request) {

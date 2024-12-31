@@ -1,6 +1,7 @@
 package com.uket.domain.event.entity;
 
 import com.uket.domain.core.entity.BaseEntity;
+import com.uket.domain.form.entity.Survey;
 import com.uket.domain.university.entity.University;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,6 +38,10 @@ public class Events extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "survey_id")
+    private Survey survey;
 
     private String name;
     private LocalDate startDate;
