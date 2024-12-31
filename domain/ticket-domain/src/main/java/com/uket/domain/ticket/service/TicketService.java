@@ -103,6 +103,9 @@ public class TicketService {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
+        if(ticketStatus == TicketStatus.RESERVATION_CANCEL) {
+            this.decreaseReservedCount(ticket.getReservation().getId());
+        }
         Ticket updatedTicket = ticket.updateStatus(ticketStatus);
         return ticketRepository.save(updatedTicket);
     }
