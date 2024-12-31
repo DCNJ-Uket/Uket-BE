@@ -9,6 +9,7 @@ import com.uket.app.ticket.api.service.TicketInfoService;
 import com.uket.app.ticket.api.service.TicketingService;
 import com.uket.app.ticket.api.service.UserRegisterService;
 import com.uket.domain.auth.dto.response.AuthToken;
+import com.uket.domain.form.service.FormService;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.service.TicketService;
 import com.uket.domain.user.dto.CreateUserDetailsDto;
@@ -35,6 +36,7 @@ public class UserController implements UserApi {
     private final UserRegisterService userRegisterService;
     private final TicketInfoService ticketInfoService;
     private final TicketService ticketService;
+    private final FormService formService;
 
     @Override
     public ResponseEntity<AuthResponse> register(Long userId, UserRegisterRequest request) {
@@ -72,6 +74,7 @@ public class UserController implements UserApi {
     @Override
     public ResponseEntity<UserDeleteDto> delete(Long userId) {
         ticketService.deleteAllUserTickets(userId);
+        formService.deleteAnswers(userId);
         UserDeleteDto userDeleteDto = userService.deleteUser(userId);
         return ResponseEntity.ok(userDeleteDto);
     }
