@@ -13,6 +13,7 @@ import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.ticket.repository.TicketRepository;
+import com.uket.domain.ticket.service.TicketService;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.repository.UniversityRepository;
 import com.uket.domain.user.entity.Users;
@@ -44,6 +45,8 @@ class TicketInfoServiceTest {
     ShowRepository showRepository;
     @Autowired
     UniversityRepository universityRepository;
+    @Autowired
+    private TicketService ticketService;
 
 
     @Test

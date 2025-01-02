@@ -23,7 +23,7 @@ public class EnterShowService {
     private final JwtTicketUtil jwtTicketUtil;
     private final TicketService ticketService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public TicketDto enterShow(String ticketToken) {
         tokenValidator.validateExpiredQRToken(ticketToken);
         tokenValidator.validateQRTokenCategory(JWT_PAYLOAD_VALUE_TICKET, ticketToken);

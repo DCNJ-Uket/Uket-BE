@@ -1,11 +1,13 @@
 package com.uket.app.admin.api.controller;
 
 
+import com.uket.app.admin.api.dto.CheckTicketingDto;
 import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.EnterShowResponse;
 import com.uket.app.admin.api.dto.response.LiveEnterUserResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
+import com.uket.app.admin.api.dto.response.TicketingResponse;
 import com.uket.app.admin.api.dto.response.UpdateTicketStatusResponse;
 import com.uket.app.admin.api.enums.TicketSearchType;
 import com.uket.core.dto.response.ErrorResponse;
@@ -91,14 +93,14 @@ public interface TicketApi {
 
     @Operation(summary = "전체 티켓 페이지별 조회 API", description = "전체 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
     @GetMapping("/search/all")
-    ResponseEntity<CustomPageResponse<TicketResponse>> searchAllTickets(
+    ResponseEntity<CustomPageResponse<TicketingResponse>> searchAllTickets(
         @RequestParam(defaultValue = "1")int page,
         @RequestParam(defaultValue = "10")int size
     );
 
     @Operation(summary = "티켓 검색 API", description = "다양한 기준으로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
     @GetMapping("/search")
-    ResponseEntity<CustomPageResponse<TicketResponse>> searchTickets(
+    ResponseEntity<CustomPageResponse<TicketingResponse>> searchTickets(
         @RequestParam TicketSearchType searchType,
         @ModelAttribute SearchRequest searchRequest,
         @RequestParam(defaultValue = "1") int page,

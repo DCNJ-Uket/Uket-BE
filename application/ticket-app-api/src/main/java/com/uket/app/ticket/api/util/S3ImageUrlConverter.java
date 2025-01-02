@@ -27,7 +27,7 @@ public class S3ImageUrlConverter {
         return banners.stream()
                 .map(banner -> {
                     String bannerUrl = s3Service.getBannerImage(banner.getPath());
-                    return BannerDto.of(banner.getTitle(), bannerUrl);
+                    return BannerDto.of(banner.getTitle(), bannerUrl, banner.getRedirectUrl());
                 }).toList();
     }
 
