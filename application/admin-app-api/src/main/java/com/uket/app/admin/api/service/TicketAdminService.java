@@ -1,5 +1,6 @@
 package com.uket.app.admin.api.service;
 
+import com.uket.app.admin.api.dto.LiveEnterUserDto;
 import com.uket.app.admin.api.repository.TicketAdminRepository;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;

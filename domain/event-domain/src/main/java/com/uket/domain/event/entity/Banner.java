@@ -33,4 +33,6 @@ public class Banner {
     private String path;
 
     private String title;
+
+    private String redirectUrl;
 }

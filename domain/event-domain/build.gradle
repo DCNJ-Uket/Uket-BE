@@ -2,6 +2,7 @@ dependencies {
     implementation project(":domain:core-domain")
     implementation project(":domain:university-domain")
     implementation project(":domain:user-domain")
+    implementation project(":domain:form-domain")
 }
 
 tasks.named('test') {

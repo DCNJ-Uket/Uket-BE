@@ -1,16 +1,23 @@
 package com.uket.domain.event.service;
 
 import com.uket.core.exception.ErrorCode;
+import com.uket.domain.event.entity.Account;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.event.exception.EventException;
+import com.uket.domain.event.repository.AccountRepository;
 import com.uket.domain.event.repository.EventRepository;
+import com.uket.domain.form.dto.FormDto;
+import com.uket.domain.form.dto.OptionDto;
+import com.uket.domain.form.entity.Survey;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.exception.UniversityException;
 import com.uket.domain.university.service.UniversityService;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +29,17 @@ public class EventService {
     private final EventRepository eventRepository;
     private final UniversityService universityService;
     private final UserService userService;
+    private final AccountRepository accountRepository;
 
     public Events findById(Long eventId) {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new EventException(ErrorCode.NOT_FOUND_EVENT));
+    }
+
+    public Survey findSurveyById(Long eventId) {
+        Events event = eventRepository.findById(eventId)
+            .orElseThrow(() -> new EventException(ErrorCode.NOT_FOUND_EVENT));
+        return event.getSurvey();
     }
 
     public String findUniversityNameByEventId(Long eventId) {
@@ -48,5 +62,14 @@ public class EventService {
             return ReservationUserType.TICKETING_STUDENT;
         }
         return ReservationUserType.TICKETING_ALL;
+    }
+
+    @Transactional(readOnly = true)
+    public Account findAccountByEventId(Long eventId) {
+        Events event = findById(eventId);
+        Account account = event.getAccount();
+        Hibernate.initialize(account);
+
+        return account;
     }
 }

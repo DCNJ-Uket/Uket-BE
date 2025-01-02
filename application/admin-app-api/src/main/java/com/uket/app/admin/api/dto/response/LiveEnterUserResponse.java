@@ -3,7 +3,7 @@ package com.uket.app.admin.api.dto.response;
 import com.uket.app.admin.api.aop.MaskingUtil;
 import com.uket.app.admin.api.enums.MaskingType;
 import com.uket.app.admin.api.aop.Mask;
-import com.uket.app.admin.api.service.LiveEnterUserDto;
+import com.uket.app.admin.api.dto.LiveEnterUserDto;
 import com.uket.domain.ticket.enums.TicketStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;

@@ -3,6 +3,7 @@ package com.uket.app.admin.api.aop;
 import com.uket.app.admin.api.dto.response.CustomPageResponse;
 import com.uket.app.admin.api.dto.response.LiveEnterUserResponse;
 import com.uket.app.admin.api.dto.response.TicketResponse;
+import com.uket.app.admin.api.dto.response.TicketingResponse;
 import com.uket.app.admin.api.exception.AdminException;
 import com.uket.core.exception.ErrorCode;
 import java.lang.reflect.InvocationTargetException;
@@ -79,6 +80,8 @@ public class MaskingAspect {
             return (T) ticketResponse.withMaskedValues();
         } else if (response instanceof LiveEnterUserResponse liveEnterUserResponse) {
             return (T) liveEnterUserResponse.withMaskedValues();
+        } else if (response instanceof TicketingResponse ticketingResponse) {
+            return (T) ticketingResponse.withMaskedValues();
         }
 
         throw new AdminException(ErrorCode.NOT_REGISTERED_TICKET_MASKING_TYPE);
