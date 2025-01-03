@@ -18,4 +18,6 @@ public record AnswerDto(
                 .userId(answer.getUser().getId())
                 .build();
     }
+
+    public static AnswerDto noAnswerDto = new AnswerDto(-1L, -1L, -1L, "");
 }

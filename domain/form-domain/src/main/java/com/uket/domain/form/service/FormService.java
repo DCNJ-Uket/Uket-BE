@@ -44,6 +44,8 @@ public class FormService {
 
     public AnswerDto findAnswerByFormIdAndUserId(Long formId, Long userId) {
         Answer answer = answerRepository.findAnswerByFormIdAndUserId(formId, userId);
+        if(answer == null)
+            return AnswerDto.noAnswerDto;
         return AnswerDto.from(answer);
     }
 
