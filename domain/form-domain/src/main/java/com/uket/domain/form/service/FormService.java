@@ -71,6 +71,11 @@ public class FormService {
         return answerRepository.saveAll(answers);
     }
 
+    @Transactional
+    public void deleteAnswers(Long userId) {
+        answerRepository.deleteAllByUserId(userId);
+    }
+
     private List<Answer> createAnswers(List<Form> forms, Users user, List<FormResponseDto> responses) {
         List<Answer> answers = new ArrayList<>();
         Map<Long, Form> formMap = forms.stream().collect(Collectors.toMap(Form::getId, form -> form));

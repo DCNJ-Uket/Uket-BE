@@ -3,8 +3,10 @@ package com.uket.domain.ticket.dto;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
+import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.user.entity.Users;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import lombok.Builder;
 
