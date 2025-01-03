@@ -108,7 +108,8 @@ public enum ErrorCode {
     NOT_FOUND_RESPONSE(404, "FO0003", "해당 질문에 대한 응답이 없습니다."),
     EXCEED_MAX_LENGTH(400, "FO0004", "질문에 대한 응답이 최대 길이를 초과했습니다."),
     NOT_A_NUMBER(400, "FO0005", "질문에 대한 응답이 숫자 형태가 아닌 문자열입니다"),
-    NOT_IN_RANGE(400, "FO0006", "질문에 대한 응답이 목록에 없습니다.");
+    NOT_IN_RANGE(400, "FO0006", "질문에 대한 응답이 목록에 없습니다."),
+    NOT_FOUND_NECESSARY_RESPONSE(404, "FO0007", "필수 질문에 대한 응답이 없습니다.");
 
     private final int status;
     private final String code;

@@ -42,10 +42,12 @@ public class FormService {
         return formRepository.findBySurveyId(surveyId);
     }
 
-    public AnswerDto findAnswerByFormIdAndUserId(Long formId, Long userId) {
+    public AnswerDto findAnswerByFormIdAndUserId(Long formId, Long userId, boolean isNecessary) {
         Answer answer = answerRepository.findAnswerByFormIdAndUserId(formId, userId);
         if(answer == null)
-            return AnswerDto.noAnswerDto;
+            throw new FormException(ErrorCode.NOT_FOUND_RESPONSE);
+        if(isNecessary && answer.getResponse().isEmpty())
+            throw new FormException(ErrorCode.NOT_FOUND_NECESSARY_RESPONSE);
         return AnswerDto.from(answer);
     }
 
