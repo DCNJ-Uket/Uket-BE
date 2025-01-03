@@ -47,6 +47,7 @@ public class TicketSearchServiceTest {
                 .formType(FormType.TEXT)
                 .maxLength(100)
                 .question("sample text question")
+                .isNecessary(true)
                 .build();
 
         Options option1 = Options.builder()
@@ -62,6 +63,7 @@ public class TicketSearchServiceTest {
                 .formType(FormType.DROPDOWN)
                 .question("sample dropdown question")
                 .options(List.of(option1, option2))
+                .isNecessary(true)
                 .build();
 
         Users user1 = Users.builder()
@@ -90,10 +92,10 @@ public class TicketSearchServiceTest {
 
         when(eventService.findSurveyById(event.getId())).thenReturn(survey);
         when(formService.findFormsBySurveyId(survey.getId())).thenReturn(List.of(form1, form2));
-        when(formService.findAnswerByFormIdAndUserId(form1.getId(), user1.getId())).thenReturn(answerDto1);
-        when(formService.findAnswerByFormIdAndUserId(form2.getId(), user1.getId())).thenReturn(answerDto2);
-        when(formService.findAnswerByFormIdAndUserId(form1.getId(), user2.getId())).thenReturn(answerDto3);
-        when(formService.findAnswerByFormIdAndUserId(form2.getId(), user2.getId())).thenReturn(answerDto4);
+        when(formService.findAnswerByFormIdAndUserId(form1.getId(), user1.getId(), form1.getIsNecessary())).thenReturn(answerDto1);
+        when(formService.findAnswerByFormIdAndUserId(form2.getId(), user1.getId(), form2.getIsNecessary())).thenReturn(answerDto2);
+        when(formService.findAnswerByFormIdAndUserId(form1.getId(), user2.getId(), form1.getIsNecessary())).thenReturn(answerDto3);
+        when(formService.findAnswerByFormIdAndUserId(form2.getId(), user2.getId(), form2.getIsNecessary())).thenReturn(answerDto4);
 
         //when
         List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllUserAnswersFromTickets(tickets);
