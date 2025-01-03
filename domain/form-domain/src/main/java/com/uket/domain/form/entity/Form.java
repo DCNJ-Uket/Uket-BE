@@ -44,6 +44,8 @@ public class Form extends BaseEntity {
     private String question;
     private Integer maxLength;
 
+    private Boolean isNecessary;
+
     public boolean containsInOptions(String response) {
         //true -> contains
         return options.stream()
