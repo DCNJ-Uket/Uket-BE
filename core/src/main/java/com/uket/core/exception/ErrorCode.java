@@ -82,9 +82,9 @@ public enum ErrorCode {
     FAIL_TO_FIND_TICKET(404, "TI009", "해당 티켓을 찾을 수 없습니다. 티켓 아이디를 다시 확인해주세요."),
     FAIL_TICKET_CANCEL(400,"TI0010","예매된 티켓이 존재하지 않습니다."),
     NOT_FOUND_TICKET(404, "TI0011", "해당 사용자에 해당하는 티켓이 존재하지 않습니다."),
-    BEFORE_PAYMENT_TICKET(400,"TI0012","입금이 완료되지 않은 티켓입니다."),
-    ALREADY_ENTER_TICKET(400,"TI0013","이미 입장이 완료된 티켓입니다."),
-    EXPIRED_TICKET(400, "TI0014", "기간이 지나 이미 만료된 티켓입니다."),
+    BEFORE_PAYMENT_TICKET(400,"TI0012","예약은 완료되었으나 아직 해당 티켓 금액이 입금되지 않았습니다."),
+    ALREADY_ENTER_TICKET(400,"TI0013","입장이 이미 완료된 티켓입니다. 재입장은 담당자에게 문의 부탁드립니다."),
+    EXPIRED_TICKET(400, "TI0014", "이미 기간이 지난 티켓입니다. 날짜를 확인해주세요."),
     NOT_REGISTERED_TICKET_MASKING_TYPE(400, "T10015", "지원되지않는 타입의 마스킹 요청입니다."),
 
     /**
