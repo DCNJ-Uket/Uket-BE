@@ -58,7 +58,19 @@ public class FormService {
         Users user = userRepository.findById(userId)
             .orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
 
-        List<Answer> answers = createAnswers(survey.getForms(), user, responses);
+        List<FormResponseDto> updatedResponses = responses.stream()
+            .map(responseDto -> {
+                if (responseDto.response().isEmpty()) {
+                    return FormResponseDto.builder()
+                        .formId(responseDto.formId())
+                        .response("응답하지 않았습니다.")
+                        .build();
+                }
+                return responseDto;
+            })
+            .toList();
+
+        List<Answer> answers = createAnswers(survey.getForms(), user, updatedResponses);
         answers.forEach(Answer::validate);
         return answerRepository.saveAll(answers);
     }
