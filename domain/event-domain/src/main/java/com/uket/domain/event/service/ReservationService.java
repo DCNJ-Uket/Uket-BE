@@ -1,5 +1,6 @@
 package com.uket.domain.event.service;
 
+import com.uket.core.exception.BaseException;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.dto.ReservationDto;
 import com.uket.domain.event.dto.ReservationQueryDto;
@@ -14,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
 
+    @Transactional(readOnly = true)
     public List<ReservationDto> findByShowIdAndReservationUserType(Long showId, ReservationUserType reservationUserType) {
         List<ReservationQueryDto> reservationQueryDtos;
 
@@ -32,8 +33,20 @@ public class ReservationService {
         return reservationQueryDtos.stream().map(ReservationDto::from).toList();
     }
 
+    @Transactional(readOnly = true)
     public Reservation findById(Long reservationId) {
         return reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new EventException(ErrorCode.NOT_FOUND_RESERVATION));
+    }
+
+    @Transactional
+    public Reservation increaseReservedCount(Long reservationId) {
+        Reservation reservation = this.findById(reservationId);
+        Boolean isSuccess = reservation.increaseReservedCount();
+
+        if (Boolean.FALSE.equals(isSuccess)) {
+            throw new BaseException(ErrorCode.FAIL_TICKETING_COUNT);
+        }
+        return reservationRepository.save(reservation);
     }
 }
