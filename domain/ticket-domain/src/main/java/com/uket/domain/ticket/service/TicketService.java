@@ -78,11 +78,16 @@ public class TicketService {
 
     @Transactional(readOnly = true)
     public List<Ticket> findAllTicketsByUserId(Long userId) {
-        return ticketRepository.findAllByUserIdAndStatusNot(userId, TicketStatus.RESERVATION_CANCEL);
+        List<TicketStatus> excludedStatuses = List.of(TicketStatus.RESERVATION_CANCEL, TicketStatus.EXPIRED);
+        return ticketRepository.findValidTicketsByUserId(userId, excludedStatuses);
     }
 
     @Transactional
     public void deleteAllUserTickets(Long userId) {
+        List<Ticket> tickets = ticketRepository.findAllByUserIdAndStatusNotWithReservation(userId, TicketStatus.RESERVATION_CANCEL);
+        for(Ticket ticket : tickets) {
+            this.decreaseReservedCount(ticket.getReservation().getId());
+        }
         ticketRepository.deleteAllByUserId(userId);
     }
 
@@ -96,6 +101,21 @@ public class TicketService {
         ticketRepository.save(ticket);
 
         return new CancelTicketDto(ticket.getId(), ticket.getStatus().getValue(), ticket.getReservation().getId());
+    }
+
+    public void validateTicketStatus(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+
+        TicketStatus ticketStatus = ticket.getStatus();
+
+        if(ticketStatus == TicketStatus.FINISH_ENTER) {
+            throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
+        } else if (ticketStatus == TicketStatus.EXPIRED) {
+            throw new TicketException(ErrorCode.EXPIRED_TICKET);
+        } else if (ticketStatus == TicketStatus.FINISH_ENTER) {
+            throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
+        }
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package com.uket.app.ticket.api.controller;
 
+import com.uket.app.ticket.api.dto.response.ActiveUniversitiesResponse;
 import com.uket.app.ticket.api.dto.response.CertifiableUniversityResponse;
 import com.uket.app.ticket.api.dto.response.CurrentEventResponse;
 import com.uket.app.ticket.api.dto.response.ListResponse;
@@ -26,7 +27,7 @@ public interface UniversityApi {
 
     @GetMapping
     @Operation(summary = "전체 대학 조회 API", description = "현재 진행중인 축제가 있는 모든 대학을 조회합니다.")
-    ResponseEntity<ListResponse<UniversityDto>> getUniversities();
+    ResponseEntity<ListResponse<ActiveUniversitiesResponse>> getUniversities();
 
     @GetMapping(value = "/{id}/event")
     @Operation(summary = "대학별 진행중인 축제 조회 API", description = "대학별 진행중인 축제를 조회합니다.")

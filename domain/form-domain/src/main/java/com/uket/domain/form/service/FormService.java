@@ -42,8 +42,12 @@ public class FormService {
         return formRepository.findBySurveyId(surveyId);
     }
 
-    public AnswerDto findAnswerByFormIdAndUserId(Long formId, Long userId) {
+    public AnswerDto findAnswerByFormIdAndUserId(Long formId, Long userId, boolean isNecessary) {
         Answer answer = answerRepository.findAnswerByFormIdAndUserId(formId, userId);
+        if(answer == null)
+            throw new FormException(ErrorCode.NOT_FOUND_RESPONSE);
+        if(isNecessary && answer.getResponse().isEmpty())
+            throw new FormException(ErrorCode.NOT_FOUND_NECESSARY_RESPONSE);
         return AnswerDto.from(answer);
     }
 
@@ -67,6 +71,11 @@ public class FormService {
         List<Answer> answers = createAnswers(survey.getForms(), user, responses);
         answers.forEach(Answer::validate);
         return answerRepository.saveAll(answers);
+    }
+
+    @Transactional
+    public void deleteAnswers(Long userId) {
+        answerRepository.deleteAllByUserId(userId);
     }
 
     private List<Answer> createAnswers(List<Form> forms, Users user, List<FormResponseDto> responses) {
