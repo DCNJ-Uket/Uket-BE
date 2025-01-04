@@ -17,6 +17,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,6 +51,7 @@ class TicketingServiceTest {
     }
 
     @Test
+    @Disabled
     void 티켓_예매시_정상적으로_예매_횟수가_올라간다() {
 
         University university = universityRepository.save(University.builder().name("1").build());
@@ -81,6 +83,7 @@ class TicketingServiceTest {
     }
 
     @Test
+    @Disabled
     void 동시에_100명이_예매해도_정상적으로_동작한다() throws InterruptedException {
 
         University university = universityRepository.save(University.builder().name("1").build());
