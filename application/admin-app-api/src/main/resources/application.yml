@@ -125,7 +125,7 @@ spring:
     password: ${DEV_MYSQL_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
 app:

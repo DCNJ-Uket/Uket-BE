@@ -128,7 +128,7 @@ spring:
     clean-disabled: true
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQL8Dialect
 
 app:
