@@ -19,5 +19,5 @@ public record AnswerDto(
                 .build();
     }
 
-    public static AnswerDto noAnswerDto = new AnswerDto(-1L, -1L, -1L, "");
+    public static AnswerDto noAnswerDto = new AnswerDto(-1L, -1L, -1L, "미응답");
 }
