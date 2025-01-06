@@ -3,19 +3,19 @@ package com.uket.domain.ticket.dto;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
-import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.user.entity.Users;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import lombok.Builder;
 
 @Builder
 public record CheckTicketDto(
     String userName,
-    LocalDateTime showDate,
-    LocalDateTime enterStartTime,
-    LocalDateTime enterEndTime,
+    ZonedDateTime showDate,
+    ZonedDateTime enterStartTime,
+    ZonedDateTime enterEndTime,
     String showLocation,
     String universityName,
     String ticketStatus,
@@ -30,6 +30,8 @@ public record CheckTicketDto(
 
     Timestamp createdAt
 ) {
+    private static final String zoneId = "Asia/Seoul";
+
     public static CheckTicketDto from(Ticket ticket) {
         Users user = ticket.getUser();
         Events event = ticket.getEvent();
@@ -38,9 +40,9 @@ public record CheckTicketDto(
 
         return CheckTicketDto.builder()
             .userName(user.getName())
-            .showDate(show.getStartDate())
-            .enterStartTime(reservation.getStartTime())
-            .enterEndTime(reservation.getEndTime())
+            .showDate(show.getStartDate().atZone(ZoneId.of(zoneId)))
+            .enterStartTime(reservation.getStartTime().atZone(ZoneId.of(zoneId)))
+            .enterEndTime(reservation.getEndTime().atZone(ZoneId.of(zoneId)))
             .showLocation(show.getLocation())
             .universityName(event.getUniversity().getName())
             .ticketStatus(ticket.getStatus().getValue())
