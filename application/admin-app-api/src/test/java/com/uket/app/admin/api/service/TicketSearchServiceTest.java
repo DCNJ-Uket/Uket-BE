@@ -1,10 +1,9 @@
 package com.uket.app.admin.api.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
-
 import com.uket.app.admin.api.dto.CheckTicketingDto;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.service.EventService;
@@ -38,60 +37,60 @@ public class TicketSearchServiceTest {
     void 티켓_예매목록에_질의응답_정보_추가() {
         //given
         List<CheckTicketDto> tickets = List.of(
-                CheckTicketDto.builder().eventId(1L).userId(1L).build(),
-                CheckTicketDto.builder().eventId(1L).userId(2L).build()
+            CheckTicketDto.builder().eventId(1L).userId(1L).build(),
+            CheckTicketDto.builder().eventId(1L).userId(2L).build()
         );
 
         Events event = Events.builder().id(1L).build();
         Survey survey = Survey.builder().id(1L).build();
 
         Form form1 = Form.builder()
-                .id(1L)
-                .formType(FormType.TEXT)
-                .maxLength(100)
-                .question("sample text question")
-                .isNecessary(true)
-                .build();
+            .id(1L)
+            .formType(FormType.TEXT)
+            .maxLength(100)
+            .question("sample text question")
+            .isNecessary(true)
+            .build();
 
         Options option1 = Options.builder()
-                .id(1L)
-                .value("option1")
-                .build();
+            .id(1L)
+            .value("option1")
+            .build();
         Options option2 = Options.builder()
-                .id(1L)
-                .value("option2")
-                .build();
+            .id(1L)
+            .value("option2")
+            .build();
         Form form2 = Form.builder()
-                .id(2L)
-                .formType(FormType.DROPDOWN)
-                .question("sample dropdown question")
-                .options(List.of(option1, option2))
-                .isNecessary(true)
-                .build();
+            .id(2L)
+            .formType(FormType.DROPDOWN)
+            .question("sample dropdown question")
+            .options(List.of(option1, option2))
+            .isNecessary(true)
+            .build();
 
         Users user1 = Users.builder()
-                .id(1L)
-                .build();
+            .id(1L)
+            .build();
         Users user2 = Users.builder()
-                .id(2L)
-                .build();
+            .id(2L)
+            .build();
 
         AnswerDto answerDto1 = AnswerDto.builder()
-                .answerId(1L)
-                .response("sample text answer")
-                .build();
+            .answerId(1L)
+            .response("sample text answer")
+            .build();
         AnswerDto answerDto2 = AnswerDto.builder()
-                .answerId(2L)
-                .response("option2")
-                .build();
+            .answerId(2L)
+            .response("option2")
+            .build();
         AnswerDto answerDto3 = AnswerDto.builder()
-                .answerId(1L)
-                .response("sample text answer2")
-                .build();
+            .answerId(1L)
+            .response("sample text answer2")
+            .build();
         AnswerDto answerDto4 = AnswerDto.builder()
-                .answerId(2L)
-                .response("option1")
-                .build();
+            .answerId(2L)
+            .response("option1")
+            .build();
 
         when(eventService.findSurveyById(event.getId())).thenReturn(survey);
         when(formService.findFormsBySurveyId(survey.getId())).thenReturn(List.of(form1, form2));
@@ -114,10 +113,10 @@ public class TicketSearchServiceTest {
     void 필수응답_예외처리() {
         //given
         List<CheckTicketDto> tickets1 = List.of(
-                CheckTicketDto.builder().eventId(1L).userId(1L).build()
+            CheckTicketDto.builder().eventId(1L).userId(1L).build()
         );
         List<CheckTicketDto> tickets2 = List.of(
-                CheckTicketDto.builder().eventId(2L).userId(2L).build()
+            CheckTicketDto.builder().eventId(2L).userId(2L).build()
         );
 
         Events event = Events.builder().id(1L).build();
@@ -126,35 +125,35 @@ public class TicketSearchServiceTest {
         Survey survey2 = Survey.builder().id(2L).build();
 
         Form form1 = Form.builder()
-                .id(1L)
-                .formType(FormType.TEXT)
-                .maxLength(100)
-                .question("sample text question")
-                .isNecessary(true)
-                .build();
+            .id(1L)
+            .formType(FormType.TEXT)
+            .maxLength(100)
+            .question("sample text question")
+            .isNecessary(true)
+            .build();
 
         Options option1 = Options.builder()
-                .id(1L)
-                .value("option1")
-                .build();
+            .id(1L)
+            .value("option1")
+            .build();
         Options option2 = Options.builder()
-                .id(1L)
-                .value("option2")
-                .build();
+            .id(1L)
+            .value("option2")
+            .build();
         Form form2 = Form.builder()
-                .id(2L)
-                .formType(FormType.DROPDOWN)
-                .question("sample dropdown question")
-                .options(List.of(option1, option2))
-                .isNecessary(true)
-                .build();
+            .id(2L)
+            .formType(FormType.DROPDOWN)
+            .question("sample dropdown question")
+            .options(List.of(option1, option2))
+            .isNecessary(true)
+            .build();
 
         Users user1 = Users.builder()
-                .id(1L)
-                .build();
+            .id(1L)
+            .build();
         Users user2 = Users.builder()
-                .id(2L)
-                .build();
+            .id(2L)
+            .build();
 
         when(eventService.findSurveyById(event.getId())).thenReturn(survey);
         when(eventService.findSurveyById(event2.getId())).thenReturn(survey2);
@@ -165,11 +164,11 @@ public class TicketSearchServiceTest {
 
         //when
         assertThatThrownBy(() -> ticketSearchService.searchAllUserAnswersFromTickets(tickets1))
-                .isInstanceOf(FormException.class)
-                .hasMessage(ErrorCode.NOT_FOUND_RESPONSE.getMessage());
+            .isInstanceOf(FormException.class)
+            .hasMessage(ErrorCode.NOT_FOUND_RESPONSE.getMessage());
         assertThatThrownBy(() -> ticketSearchService.searchAllUserAnswersFromTickets(tickets2))
-                .isInstanceOf(FormException.class)
-                .hasMessage(ErrorCode.NOT_FOUND_NECESSARY_RESPONSE.getMessage());
+            .isInstanceOf(FormException.class)
+            .hasMessage(ErrorCode.NOT_FOUND_NECESSARY_RESPONSE.getMessage());
 
         //then
     }

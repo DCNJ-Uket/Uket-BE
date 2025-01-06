@@ -53,13 +53,13 @@ public class TicketService {
          */
 
         Ticket ticket = Ticket.builder()
-                .user(user)
-                .reservation(reservation)
-                .event(createTicketDto.event())
-                .show(createTicketDto.show())
-                .status(createTicketDto.status())
-                .ticketNo(UUID.randomUUID().toString())
-                .build();
+            .user(user)
+            .reservation(reservation)
+            .event(createTicketDto.event())
+            .show(createTicketDto.show())
+            .status(createTicketDto.status())
+            .ticketNo(UUID.randomUUID().toString())
+            .build();
 
         return ticketRepository.save(ticket);
     }
@@ -67,7 +67,7 @@ public class TicketService {
     @Transactional(readOnly = true)
     public Ticket findById(Long ticketId) {
         return ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
     }
 
     public void checkTicketOwner(Long userId, Long ticketId) {
@@ -94,7 +94,7 @@ public class TicketService {
     @Transactional
     public CancelTicketDto cancelTicketByUserIdAndId(Long userId, Long ticketId) {
         Ticket ticket = ticketRepository.findByUserIdAndId(userId, ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
         ticket.cancel();
         ticket.updateDeletedAt();
@@ -121,10 +121,15 @@ public class TicketService {
     @Transactional
     public Ticket updateTicketStatus(Long ticketId, TicketStatus ticketStatus) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
         if(ticketStatus == TicketStatus.RESERVATION_CANCEL) {
             this.decreaseReservedCount(ticket.getReservation().getId());
+        }
+
+        if(ticketStatus == TicketStatus.FINISH_ENTER) {
+            ticket.enter();
+            return ticketRepository.save(ticket);
         }
         Ticket updatedTicket = ticket.updateStatus(ticketStatus);
         return ticketRepository.save(updatedTicket);
