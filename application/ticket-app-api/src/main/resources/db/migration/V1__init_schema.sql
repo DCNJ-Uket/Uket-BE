@@ -9,13 +9,6 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema uket
--- -----------------------------------------------------
-
--- -----------------------------------------------------
 -- Schema uket
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `uket` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
@@ -32,7 +25,6 @@ CREATE TABLE IF NOT EXISTS `uket`.`admin` (
   `password` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`admin_id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -49,7 +41,6 @@ CREATE TABLE IF NOT EXISTS `uket`.`university` (
   PRIMARY KEY (`university_id`),
   UNIQUE INDEX `UKru212k5vib3yvu360fuy3h1g5` (`name` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -68,12 +59,8 @@ CREATE TABLE IF NOT EXISTS `uket`.`events` (
   `location` VARCHAR(255) NULL DEFAULT NULL,
   `deposit_url` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`event_id`),
-  INDEX `FK3ko5bqqgrh490lyj3poc9xxxd` (`university_id` ASC) VISIBLE,
-  CONSTRAINT `FK3ko5bqqgrh490lyj3poc9xxxd`
-    FOREIGN KEY (`university_id`)
-    REFERENCES `uket`.`university` (`university_id`))
+  INDEX `FK3ko5bqqgrh490lyj3poc9xxxd` (`university_id` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -87,12 +74,8 @@ CREATE TABLE IF NOT EXISTS `uket`.`banner` (
   `path` VARCHAR(255) NULL DEFAULT NULL,
   `title` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`banner_id`),
-  INDEX `FKdppoymcfgci3rb0nkgp40coff` (`event_id` ASC) VISIBLE,
-  CONSTRAINT `FKdppoymcfgci3rb0nkgp40coff`
-    FOREIGN KEY (`event_id`)
-    REFERENCES `uket`.`events` (`event_id`))
+  INDEX `FKdppoymcfgci3rb0nkgp40coff` (`event_id` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -112,12 +95,8 @@ CREATE TABLE IF NOT EXISTS `uket`.`shows` (
   `total_ticket_count` INT NULL DEFAULT NULL,
   `event_id` BIGINT NULL DEFAULT NULL,
   PRIMARY KEY (`show_id`),
-  INDEX `FK62bhbunvyn8qgmtwgwrqsu0pn` (`event_id` ASC) VISIBLE,
-  CONSTRAINT `FK62bhbunvyn8qgmtwgwrqsu0pn`
-    FOREIGN KEY (`event_id`)
-    REFERENCES `uket`.`events` (`event_id`))
+  INDEX `FK62bhbunvyn8qgmtwgwrqsu0pn` (`event_id` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -133,15 +112,11 @@ CREATE TABLE IF NOT EXISTS `uket`.`reservation` (
   `reserved_count` INT NULL DEFAULT NULL,
   `start_time` DATETIME(6) NULL DEFAULT NULL,
   `total_count` INT NULL DEFAULT NULL,
-  `type` ENUM('TICKETING_ALL', 'TICKETING_STUDENT') NULL DEFAULT NULL,
+  `type` VARCHAR(255) NOT NULL,
   `show_id` BIGINT NULL DEFAULT NULL,
   PRIMARY KEY (`reservation_id`),
-  UNIQUE INDEX `UKqiv25fjceva4udkdt8rr88tkm` (`show_id` ASC, `start_time` ASC, `end_time` ASC) VISIBLE,
-  CONSTRAINT `FKnkixaet37j2pq8iqv395cdpr8`
-    FOREIGN KEY (`show_id`)
-    REFERENCES `uket`.`shows` (`show_id`))
+  UNIQUE INDEX `UKqiv25fjceva4udkdt8rr88tkm` (`show_id` ASC, `start_time` ASC, `end_time` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 46
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -158,7 +133,6 @@ CREATE TABLE IF NOT EXISTS `uket`.`user_details` (
   `university_email` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`user_details_id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 148
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -174,23 +148,16 @@ CREATE TABLE IF NOT EXISTS `uket`.`users` (
   `is_registered` BIT(1) NULL DEFAULT NULL,
   `name` VARCHAR(255) NULL DEFAULT NULL,
   `phone_number` VARCHAR(255) NULL DEFAULT NULL,
-  `platform` ENUM('KAKAO', 'GOOGLE') NULL DEFAULT NULL,
+  `platform` VARCHAR(255) NOT NULL,
   `platform_id` VARCHAR(255) NULL DEFAULT NULL,
-  `role` ENUM('ROLE_USER', 'ROLE_ADMIN') NULL DEFAULT NULL,
+  `role` VARCHAR(255) NOT NULL,
   `university_id` BIGINT NULL DEFAULT NULL,
   `user_details_id` BIGINT NULL DEFAULT NULL,
   `profile_image` VARCHAR(1000) NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `UK_4ai7rrtrvwtgtqavv8okpxrul` (`user_details_id` ASC) VISIBLE,
-  INDEX `FKg6bhc1g69lfy3mquw927rmr9m` (`university_id` ASC) VISIBLE,
-  CONSTRAINT `FK8uj8y5ad4xl01w9wcracimb14`
-    FOREIGN KEY (`user_details_id`)
-    REFERENCES `uket`.`user_details` (`user_details_id`),
-  CONSTRAINT `FKg6bhc1g69lfy3mquw927rmr9m`
-    FOREIGN KEY (`university_id`)
-    REFERENCES `uket`.`university` (`university_id`))
+  INDEX `FKg6bhc1g69lfy3mquw927rmr9m` (`university_id` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 24
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -203,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `uket`.`ticket` (
   `created_at` DATETIME(6) NULL DEFAULT NULL,
   `modified_at` DATETIME(6) NULL DEFAULT NULL,
   `payment_at` DATETIME(6) NULL DEFAULT NULL,
-  `status` ENUM('BEFORE_ENTER', 'FINISH_ENTER', 'BEFORE_PAYMENT', 'RESERVATION_CANCEL', 'EXPIRED') NULL DEFAULT NULL,
+  `status` VARCHAR(255) NOT NULL,
   `event_id` BIGINT NULL DEFAULT NULL,
   `reservation_id` BIGINT NULL DEFAULT NULL,
   `show_id` BIGINT NULL DEFAULT NULL,
@@ -216,21 +183,8 @@ CREATE TABLE IF NOT EXISTS `uket`.`ticket` (
   INDEX `FKpfmdrnx3oxo7d7qmkaf68pnsj` (`event_id` ASC) VISIBLE,
   INDEX `FKocy25e6lqyhj0c7bcb5auii7n` (`reservation_id` ASC) VISIBLE,
   INDEX `FKoqx6x1gm4qrcl0li6c8j9k0d7` (`show_id` ASC) VISIBLE,
-  INDEX `FKmvugyjf7b45u0juyue7k3pct0` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `FKmvugyjf7b45u0juyue7k3pct0`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `uket`.`users` (`user_id`),
-  CONSTRAINT `FKocy25e6lqyhj0c7bcb5auii7n`
-    FOREIGN KEY (`reservation_id`)
-    REFERENCES `uket`.`reservation` (`reservation_id`),
-  CONSTRAINT `FKoqx6x1gm4qrcl0li6c8j9k0d7`
-    FOREIGN KEY (`show_id`)
-    REFERENCES `uket`.`shows` (`show_id`),
-  CONSTRAINT `FKpfmdrnx3oxo7d7qmkaf68pnsj`
-    FOREIGN KEY (`event_id`)
-    REFERENCES `uket`.`events` (`event_id`))
+  INDEX `FKmvugyjf7b45u0juyue7k3pct0` (`user_id` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 20990
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
