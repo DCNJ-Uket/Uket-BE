@@ -1,7 +1,6 @@
 package com.uket.domain.event.dto;
 
 import com.uket.domain.event.entity.Shows;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import lombok.Builder;
