@@ -58,26 +58,21 @@ public class FormService {
         Users user = userRepository.findById(userId)
             .orElseThrow(() -> new UserException(ErrorCode.NOT_FOUND_USER));
 
-        List<FormResponseDto> updatedResponses = responses.stream()
-            .map(responseDto -> {
-                Form form = formRepository.findById(responseDto.formId())
-                    .orElseThrow(() -> new FormException(ErrorCode.NOT_FOUND_FORM));
+        List<FormResponseDto> answerResponses = new ArrayList<>();
+        for(FormResponseDto formResponseDto : responses) {
+            Form form = formRepository.findById(formResponseDto.formId())
+                .orElseThrow(() -> new FormException(ErrorCode.NOT_FOUND_FORM));
 
-                if (Boolean.TRUE.equals(form.getIsNecessary()) && responseDto.response().isEmpty()) {
+            if(!formResponseDto.response().isEmpty()) {
+                answerResponses.add(formResponseDto);
+            } else {
+                if(Boolean.TRUE.equals(form.getIsNecessary())) {
                     throw new FormException(ErrorCode.NOT_FOUND_RESPONSE);
                 }
+            }
+        }
 
-                if (Boolean.FALSE.equals(form.getIsNecessary()) && responseDto.response().isEmpty()) {
-                    return FormResponseDto.builder()
-                        .formId(responseDto.formId())
-                        .response("응답하지 않았습니다.")
-                        .build();
-                }
-                return responseDto;
-            })
-            .toList();
-
-        List<Answer> answers = createAnswers(survey.getForms(), user, updatedResponses);
+        List<Answer> answers = createAnswers(survey.getForms(), user, answerResponses);
         answers.forEach(Answer::validate);
         return answerRepository.saveAll(answers);
     }
