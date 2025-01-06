@@ -8,6 +8,8 @@ import com.uket.domain.form.dto.AnswerDto;
 import com.uket.domain.form.dto.FormAnswerDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import lombok.Builder;
 
@@ -19,22 +21,23 @@ public record TicketingResponse(
     String depositorName,
     @Mask(type = MaskingType.PHONE)
     String telephone,
-    LocalDateTime showTime,
-    LocalDateTime orderDate,
-    LocalDateTime updatedDate,
+    ZonedDateTime showTime,
+    ZonedDateTime orderDate,
+    ZonedDateTime updatedDate,
     String ticketStatus,
     String userType,
     List<FormAnswerDto> formAnswers
 ) {
+    private static final String zoneId = "Asia/Seoul";
 
     public static TicketingResponse from(CheckTicketingDto checkTicketingDto) {
         return TicketingResponse.builder()
             .ticketId(checkTicketingDto.ticket().ticketId())
             .depositorName(checkTicketingDto.ticket().userName())
             .telephone(checkTicketingDto.ticket().phoneNumber())
-            .showTime(checkTicketingDto.ticket().showStartDate())
-            .orderDate(checkTicketingDto.ticket().createdAt())
-            .updatedDate(checkTicketingDto.ticket().updatedAt())
+            .showTime(checkTicketingDto.ticket().showStartDate().atZone(ZoneId.of(zoneId)))
+            .orderDate(checkTicketingDto.ticket().createdAt().atZone(ZoneId.of(zoneId)))
+            .updatedDate(checkTicketingDto.ticket().updatedAt().atZone(ZoneId.of(zoneId)))
             .ticketStatus(checkTicketingDto.ticket().ticketStatus())
             .userType(checkTicketingDto.ticket().userType())
             .formAnswers(checkTicketingDto.formAnswers())

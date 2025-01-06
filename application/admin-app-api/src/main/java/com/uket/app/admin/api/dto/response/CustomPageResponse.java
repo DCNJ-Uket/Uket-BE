@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public record CustomPageResponse<T>(
-    List<T> content         ,
+    List<T> content,
     int pageNumber,
     int pageSize,
     boolean first,
