@@ -1,7 +1,6 @@
 package com.uket.app.ticket.api.service;
 
 import com.uket.app.ticket.api.util.TicketingValidator;
-import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
@@ -10,7 +9,6 @@ import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
-import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.service.TicketService;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.service.UniversityService;
@@ -34,26 +32,16 @@ public class TicketingService {
 
     private final TicketingValidator ticketingValidator;
 
-    @Transactional
-    public TicketDto ticketing(Long userId, Long universityId, Long reservationId) {
+    @DistributedLock(key = "#reservationId")
+    public TicketDto ticketing(Long reservationId, Long userId, Long universityId) {
+        Reservation reservation = reservationService.increaseReservedCount(reservationId);
 
         Users user = userService.findById(userId);
         University university = universityService.findById(universityId);
-        Reservation reservation = reservationService.findById(reservationId);
 
         CreateTicketDto createTicketDto = generateCreateTicketDto(user, university, reservation);
         Ticket ticket = ticketService.save(createTicketDto);
         return TicketDto.from(ticket);
-    }
-
-    @DistributedLock(key = "#reservationId")
-    public void increaseReservedCount(Long reservationId) {
-        Reservation reservation = reservationService.findById(reservationId);
-        Boolean isSuccess = reservation.increaseReservedCount();
-
-        if (Boolean.FALSE.equals(isSuccess)) {
-            throw new TicketException(ErrorCode.FAIL_TICKETING_COUNT);
-        }
     }
 
     @Transactional(readOnly = true)

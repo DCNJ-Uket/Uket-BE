@@ -3,7 +3,6 @@ package com.uket.domain.ticket.service;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.service.ReservationService;
-import com.uket.domain.ticket.dto.AccountInfoDto;
 import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
@@ -12,10 +11,7 @@ import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,11 +40,9 @@ public class TicketService {
         Users user = createTicketDto.user();
         Reservation reservation = createTicketDto.reservation();
 
-        /*
         if(Boolean.TRUE.equals(ticketRepository.existsByUserAndReservationAndStatusNot(user, reservation, TicketStatus.RESERVATION_CANCEL))){
             throw new TicketException(ErrorCode.ALREADY_EXIST_TICKET);
         }
-         */
 
         Ticket ticket = Ticket.builder()
                 .user(user)
@@ -111,8 +105,6 @@ public class TicketService {
             throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
         } else if (ticketStatus == TicketStatus.EXPIRED) {
             throw new TicketException(ErrorCode.EXPIRED_TICKET);
-        } else if (ticketStatus == TicketStatus.FINISH_ENTER) {
-            throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
         }
     }
 
