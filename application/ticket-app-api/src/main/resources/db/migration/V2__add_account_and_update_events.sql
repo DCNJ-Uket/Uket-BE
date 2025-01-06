@@ -1,7 +1,7 @@
 ALTER TABLE events DROP COLUMN deposit_url;
 
 -- Create Account table
-CREATE TABLE account (
+CREATE TABLE IF NOT EXISTS account (
                          account_id BIGINT AUTO_INCREMENT PRIMARY KEY,
                          deposit_url VARCHAR(255) NOT NULL,
                          account_number VARCHAR(50),
