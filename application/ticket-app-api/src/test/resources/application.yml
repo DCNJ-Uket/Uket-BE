@@ -1,10 +1,11 @@
 spring:
-  flyway:
+  datasource:
+    driverClassName: org.h2.Driver
     url: jdbc:h2:mem:test;MODE=MySQL;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1
-    baseline-on-migrate: true
-    locations: classpath:db/migration/test
-    user: sa
+    username: sa
     password:
+    hikari:
+      maximum-pool-size: 40
   data:
     redis:
       lock:
@@ -16,9 +17,15 @@ spring:
     init:
       mode: never
       encoding: UTF-8
+  flyway:
+    locations: classpath:db/migration/test
+    enabled: true
+    schemas: default
+    baseline-on-migrate: true
+    baseline-version: 1
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     open-in-view: false
     properties:
       hibernate:
@@ -30,13 +37,6 @@ spring:
         order_inserts: true
         order_updates: true
     show-sql: true
-  datasource:
-    driverClassName: org.h2.Driver
-    url: jdbc:h2:mem:test;MODE=MySQL;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1
-    username: sa
-    password:
-    hikari:
-      maximum-pool-size: 40
   cloud:
     aws:
       s3:

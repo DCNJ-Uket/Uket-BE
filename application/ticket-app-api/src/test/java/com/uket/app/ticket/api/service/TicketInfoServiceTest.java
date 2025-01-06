@@ -2,13 +2,17 @@ package com.uket.app.ticket.api.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.uket.domain.event.entity.Account;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
 import com.uket.domain.event.enums.ReservationUserType;
+import com.uket.domain.event.repository.AccountRepository;
 import com.uket.domain.event.repository.EventRepository;
 import com.uket.domain.event.repository.ReservationRepository;
 import com.uket.domain.event.repository.ShowRepository;
+import com.uket.domain.form.entity.Survey;
+import com.uket.domain.form.repository.SurveyRepository;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
@@ -47,6 +51,10 @@ class TicketInfoServiceTest {
     UniversityRepository universityRepository;
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    SurveyRepository surveyRepository;
+    @Autowired
+    AccountRepository accountRepository;
 
 
     @Test
@@ -68,11 +76,23 @@ class TicketInfoServiceTest {
             .name("건국대")
             .build());
 
+        Survey survey = surveyRepository.save(Survey.builder()
+            .id(1L)
+            .build()
+        );
+
+        Account account = accountRepository.save(Account.builder()
+            .id(1L)
+            .build()
+        );
+
         Events konkuk = eventRepository.save(Events.builder()
             .university(university)
             .startDate(LocalDate.now())
             .endDate(LocalDate.now().plusDays(1))
             .location("건국대 노천극장")
+            .survey(survey)
+            .account(account)
             .build()
         );
 
