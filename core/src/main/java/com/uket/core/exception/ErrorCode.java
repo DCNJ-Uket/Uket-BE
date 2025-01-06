@@ -17,6 +17,9 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED(405,"CM0004", "허가되지 않은 메서드입니다."),
     IO_ERROR(500,"CM0005", "I/O 관련 에러입니다. 서버 팀에 문의 부탁드립니다."),
     INVALID_ROLE(400,"CM0006", "권한이 유효하지 않습니다."),
+    INVALID_SEARCH_TYPE(400,"CM0007", "잘못된 검색 타입입니다."),
+    INVALID_INPUT_DATE_VALUE(400,"CM0008", "잘못된 형태의 날짜 입력입니다."),
+    TOO_MANY_REQUEST(429,"CM0009", "너무 많은 요청이 들어왔습니다. 잠시후 다시 시도해주세요"),
 
     /**
      * Auth Related Errors
@@ -82,6 +85,7 @@ public enum ErrorCode {
     BEFORE_PAYMENT_TICKET(400,"TI0012","입금이 완료되지 않은 티켓입니다."),
     ALREADY_ENTER_TICKET(400,"TI0013","이미 입장이 완료된 티켓입니다."),
     EXPIRED_TICKET(400, "TI0014", "기간이 지나 이미 만료된 티켓입니다."),
+    NOT_REGISTERED_TICKET_MASKING_TYPE(400, "T10015", "지원되지않는 타입의 마스킹 요청입니다."),
 
     /**
      * Terms Errors
@@ -104,7 +108,8 @@ public enum ErrorCode {
     NOT_FOUND_RESPONSE(404, "FO0003", "해당 질문에 대한 응답이 없습니다."),
     EXCEED_MAX_LENGTH(400, "FO0004", "질문에 대한 응답이 최대 길이를 초과했습니다."),
     NOT_A_NUMBER(400, "FO0005", "질문에 대한 응답이 숫자 형태가 아닌 문자열입니다"),
-    NOT_IN_RANGE(400, "FO0006", "질문에 대한 응답이 목록에 없습니다.");
+    NOT_IN_RANGE(400, "FO0006", "질문에 대한 응답이 목록에 없습니다."),
+    NOT_FOUND_NECESSARY_RESPONSE(404, "FO0007", "필수 질문에 대한 응답이 없습니다.");
 
     private final int status;
     private final String code;

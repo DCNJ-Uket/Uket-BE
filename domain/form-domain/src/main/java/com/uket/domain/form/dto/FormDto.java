@@ -7,21 +7,21 @@ import lombok.Builder;
 
 @Builder
 public record FormDto(
-        Long formId,
-        Boolean isNecessary,
-        FormType formType,
-        List<OptionDto> options,
-        String question,
-        Integer maxLength
+    Long formId,
+    Boolean isNecessary,
+    FormType formType,
+    List<OptionDto> options,
+    String question,
+    Integer maxLength
 ) {
     public static FormDto from(Form form, List<OptionDto> options) {
         return FormDto.builder()
-                .formId(form.getId())
-                .isNecessary(form.getIsNecessary())
-                .formType(form.getFormType())
-                .options(options)
-                .question(form.getQuestion())
-                .maxLength(form.getMaxLength())
-                .build();
+            .formId(form.getId())
+            .isNecessary(form.getIsNecessary())
+            .formType(form.getFormType())
+            .options(options)
+            .question(form.getQuestion())
+            .maxLength(form.getMaxLength())
+            .build();
     }
 }

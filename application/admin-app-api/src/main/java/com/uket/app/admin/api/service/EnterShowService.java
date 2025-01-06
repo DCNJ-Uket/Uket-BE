@@ -35,6 +35,8 @@ public class EnterShowService {
         validateBeforePaymentTicket(ticket.getStatus());
         validateAlreadyEnterTicket(ticket.getStatus());
 
+        ticket.enter();
+
         return TicketDto.from(ticket);
     }
 
