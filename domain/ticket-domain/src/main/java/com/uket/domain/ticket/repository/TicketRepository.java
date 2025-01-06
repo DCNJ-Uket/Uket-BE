@@ -53,5 +53,16 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
     Page<Ticket> findByModifiedAtBetween(Timestamp modifiedAt,Timestamp endTimestamp, Pageable pageable);
 
     void deleteAllByUserId(Long userId);
+
+    @Query("SELECT t FROM Ticket t " +
+        "WHERE t.user.id = :userId " +
+        "AND t.status NOT IN (:statuses) " +
+        "AND t.event.endDate >= CURRENT_DATE")
+    List<Ticket> findValidTicketsByUserId(@Param("userId") Long userId,
+        @Param("statuses") List<TicketStatus> statuses);
+
+    @Query("SELECT t FROM Ticket t JOIN FETCH t.reservation r WHERE t.user.id = :userId AND t.status <> :status")
+    List<Ticket> findAllByUserIdAndStatusNotWithReservation(@Param("userId") Long userId, @Param("status") TicketStatus status);
+
 }
 

@@ -8,7 +8,9 @@ import com.uket.app.ticket.api.service.UserRegisterService;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.dto.response.AuthToken;
 import com.uket.domain.event.entity.Events;
+import com.uket.domain.event.entity.Shows;
 import com.uket.domain.event.repository.EventRepository;
+import com.uket.domain.event.repository.ShowRepository;
 import com.uket.domain.university.entity.University;
 import com.uket.domain.university.repository.UniversityRepository;
 import com.uket.domain.user.dto.CreateUserDetailsDto;
@@ -20,6 +22,7 @@ import com.uket.domain.user.service.UserService;
 import com.uket.modules.jwt.constants.JwtValues;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +54,8 @@ class UniversityControllerTest {
     UniversityRepository universityRepository;
     @Autowired
     EventRepository eventRepository;
+    @Autowired
+    ShowRepository showRepository;
 
     Users user;
     String accessToken;
@@ -94,6 +99,16 @@ class UniversityControllerTest {
                         .endDate(LocalDate.now())
                         .build()
         );
+
+        Shows show = showRepository.save(
+                Shows.builder()
+                        .startDate(LocalDateTime.now())
+                        .endDate(LocalDateTime.now())
+                        .ticketingDate(LocalDateTime.now())
+                        .event(event)
+                        .build()
+        );
+
         University konkuk = universityRepository.save(
                 University.builder()
                         .name(UNIVERSITY_KONKUK)

@@ -54,6 +54,7 @@ public class TicketController implements TicketApi {
 
     @Override
     public ResponseEntity<CancelTicketResponse> cancelTicket(Long userId, Long ticketId) {
+        ticketService.validateTicketStatus(ticketId);
         CancelTicketDto cancelTicket = ticketService.cancelTicketByUserIdAndId(userId, ticketId);
         ticketService.decreaseReservedCount(cancelTicket.reservationId());
 

@@ -38,7 +38,7 @@ public class TicketSearchService {
         List<FormAnswerDto> formAnswers = forms.stream()
                 .map(form -> FormAnswerDto.from(
                         form,
-                        formService.findAnswerByFormIdAndUserId(form.getId(), userId)
+                        formService.findAnswerByFormIdAndUserId(form.getId(), userId, form.getIsNecessary())
                 ))
                 .toList();
         return CheckTicketingDto.of(ticket, formAnswers);

@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
     Answer findAnswerByFormIdAndUserId(Long formId, Long userId);
+    void deleteAllByUserId(Long userId);
 }

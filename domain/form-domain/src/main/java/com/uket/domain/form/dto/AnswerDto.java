@@ -16,6 +16,9 @@ public record AnswerDto(
                 .answerId(answer.getId())
                 .formId(answer.getForm().getId())
                 .userId(answer.getUser().getId())
+                .response(answer.getResponse())
                 .build();
     }
+
+    public static AnswerDto noAnswerDto = new AnswerDto(-1L, -1L, -1L, "미응답");
 }

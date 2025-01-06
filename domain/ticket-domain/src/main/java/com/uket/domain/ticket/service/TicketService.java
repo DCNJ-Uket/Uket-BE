@@ -53,13 +53,13 @@ public class TicketService {
          */
 
         Ticket ticket = Ticket.builder()
-                .user(user)
-                .reservation(reservation)
-                .event(createTicketDto.event())
-                .show(createTicketDto.show())
-                .status(createTicketDto.status())
-                .ticketNo(UUID.randomUUID().toString())
-                .build();
+            .user(user)
+            .reservation(reservation)
+            .event(createTicketDto.event())
+            .show(createTicketDto.show())
+            .status(createTicketDto.status())
+            .ticketNo(UUID.randomUUID().toString())
+            .build();
 
         return ticketRepository.save(ticket);
     }
@@ -67,7 +67,7 @@ public class TicketService {
     @Transactional(readOnly = true)
     public Ticket findById(Long ticketId) {
         return ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
     }
 
     public void checkTicketOwner(Long userId, Long ticketId) {
@@ -78,18 +78,23 @@ public class TicketService {
 
     @Transactional(readOnly = true)
     public List<Ticket> findAllTicketsByUserId(Long userId) {
-        return ticketRepository.findAllByUserIdAndStatusNot(userId, TicketStatus.RESERVATION_CANCEL);
+        List<TicketStatus> excludedStatuses = List.of(TicketStatus.RESERVATION_CANCEL, TicketStatus.EXPIRED);
+        return ticketRepository.findValidTicketsByUserId(userId, excludedStatuses);
     }
 
     @Transactional
     public void deleteAllUserTickets(Long userId) {
+        List<Ticket> tickets = ticketRepository.findAllByUserIdAndStatusNotWithReservation(userId, TicketStatus.RESERVATION_CANCEL);
+        for(Ticket ticket : tickets) {
+            this.decreaseReservedCount(ticket.getReservation().getId());
+        }
         ticketRepository.deleteAllByUserId(userId);
     }
 
     @Transactional
     public CancelTicketDto cancelTicketByUserIdAndId(Long userId, Long ticketId) {
         Ticket ticket = ticketRepository.findByUserIdAndId(userId, ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
         ticket.cancel();
         ticket.updateDeletedAt();
@@ -98,10 +103,25 @@ public class TicketService {
         return new CancelTicketDto(ticket.getId(), ticket.getStatus().getValue(), ticket.getReservation().getId());
     }
 
+    public void validateTicketStatus(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+
+        TicketStatus ticketStatus = ticket.getStatus();
+
+        if(ticketStatus == TicketStatus.FINISH_ENTER) {
+            throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
+        } else if (ticketStatus == TicketStatus.EXPIRED) {
+            throw new TicketException(ErrorCode.EXPIRED_TICKET);
+        } else if (ticketStatus == TicketStatus.FINISH_ENTER) {
+            throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
+        }
+    }
+
     @Transactional
     public Ticket updateTicketStatus(Long ticketId, TicketStatus ticketStatus) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
         if(ticketStatus == TicketStatus.RESERVATION_CANCEL) {
             this.decreaseReservedCount(ticket.getReservation().getId());

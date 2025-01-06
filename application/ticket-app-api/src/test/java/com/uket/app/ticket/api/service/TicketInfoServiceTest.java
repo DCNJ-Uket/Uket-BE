@@ -71,7 +71,7 @@ class TicketInfoServiceTest {
         Events konkuk = eventRepository.save(Events.builder()
             .university(university)
             .startDate(LocalDate.now())
-            .endDate(LocalDate.now())
+            .endDate(LocalDate.now().plusDays(1))
             .location("건국대 노천극장")
             .build()
         );

@@ -42,8 +42,30 @@ public class FormService {
         return formRepository.findBySurveyId(surveyId);
     }
 
-    public AnswerDto findAnswerByFormIdAndUserId(Long formId, Long userId) {
+    public AnswerDto findAnswerByFormIdAndUserId(Long formId, Long userId, boolean isNecessary) {
         Answer answer = answerRepository.findAnswerByFormIdAndUserId(formId, userId);
+        /*
+        기존 데이터
+        - 필수 응답 여부와 관계 없이, 응답 데이터가 아예 없거나, 응답 내용이 ""일 수 있음
+
+        새로운 데이터
+        - 필수 응답인 경우, 응답 데이터가 무조건 존재하고 내용도 제대로 되어있음
+        - 필수 응답이 아닌 경우, 응답 데이터는 무조건 존재하지만 응답 내용이 "응답하지 않았습니다"일 수 있음
+
+        1. 응답 데이터가 존재하는가?
+        2. 응답 데이터가 존재는 한다면, 응답 내용이 잘못되어 있는가?
+         */
+        if(answer == null)
+            return AnswerDto.noAnswerDto;
+        if(answer.getResponse().isEmpty() || answer.getResponse().equals("응답하지 않았습니다"))
+            return AnswerDto.noAnswerDto;
+
+        // TODO : 기존 데이터를 싹 날려버린 이후에는 새로운 데이터가 갖춰야할 조건에 대한 예외처리로 수정 필요 ex.하단 주석
+        // if(answer == null)
+        //     throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+        // if(isNecessary && answer.getResponse().equals("응답하지 않았습니다"))
+        //     throw new FormException(ErrorCode.UNKNOWN_SERVER_ERROR);
+
         return AnswerDto.from(answer);
     }
 
@@ -67,6 +89,11 @@ public class FormService {
         List<Answer> answers = createAnswers(survey.getForms(), user, responses);
         answers.forEach(Answer::validate);
         return answerRepository.saveAll(answers);
+    }
+
+    @Transactional
+    public void deleteAnswers(Long userId) {
+        answerRepository.deleteAllByUserId(userId);
     }
 
     private List<Answer> createAnswers(List<Form> forms, Users user, List<FormResponseDto> responses) {
