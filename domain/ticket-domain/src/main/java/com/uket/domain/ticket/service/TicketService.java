@@ -126,6 +126,11 @@ public class TicketService {
         if(ticketStatus == TicketStatus.RESERVATION_CANCEL) {
             this.decreaseReservedCount(ticket.getReservation().getId());
         }
+
+        if(ticketStatus == TicketStatus.FINISH_ENTER) {
+            ticket.enter();
+            return ticketRepository.save(ticket);
+        }
         Ticket updatedTicket = ticket.updateStatus(ticketStatus);
         return ticketRepository.save(updatedTicket);
     }
