@@ -12,6 +12,7 @@ import com.uket.domain.form.entity.FormType;
 import com.uket.domain.form.entity.Survey;
 import com.uket.domain.form.exception.FormException;
 import com.uket.domain.form.repository.AnswerRepository;
+import com.uket.domain.form.repository.FormRepository;
 import com.uket.domain.form.repository.SurveyRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.repository.UserRepository;
@@ -39,6 +40,9 @@ public class FormServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private FormRepository formRepository;
 
 
     @Test
@@ -108,6 +112,8 @@ public class FormServiceTest {
         when(surveyRepository.findById(1L)).thenReturn(Optional.of(survey));
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(answerRepository.saveAll(any())).thenReturn(null);
+        when(formRepository.findById(1L)).thenReturn(Optional.of(form1));
+        when(formRepository.findById(2L)).thenReturn(Optional.of(form2));
 
         //then
         assertDoesNotThrow(() -> formService.submitResponse(survey.getId(), user.getId(), responses));
