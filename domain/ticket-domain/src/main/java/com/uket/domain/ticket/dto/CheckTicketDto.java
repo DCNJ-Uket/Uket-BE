@@ -28,11 +28,12 @@ public record CheckTicketDto(
     Long ticketId,
     Long eventId,
 
-    Timestamp createdAt
+    Timestamp createdAt,
+    String backgroundImageUrl
 ) {
     private static final String zoneId = "Asia/Seoul";
 
-    public static CheckTicketDto from(Ticket ticket) {
+    public static CheckTicketDto of(Ticket ticket, String backgroundImageUrl) {
         Users user = ticket.getUser();
         Events event = ticket.getEvent();
         Shows show = ticket.getShow();
@@ -53,6 +54,7 @@ public record CheckTicketDto(
             .ticketId(ticket.getId())
             .eventId(ticket.getEvent().getId())
             .createdAt(ticket.getCreatedAt())
+            .backgroundImageUrl(backgroundImageUrl)
             .build();
     }
 }

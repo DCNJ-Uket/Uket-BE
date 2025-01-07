@@ -13,6 +13,7 @@ public class S3Service {
 
     private static final String UNIVERSITY_LOGO_FOLDER = "university-logo";
     private static final String BANNER_IMAGE_FOLDER = "banner";
+    private static final String EVENT_MAIN_IMAGE_FOLDER = "event";
 
     private final S3Presigner preSigner;
     private final S3Properties s3Properties;
@@ -23,6 +24,10 @@ public class S3Service {
 
     public String getBannerImage(String filename) {
         return getPreSignedUrl(BANNER_IMAGE_FOLDER, filename);
+    }
+
+    public String getEventMainImage(String filename) {
+        return getPreSignedUrl(EVENT_MAIN_IMAGE_FOLDER, filename);
     }
 
     private String getPreSignedUrl(String folder, String filename) {
