@@ -16,13 +16,13 @@ import com.uket.domain.form.repository.SurveyRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.exception.UserException;
 import com.uket.domain.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,15 +33,18 @@ public class FormService {
     private final FormRepository formRepository;
     private final OptionsRepository optionsRepository;
 
+    @Transactional(readOnly = true)
     public Survey findById(Long surveyId) {
         return surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new FormException(ErrorCode.NOT_FOUND_SURVEY));
     }
 
+    @Transactional(readOnly = true)
     public List<Form> findFormsBySurveyId(Long surveyId) {
         return formRepository.findBySurveyId(surveyId);
     }
 
+    @Transactional(readOnly = true)
     public AnswerDto findAnswerByFormIdAndUserId(Long formId, Long userId, boolean isNecessary) {
         Answer answer = answerRepository.findAnswerByFormIdAndUserId(formId, userId);
         /*
@@ -69,6 +72,7 @@ public class FormService {
         return AnswerDto.from(answer);
     }
 
+    @Transactional(readOnly = true)
     public List<OptionDto> findOptionsByFormId(Long formId) {
         List<OptionDto> optionDtos = new ArrayList<>();
         List<Options> options = optionsRepository.findByFormId(formId);
