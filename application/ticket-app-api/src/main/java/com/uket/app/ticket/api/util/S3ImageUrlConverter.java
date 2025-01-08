@@ -53,6 +53,7 @@ public class S3ImageUrlConverter {
                     return ActiveUniversitiesResponse.builder()
                             .id(universityDto.id())
                             .name(universityDto.name())
+                            .eventName(currentEvent.getName())
                             .logoUrl(logoUrl)
                             .startDateTime(firstShowStartDateTime.atZone(ZoneId.of("Asia/Seoul")))
                             .build();

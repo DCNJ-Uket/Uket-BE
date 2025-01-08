@@ -7,6 +7,7 @@ import lombok.Builder;
 public record ActiveUniversitiesResponse(
         Long id,
         String name,
+        String eventName,
         String logoUrl,
         ZonedDateTime startDateTime
 ){}
