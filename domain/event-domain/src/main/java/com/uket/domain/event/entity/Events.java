@@ -48,6 +48,8 @@ public class Events extends BaseEntity {
     private LocalDate endDate;
     private String location;
 
+    private String mainImagePath;
+
     public void updateUniversity(University university) {
         this.university = university;
     }
