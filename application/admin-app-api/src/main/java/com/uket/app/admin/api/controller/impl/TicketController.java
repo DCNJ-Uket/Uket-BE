@@ -108,7 +108,7 @@ public class TicketController implements TicketApi {
         Page<CheckTicketDto> ticketsPage = ticketSearchers.stream()
                 .filter(ticketSearcher -> ticketSearcher.isSupport(searchType))
                 .findFirst().orElseThrow(() -> new AdminException(ErrorCode.INVALID_SEARCH_TYPE))
-                .search(searchRequest, PageRequest.of(page - 1, size));
+                .search(searchRequest, pageRequest);
 
         List<CheckTicketDto> tickets = ticketsPage.getContent();
         List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllUserAnswersFromTickets(tickets);
