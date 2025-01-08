@@ -32,6 +32,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
@@ -75,7 +77,7 @@ public class TicketController implements TicketApi {
         // 4. ticket 소유자마다, 해당 event에 대한 answer list get
         // 5. 3, 4번의 내용을 합치기
 
-        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(Direction.DESC, "createdAt"));
         Page<CheckTicketDto> ticketsPage = ticketService.searchAllTickets(pageRequest);
 
         List<CheckTicketDto> tickets = ticketsPage.getContent();
@@ -101,7 +103,7 @@ public class TicketController implements TicketApi {
             int page,
             int size
     ) {
-        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(Direction.DESC, "createdAt"));
 
         Page<CheckTicketDto> ticketsPage = ticketSearchers.stream()
                 .filter(ticketSearcher -> ticketSearcher.isSupport(searchType))
