@@ -36,12 +36,15 @@ public class EventController implements EventApi {
     @Override
     public ResponseEntity<ShowResponse> getShows(Long userId, Long eventId) {
 
+        Events event = eventService.findById(eventId);
+        String eventName = event.getName();
+
         String universityName = eventService.findUniversityNameByEventId(eventId);
         ReservationUserType reservationUserType = eventService.getReservationUserTypeByUniversityName(userId, universityName);
 
         List<ShowDto> shows = showService.findByEventId(eventId);
 
-        ShowResponse response = ShowResponse.of(reservationUserType, universityName, shows);
+        ShowResponse response = ShowResponse.of(reservationUserType, universityName, eventName, shows);
         return ResponseEntity.ok(response);
     }
 
