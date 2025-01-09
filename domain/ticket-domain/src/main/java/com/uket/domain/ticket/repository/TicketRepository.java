@@ -44,5 +44,11 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
     @Query("SELECT t FROM Ticket t JOIN FETCH t.reservation r WHERE t.user.id = :userId AND t.status <> :status")
     List<Ticket> findAllByUserIdAndStatusNotWithReservation(@Param("userId") Long userId, @Param("status") TicketStatus status);
 
+    @Query("SELECT t FROM Ticket t " +
+        "JOIN FETCH t.event e " +
+        "JOIN FETCH e.survey s " +
+        "WHERE t.id = :ticketId")
+    Optional<Ticket> findTicketWithEventAndSurvey(@Param("ticketId") Long ticketId);
+
 }
 
