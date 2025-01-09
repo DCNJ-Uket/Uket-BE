@@ -39,12 +39,11 @@ public record LiveEnterUserResponse(
     }
 
     public LiveEnterUserResponse withMaskedValues() {
-        String maskedName = MaskingUtil.MaskingOf(MaskingType.NAME, this.name);
         String maskedPhoneNumber = MaskingUtil.MaskingOf(MaskingType.PHONE, this.phoneNumber);
 
         return new LiveEnterUserResponse(
             this.enterTime,
-            maskedName,
+            this.name,
             this.ticketDate,
             maskedPhoneNumber,
             this.ticketStatus

@@ -41,12 +41,11 @@ public record TicketingResponse(
     }
 
     public TicketingResponse withMaskedValues() {
-        String maskedDepositorName = MaskingUtil.MaskingOf(MaskingType.NAME, this.depositorName);
         String maskedTelephone = MaskingUtil.MaskingOf(MaskingType.PHONE, this.telephone);
 
         return new TicketingResponse(
             this.ticketId,
-            maskedDepositorName,
+            this.depositorName,
             maskedTelephone,
             this.showTime,
             this.orderDate,
