@@ -4,10 +4,7 @@ import com.uket.app.admin.api.aop.Mask;
 import com.uket.app.admin.api.aop.MaskingUtil;
 import com.uket.app.admin.api.dto.CheckTicketingDto;
 import com.uket.app.admin.api.enums.MaskingType;
-import com.uket.domain.form.dto.AnswerDto;
 import com.uket.domain.form.dto.FormAnswerDto;
-import com.uket.domain.ticket.dto.CheckTicketDto;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -17,7 +14,6 @@ import lombok.Builder;
 public record TicketingResponse(
     Long ticketId,
 
-    @Mask(type = MaskingType.NAME)
     String depositorName,
     @Mask(type = MaskingType.PHONE)
     String telephone,

@@ -14,7 +14,6 @@ public record LiveEnterUserResponse(
         ZonedDateTime enterTime,
 
         @Schema(description = "입금자명")
-        @Mask(type = MaskingType.NAME)
         String name,
 
         @Schema(description = "티켓 날짜")

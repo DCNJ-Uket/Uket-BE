@@ -8,13 +8,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
-
 @Builder
 public record TicketResponse(
     Long ticketId,
 
-    @Mask(type = MaskingType.NAME)
     String depositorName,
     @Mask(type = MaskingType.PHONE)
     String telephone,
