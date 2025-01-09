@@ -1,8 +1,10 @@
 package com.uket.domain.ticket.service;
 
 import com.uket.core.exception.ErrorCode;
+import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.service.ReservationService;
+import com.uket.domain.form.repository.AnswerRepository;
 import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final AnswerRepository answerRepository;
     private final ReservationService reservationService;
 
     @DistributedLock(key = "#reservationId")
@@ -81,6 +84,12 @@ public class TicketService {
             this.decreaseReservedCount(ticket.getReservation().getId());
         }
         ticketRepository.deleteAllByUserId(userId);
+    }
+
+    @Transactional
+    public void deleteAllTicketAnswers(Long userId, Long ticketId) {
+        Events event = ticketRepository.findById(ticketId).orElseThrow().getEvent();
+        answerRepository.deleteAllByUserIdAndEventId(userId, event.getId());
     }
 
     @Transactional

@@ -4,6 +4,7 @@ dependencies {
     implementation project(":domain:event-domain")
     implementation project(":domain:university-domain")
     implementation project(":modules:lock-redis")
+    implementation project(":domain:form-domain")
 }
 
 tasks.named('test') {

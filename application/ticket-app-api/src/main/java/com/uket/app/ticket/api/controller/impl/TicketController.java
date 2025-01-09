@@ -51,6 +51,7 @@ public class TicketController implements TicketApi {
         ticketService.validateTicketStatus(ticketId);
         CancelTicketDto cancelTicket = ticketService.cancelTicketByUserIdAndId(userId, ticketId);
         ticketService.decreaseReservedCount(cancelTicket.reservationId());
+        ticketService.deleteAllTicketAnswers(userId, ticketId);
 
         CancelTicketResponse cancelTicketResponse = CancelTicketResponse.of(cancelTicket);
         return ResponseEntity.ok(cancelTicketResponse);
