@@ -46,7 +46,7 @@ public class FormService {
 
     @Transactional(readOnly = true)
     public AnswerDto findAnswerByFormIdAndUserId(Long formId, Long userId, boolean isNecessary) {
-        Answer answer = answerRepository.findAnswerByFormIdAndUserId(formId, userId);
+        Answer answer = answerRepository.findRecentAnswerByFormIdAndUserId(formId, userId);
         /*
         기존 데이터
         - 필수 응답 여부와 관계 없이, 응답 데이터가 아예 없거나, 응답 내용이 ""일 수 있음
