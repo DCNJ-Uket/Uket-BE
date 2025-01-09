@@ -1,8 +1,13 @@
 package com.uket.domain.ticket.service;
 
 import com.uket.core.exception.ErrorCode;
+import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.service.ReservationService;
+import com.uket.domain.form.entity.Answer;
+import com.uket.domain.form.entity.Form;
+import com.uket.domain.form.entity.Survey;
+import com.uket.domain.form.repository.AnswerRepository;
 import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
@@ -14,6 +19,7 @@ import com.uket.modules.redis.lock.aop.DistributedLock;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final AnswerRepository answerRepository;
     private final ReservationService reservationService;
 
     @DistributedLock(key = "#reservationId")
@@ -81,6 +88,18 @@ public class TicketService {
             this.decreaseReservedCount(ticket.getReservation().getId());
         }
         ticketRepository.deleteAllByUserId(userId);
+    }
+
+    @Transactional
+    public void deleteAllTicketAnswers(Long userId, Long ticketId) {
+        Ticket ticket = ticketRepository.findTicketWithEventAndSurvey(ticketId).orElseThrow(() ->
+            new TicketException(ErrorCode.NOT_FOUND_TICKET));
+
+        Survey survey = ticket.getEvent().getSurvey();
+        Hibernate.initialize(survey.getForms());
+        List<Form> forms = survey.getForms();
+
+        answerRepository.deleteAnswersByUserIdAndForms(userId, forms);
     }
 
     @Transactional
