@@ -8,9 +8,9 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     Answer findAnswerByFormIdAndUserId(Long formId, Long userId);
 
 
-    @Query("SELECT a FROM Answer a " +
-        "WHERE a.form.id = :formId AND a.user.id = :userId " +
-        "ORDER BY a.createdAt DESC")
+    @Query(value = "SELECT * FROM answer a " +
+        "WHERE a.form_id = :formId AND a.user_id = :userId " +
+        "ORDER BY a.created_at DESC LIMIT 1", nativeQuery = true)
     Answer findRecentAnswerByFormIdAndUserId(Long formId, Long userId);
     void deleteAllByUserId(Long userId);
 }
