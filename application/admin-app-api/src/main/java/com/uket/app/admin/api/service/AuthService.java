@@ -33,7 +33,7 @@ public class AuthService {
         String accessToken = jwtAuthTokenUtil.createAccessToken(admin.getId(), admin.getName(),
                 String.valueOf(UserRole.ROLE_ADMIN), true);
 
-        return AdminAuthToken.from(accessToken);
+        return AdminAuthToken.from(accessToken, admin.getName());
     }
 
     @Transactional
