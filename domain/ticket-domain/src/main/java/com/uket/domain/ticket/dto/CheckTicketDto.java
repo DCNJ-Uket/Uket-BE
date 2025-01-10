@@ -39,7 +39,7 @@ public record CheckTicketDto(
         Reservation reservation = ticket.getReservation();
 
         return CheckTicketDto.builder()
-            .userName(user.getName())
+            .userName(user.getUserDetails().getDepositorName())
             .phoneNumber(user.getUserDetails().getPhoneNumber())
             .showStartDate(show.getStartDate())
             .enterStartTime(reservation.getStartTime())
