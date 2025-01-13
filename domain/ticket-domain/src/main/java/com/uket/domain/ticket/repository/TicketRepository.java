@@ -36,7 +36,7 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     Page<Ticket> findByStatus(TicketStatus status, Pageable pageable);
 
-    @Query("SELECT t FROM Ticket t WHERE t.user.userDetails.depositorName LIKE %:depositorName")
+    @Query("SELECT t FROM Ticket t WHERE t.user.userDetails.depositorName LIKE %:depositorName%")
     Page<Ticket> findByDepositorName(String depositorName, Pageable pageable);
 
     @Query("SELECT t FROM Ticket t WHERE t.user.userDetails.phoneNumber LIKE %:lastFourDigits")
