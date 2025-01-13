@@ -25,7 +25,7 @@ public class TicketSearcherByUserName extends TicketSearcher{
     @Override
     @Transactional(readOnly = true)
     public Page<CheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
-        Page<Ticket> tickets = ticketRepository.findByUserUserDetailsDepositorName(searchRequest.userName(), pageable);
+        Page<Ticket> tickets = ticketRepository.findByDepositorName(searchRequest.userName(), pageable);
         return tickets.map(CheckTicketDto::from);
     }
 }
