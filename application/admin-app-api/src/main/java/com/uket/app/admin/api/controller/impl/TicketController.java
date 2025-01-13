@@ -25,6 +25,7 @@ import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
+import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.ticket.service.TicketService;
 import com.uket.domain.user.service.UserService;
 import java.util.List;
@@ -36,6 +37,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -49,6 +51,7 @@ public class TicketController implements TicketApi {
     private final FormService formService;
     private final UserService userService;
     private final TicketSearchService ticketSearchService;
+    private final TicketRepository ticketRepository;
 
     @Override
     public ResponseEntity<EnterShowResponse> enterShow(String ticketToken) {
@@ -123,6 +126,14 @@ public class TicketController implements TicketApi {
                 );
 
         return ResponseEntity.ok(customResponse);
+    }
+
+    @GetMapping("/test")
+    public String getName(String name){
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Direction.DESC, "createdAt"));
+        Page<Ticket> byDepositorName = ticketRepository.findByDepositorName(name, pageRequest);
+        byDepositorName.forEach(System.out::println);
+        return "ok";
     }
 
     @Override
