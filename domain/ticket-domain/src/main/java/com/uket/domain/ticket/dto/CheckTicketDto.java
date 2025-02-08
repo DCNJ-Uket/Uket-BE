@@ -3,20 +3,19 @@ package com.uket.domain.ticket.dto;
 import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.entity.Shows;
-import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.user.entity.Users;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import lombok.Builder;
 
 @Builder
 public record CheckTicketDto(
     String userName,
-    String phoneNumber,
-    LocalDateTime showStartDate,
-    LocalDateTime enterStartTime,
-    LocalDateTime enterEndTime,
+    ZonedDateTime showDate,
+    ZonedDateTime enterStartTime,
+    ZonedDateTime enterEndTime,
     String showLocation,
     String universityName,
     String ticketStatus,
@@ -28,13 +27,13 @@ public record CheckTicketDto(
 
     Long ticketId,
     Long eventId,
-    Long userId,
 
-    LocalDateTime createdAt,
-
-    LocalDateTime updatedAt
+    Timestamp createdAt,
+    String backgroundImageUrl
 ) {
-    public static CheckTicketDto from(Ticket ticket) {
+    private static final String zoneId = "Asia/Seoul";
+
+    public static CheckTicketDto of(Ticket ticket, String backgroundImageUrl) {
         Users user = ticket.getUser();
         Events event = ticket.getEvent();
         Shows show = ticket.getShow();
@@ -42,10 +41,9 @@ public record CheckTicketDto(
 
         return CheckTicketDto.builder()
             .userName(user.getName())
-            .phoneNumber(user.getUserDetails().getPhoneNumber())
-            .showStartDate(show.getStartDate())
-            .enterStartTime(reservation.getStartTime())
-            .enterEndTime(reservation.getEndTime())
+            .showDate(show.getStartDate().atZone(ZoneId.of(zoneId)))
+            .enterStartTime(reservation.getStartTime().atZone(ZoneId.of(zoneId)))
+            .enterEndTime(reservation.getEndTime().atZone(ZoneId.of(zoneId)))
             .showLocation(show.getLocation())
             .universityName(event.getUniversity().getName())
             .ticketStatus(ticket.getStatus().getValue())
@@ -55,9 +53,8 @@ public record CheckTicketDto(
             .eventName(event.getName())
             .ticketId(ticket.getId())
             .eventId(ticket.getEvent().getId())
-            .userId(user.getId())
-            .createdAt(ticket.getCreatedAt().toLocalDateTime())
-            .updatedAt(ticket.getModifiedAt().toLocalDateTime())
+            .createdAt(ticket.getCreatedAt())
+            .backgroundImageUrl(backgroundImageUrl)
             .build();
     }
 }

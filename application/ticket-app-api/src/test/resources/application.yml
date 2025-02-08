@@ -36,7 +36,18 @@ spring:
           batch_size: 100
         order_inserts: true
         order_updates: true
+<<<<<<< HEAD
     show-sql: true
+=======
+    show-sql: false
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:test;MODE=MySQL;
+    username: sa
+    password:
+    hikari:
+      maximum-pool-size: 40
+>>>>>>> 6b832dd6607fa914234b941496c094a943d6f423
   cloud:
     aws:
       s3:

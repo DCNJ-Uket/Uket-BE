@@ -14,6 +14,7 @@ import com.uket.domain.university.dto.UniversityDto;
 import com.uket.modules.aws.s3.service.S3Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -52,8 +53,9 @@ public class S3ImageUrlConverter {
                     return ActiveUniversitiesResponse.builder()
                             .id(universityDto.id())
                             .name(universityDto.name())
+                            .eventName(currentEvent.getName())
                             .logoUrl(logoUrl)
-                            .startDateTime(firstShowStartDateTime)
+                            .startDateTime(firstShowStartDateTime.atZone(ZoneId.of("Asia/Seoul")))
                             .build();
                 }).toList();
     }

@@ -1,11 +1,14 @@
 package com.uket.domain.ticket.service;
 
 import com.uket.core.exception.ErrorCode;
+import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.service.ReservationService;
-import com.uket.domain.ticket.dto.AccountInfoDto;
+import com.uket.domain.form.entity.Answer;
+import com.uket.domain.form.entity.Form;
+import com.uket.domain.form.entity.Survey;
+import com.uket.domain.form.repository.AnswerRepository;
 import com.uket.domain.ticket.dto.CancelTicketDto;
-import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
@@ -13,25 +16,19 @@ import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
 import com.uket.modules.redis.lock.aop.DistributedLock;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
-@Transactional(readOnly = true)
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final AnswerRepository answerRepository;
     private final ReservationService reservationService;
 
     @DistributedLock(key = "#reservationId")
@@ -50,20 +47,18 @@ public class TicketService {
         Users user = createTicketDto.user();
         Reservation reservation = createTicketDto.reservation();
 
-        /*
         if(Boolean.TRUE.equals(ticketRepository.existsByUserAndReservationAndStatusNot(user, reservation, TicketStatus.RESERVATION_CANCEL))){
             throw new TicketException(ErrorCode.ALREADY_EXIST_TICKET);
         }
-         */
 
         Ticket ticket = Ticket.builder()
-                .user(user)
-                .reservation(reservation)
-                .event(createTicketDto.event())
-                .show(createTicketDto.show())
-                .status(createTicketDto.status())
-                .ticketNo(UUID.randomUUID().toString())
-                .build();
+            .user(user)
+            .reservation(reservation)
+            .event(createTicketDto.event())
+            .show(createTicketDto.show())
+            .status(createTicketDto.status())
+            .ticketNo(UUID.randomUUID().toString())
+            .build();
 
         return ticketRepository.save(ticket);
     }
@@ -71,7 +66,7 @@ public class TicketService {
     @Transactional(readOnly = true)
     public Ticket findById(Long ticketId) {
         return ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
     }
 
     public void checkTicketOwner(Long userId, Long ticketId) {
@@ -96,9 +91,21 @@ public class TicketService {
     }
 
     @Transactional
+    public void deleteAllTicketAnswers(Long userId, Long ticketId) {
+        Ticket ticket = ticketRepository.findTicketWithEventAndSurvey(ticketId).orElseThrow(() ->
+            new TicketException(ErrorCode.NOT_FOUND_TICKET));
+
+        Survey survey = ticket.getEvent().getSurvey();
+        Hibernate.initialize(survey.getForms());
+        List<Form> forms = survey.getForms();
+
+        answerRepository.deleteAnswersByUserIdAndForms(userId, forms);
+    }
+
+    @Transactional
     public CancelTicketDto cancelTicketByUserIdAndId(Long userId, Long ticketId) {
         Ticket ticket = ticketRepository.findByUserIdAndId(userId, ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
         ticket.cancel();
         ticket.updateDeletedAt();
@@ -117,26 +124,15 @@ public class TicketService {
             throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
         } else if (ticketStatus == TicketStatus.EXPIRED) {
             throw new TicketException(ErrorCode.EXPIRED_TICKET);
-        } else if (ticketStatus == TicketStatus.FINISH_ENTER) {
-            throw new TicketException(ErrorCode.ALREADY_ENTER_TICKET);
         }
     }
 
-    @Transactional
     public Ticket updateTicketStatus(Long ticketId, TicketStatus ticketStatus) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
-        if(ticketStatus == TicketStatus.RESERVATION_CANCEL) {
-            this.decreaseReservedCount(ticket.getReservation().getId());
-        }
         Ticket updatedTicket = ticket.updateStatus(ticketStatus);
         return ticketRepository.save(updatedTicket);
     }
 
-    @Transactional
-    public Page<CheckTicketDto> searchAllTickets(Pageable pageable) {
-        Page<Ticket> tickets =  ticketRepository.findAll(pageable);
-        return tickets.map(CheckTicketDto::from);
-    }
 }

@@ -2,18 +2,13 @@ package com.uket.app.ticket.api.controller.impl;
 
 import com.uket.app.ticket.api.controller.TicketApi;
 import com.uket.app.ticket.api.dto.request.TicketingRequest;
-import com.uket.app.ticket.api.dto.response.AccountInfoResponse;
 import com.uket.app.ticket.api.dto.response.CancelTicketResponse;
 import com.uket.app.ticket.api.dto.response.TicketingResponse;
 import com.uket.app.ticket.api.service.QRCodeService;
 import com.uket.app.ticket.api.service.TicketInfoService;
 import com.uket.app.ticket.api.service.TicketingService;
-import com.uket.domain.event.entity.Events;
-import com.uket.domain.ticket.dto.AccountInfoDto;
 import com.uket.domain.ticket.dto.CancelTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
-import com.uket.domain.ticket.entity.Ticket;
-import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -32,10 +27,8 @@ public class TicketController implements TicketApi {
     @Override
     public ResponseEntity<TicketingResponse> ticketing(Long userId, TicketingRequest request) {
 
-        //ticketingService.validateTicketing(userId, request.universityId(), request.reservationId());
-        ticketingService.increaseReservedCount(request.reservationId());
-
-        TicketDto ticket = ticketingService.ticketing(userId, request.universityId(), request.reservationId());
+        ticketingService.validateTicketing(userId, request.universityId(), request.reservationId());
+        TicketDto ticket = ticketingService.ticketing(request.reservationId(), userId, request.universityId());
 
         TicketingResponse response = TicketingResponse.of(true, ticket);
         return ResponseEntity.ok(response);
@@ -58,6 +51,7 @@ public class TicketController implements TicketApi {
         ticketService.validateTicketStatus(ticketId);
         CancelTicketDto cancelTicket = ticketService.cancelTicketByUserIdAndId(userId, ticketId);
         ticketService.decreaseReservedCount(cancelTicket.reservationId());
+        ticketService.deleteAllTicketAnswers(userId, ticketId);
 
         CancelTicketResponse cancelTicketResponse = CancelTicketResponse.of(cancelTicket);
         return ResponseEntity.ok(cancelTicketResponse);

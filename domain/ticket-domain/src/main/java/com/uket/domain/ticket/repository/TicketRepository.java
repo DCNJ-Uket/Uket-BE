@@ -6,7 +6,6 @@ import com.uket.domain.event.enums.ReservationUserType;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.user.entity.Users;
-import java.time.LocalDate;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,15 +54,24 @@ public interface TicketRepository extends JpaRepository<Ticket,Long> {
 
     void deleteAllByUserId(Long userId);
 
-    @Query("SELECT t FROM Ticket t " +
-        "WHERE t.user.id = :userId " +
-        "AND t.status NOT IN (:statuses) " +
-        "AND t.event.endDate >= CURRENT_DATE")
+    @Query("""
+            SELECT t FROM Ticket t
+            JOIN FETCH t.event e
+            WHERE t.user.id = :userId
+            AND t.status NOT IN (:statuses)
+            AND t.event.endDate >= CURRENT_DATE
+        """)
     List<Ticket> findValidTicketsByUserId(@Param("userId") Long userId,
         @Param("statuses") List<TicketStatus> statuses);
 
     @Query("SELECT t FROM Ticket t JOIN FETCH t.reservation r WHERE t.user.id = :userId AND t.status <> :status")
     List<Ticket> findAllByUserIdAndStatusNotWithReservation(@Param("userId") Long userId, @Param("status") TicketStatus status);
+
+    @Query("SELECT t FROM Ticket t " +
+        "JOIN FETCH t.event e " +
+        "JOIN FETCH e.survey s " +
+        "WHERE t.id = :ticketId")
+    Optional<Ticket> findTicketWithEventAndSurvey(@Param("ticketId") Long ticketId);
 
 }
 
