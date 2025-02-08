@@ -21,6 +21,7 @@ import com.uket.app.admin.api.service.TicketAdminService;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.event.service.EventService;
 import com.uket.domain.form.service.FormService;
+import com.uket.domain.ticket.dto.AdminCheckTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.TicketDto;
 import com.uket.domain.ticket.entity.Ticket;
@@ -76,9 +77,9 @@ public class TicketController implements TicketApi {
         // 5. 3, 4번의 내용을 합치기
 
         PageRequest pageRequest = PageRequest.of(page - 1, size);
-        Page<CheckTicketDto> ticketsPage = ticketService.searchAllTickets(pageRequest);
+        Page<AdminCheckTicketDto> ticketsPage = ticketService.searchAllTickets(pageRequest);
 
-        List<CheckTicketDto> tickets = ticketsPage.getContent();
+        List<AdminCheckTicketDto> tickets = ticketsPage.getContent();
         List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllUserAnswersFromTickets(tickets);
 
         CustomPageResponse<TicketingResponse> customResponse =
@@ -103,12 +104,12 @@ public class TicketController implements TicketApi {
     ) {
         PageRequest pageRequest = PageRequest.of(page - 1, size);
 
-        Page<CheckTicketDto> ticketsPage = ticketSearchers.stream()
+        Page<AdminCheckTicketDto> ticketsPage = ticketSearchers.stream()
                 .filter(ticketSearcher -> ticketSearcher.isSupport(searchType))
                 .findFirst().orElseThrow(() -> new AdminException(ErrorCode.INVALID_SEARCH_TYPE))
                 .search(searchRequest, PageRequest.of(page - 1, size));
 
-        List<CheckTicketDto> tickets = ticketsPage.getContent();
+        List<AdminCheckTicketDto> tickets = ticketsPage.getContent();
         List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllUserAnswersFromTickets(tickets);
 
         CustomPageResponse<TicketingResponse> customResponse =

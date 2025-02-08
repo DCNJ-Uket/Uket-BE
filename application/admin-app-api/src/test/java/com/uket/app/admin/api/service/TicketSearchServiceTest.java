@@ -15,6 +15,7 @@ import com.uket.domain.form.entity.Options;
 import com.uket.domain.form.entity.Survey;
 import com.uket.domain.form.exception.FormException;
 import com.uket.domain.form.service.FormService;
+import com.uket.domain.ticket.dto.AdminCheckTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.user.entity.Users;
 import java.util.List;
@@ -37,9 +38,9 @@ public class TicketSearchServiceTest {
     @Test
     void 티켓_예매목록에_질의응답_정보_추가() {
         //given
-        List<CheckTicketDto> tickets = List.of(
-                CheckTicketDto.builder().eventId(1L).userId(1L).build(),
-                CheckTicketDto.builder().eventId(1L).userId(2L).build()
+        List<AdminCheckTicketDto> tickets = List.of(
+                AdminCheckTicketDto.builder().eventId(1L).userId(1L).build(),
+                AdminCheckTicketDto.builder().eventId(1L).userId(2L).build()
         );
 
         Events event = Events.builder().id(1L).build();
@@ -113,11 +114,11 @@ public class TicketSearchServiceTest {
     @Test
     void 필수응답_예외처리() {
         //given
-        List<CheckTicketDto> tickets1 = List.of(
-                CheckTicketDto.builder().eventId(1L).userId(1L).build()
+        List<AdminCheckTicketDto> tickets1 = List.of(
+                AdminCheckTicketDto.builder().eventId(1L).userId(1L).build()
         );
-        List<CheckTicketDto> tickets2 = List.of(
-                CheckTicketDto.builder().eventId(2L).userId(2L).build()
+        List<AdminCheckTicketDto> tickets2 = List.of(
+                AdminCheckTicketDto.builder().eventId(2L).userId(2L).build()
         );
 
         Events event = Events.builder().id(1L).build();

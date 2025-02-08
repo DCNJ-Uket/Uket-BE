@@ -2,6 +2,7 @@ package com.uket.app.admin.api.service.search;
 
 import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.enums.TicketSearchType;
+import com.uket.domain.ticket.dto.AdminCheckTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.repository.TicketRepository;
@@ -24,8 +25,8 @@ public class TicketSearcherByStatus extends TicketSearcher{
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
+    public Page<AdminCheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByStatus(searchRequest.status(), pageable);
-        return tickets.map(CheckTicketDto::from);
+        return tickets.map(AdminCheckTicketDto::from);
     }
 }

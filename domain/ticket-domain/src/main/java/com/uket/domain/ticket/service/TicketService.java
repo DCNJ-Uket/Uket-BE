@@ -8,7 +8,9 @@ import com.uket.domain.form.entity.Answer;
 import com.uket.domain.form.entity.Form;
 import com.uket.domain.form.entity.Survey;
 import com.uket.domain.form.repository.AnswerRepository;
+import com.uket.domain.ticket.dto.AdminCheckTicketDto;
 import com.uket.domain.ticket.dto.CancelTicketDto;
+import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
@@ -20,6 +22,8 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -131,8 +135,22 @@ public class TicketService {
         Ticket ticket = ticketRepository.findById(ticketId)
             .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
+        if(ticketStatus == TicketStatus.RESERVATION_CANCEL) {
+            this.decreaseReservedCount(ticket.getReservation().getId());
+        }
+
+        if(ticketStatus == TicketStatus.FINISH_ENTER) {
+            ticket.enter();
+            return ticketRepository.save(ticket);
+        }
         Ticket updatedTicket = ticket.updateStatus(ticketStatus);
         return ticketRepository.save(updatedTicket);
+    }
+
+    @Transactional
+    public Page<AdminCheckTicketDto> searchAllTickets(Pageable pageable) {
+        Page<Ticket> tickets =  ticketRepository.findAll(pageable);
+        return tickets.map(AdminCheckTicketDto::from);
     }
 
 }

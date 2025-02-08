@@ -2,6 +2,7 @@ package com.uket.app.admin.api.service.search;
 
 import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.enums.TicketSearchType;
+import com.uket.domain.ticket.dto.AdminCheckTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,5 +18,5 @@ public abstract class TicketSearcher implements SearchTicket {
 }
 
 interface SearchTicket {
-    Page<CheckTicketDto> search(SearchRequest searchRequest, Pageable pageable);
+    Page<AdminCheckTicketDto> search(SearchRequest searchRequest, Pageable pageable);
 }

@@ -2,6 +2,7 @@ package com.uket.app.admin.api.service.search;
 
 import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.enums.TicketSearchType;
+import com.uket.domain.ticket.dto.AdminCheckTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.repository.TicketRepository;
@@ -28,7 +29,7 @@ public class TicketSearcherByModifiedAt extends TicketSearcher{
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
+    public Page<AdminCheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
         LocalDate modifiedAtLocal = searchRequest.modifiedAt();
         if(modifiedAtLocal == null) {
             throw new IllegalStateException("createdAt이 null일 수 없습니다.");
@@ -40,6 +41,6 @@ public class TicketSearcherByModifiedAt extends TicketSearcher{
 
         Page<Ticket> tickets = ticketRepository.findByModifiedAtBetween(modifyStartTimestamp, modifyEndTimestamp,pageable);
 
-        return tickets.map(CheckTicketDto::from);
+        return tickets.map(AdminCheckTicketDto::from);
     }
 }

@@ -2,6 +2,7 @@ package com.uket.app.admin.api.service.search;
 
 import com.uket.app.admin.api.dto.request.SearchRequest;
 import com.uket.app.admin.api.enums.TicketSearchType;
+import com.uket.domain.ticket.dto.AdminCheckTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.repository.TicketRepository;
@@ -27,7 +28,7 @@ public class TicketSearcherByShowStartDate extends TicketSearcher{
 
     @Override
     @Transactional(readOnly = true)
-    public Page<CheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
+    public Page<AdminCheckTicketDto> search(SearchRequest searchRequest, Pageable pageable) {
         LocalDate showDateLocal = searchRequest.showDate();
         if(showDateLocal == null){
             throw new IllegalStateException("showDate가 null일 수 없습니다.");
@@ -36,6 +37,6 @@ public class TicketSearcherByShowStartDate extends TicketSearcher{
         LocalDateTime showEnd = showDateLocal.atTime(LocalTime.MAX);
 
         Page<Ticket> tickets = ticketRepository.findByShowStartDateBetween(showStart, showEnd,pageable);
-        return tickets.map(CheckTicketDto::from);
+        return tickets.map(AdminCheckTicketDto::from);
     }
 }
