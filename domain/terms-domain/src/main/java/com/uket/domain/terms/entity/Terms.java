@@ -33,7 +33,7 @@ public class Terms extends BaseEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
+    @Column(name = "type", columnDefinition = "varchar(255)")
     private TermsType type;
 
     @JoinColumn(name = "documnet_no")

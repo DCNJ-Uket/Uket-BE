@@ -45,6 +45,7 @@ public class Reservation extends BaseEntity {
     private Integer reservedCount;
     private Integer totalCount;
 
+    @Column(columnDefinition = "varchar(255)")
     @Enumerated(EnumType.STRING)
     private ReservationUserType type;
 

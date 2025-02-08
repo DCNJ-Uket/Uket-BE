@@ -45,9 +45,13 @@ public class Users extends BaseEntity {
     private String name;
     private String email;
     private String profileImage;
+
+    @Column(columnDefinition = "varchar(255)")
     @Enumerated(EnumType.STRING)
     private Platform platform;
     private String platformId;
+
+    @Column(columnDefinition = "varchar(255)")
     @Enumerated(EnumType.STRING)
     private UserRole role;
     private Boolean isRegistered;

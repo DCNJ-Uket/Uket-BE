@@ -35,6 +35,7 @@ public class Form extends BaseEntity {
     @JoinColumn(name = "survey_id")
     private Survey survey;
 
+    @Column(columnDefinition = "varchar(255)")
     @Enumerated(value = EnumType.STRING)
     private FormType formType;
 

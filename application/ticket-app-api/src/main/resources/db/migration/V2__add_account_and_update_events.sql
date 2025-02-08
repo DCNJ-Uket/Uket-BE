@@ -13,3 +13,4 @@ CREATE TABLE IF NOT EXISTS account (
 
 -- Add account_id column to Events table
 ALTER TABLE events ADD COLUMN account_id BIGINT;
+ALTER TABLE events ADD COLUMN main_image_path VARCHAR(255);

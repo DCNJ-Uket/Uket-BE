@@ -56,6 +56,7 @@ public class Ticket extends DeletableBaseEntity {
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
+    @Column(columnDefinition = "varchar(255)")
     @Enumerated(value = EnumType.STRING)
     private TicketStatus status;
     private LocalDateTime paymentAt;
