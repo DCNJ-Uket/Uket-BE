@@ -6,14 +6,14 @@ on:
       - main
       - dev
     paths-ignore:
-      - application/ticket-app-api/**
+      - application/admin-app-api/**
       - application/queue-app-api/**
   pull_request:
     branches:
       - main
       - dev
     paths-ignore:
-      - application/ticket-app-api/**
+      - application/admin-app-api/**
       - application/queue-app-api/**
 
 env:
@@ -24,6 +24,12 @@ env:
 jobs:
   build-and-push-docker-image:
     runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
     steps:
       - uses: actions/checkout@v3
 
