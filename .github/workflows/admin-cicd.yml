@@ -5,20 +5,16 @@ on:
     branches:
       - main
       - dev
-    paths:
-      - application/admin-app-api/**
-      - core/**
-      - domain/**
-      - modules/**
+    paths-ignore:
+      - application/ticket-app-api/**
+      - application/queue-app-api/**
   pull_request:
     branches:
       - main
       - dev
-    paths:
-      - application/admin-app-api/**
-      - core/**
-      - domain/**
-      - modules/**
+    paths-ignore:
+      - application/ticket-app-api/**
+      - application/queue-app-api/**
 
 env:
   DOCKER_REGISTRY_URL: ${{ secrets.ADMIN_DOCKER_REGISTRY_URL }}
