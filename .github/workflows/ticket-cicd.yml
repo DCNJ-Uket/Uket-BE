@@ -1,9 +1,19 @@
-name: Java CI/CD with Gradle
+name: Ticket-App CI/CD
 
 on:
   push:
     branches:
+      - main
       - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+    paths:
+      - application/ticket-app-api/**
+      - core/**
+      - domain/**
+      - modules/**
 
 env:
   DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
@@ -27,7 +37,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # Setting up JDK 17 for building the Java application
+      # Setting up JDK 21 for building the Java application
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
@@ -40,7 +50,7 @@ jobs:
 
       # Building the application with Gradle
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew clean build -PmainClass=com.uket.TicketApiApplication
 
       # Configuring AWS credentials for accessing AWS services
       - name: Configure AWS credentials
