@@ -5,6 +5,11 @@ on:
     branches:
       - main
       - dev
+    paths:
+      - application/admin-app-api/**
+      - core/**
+      - domain/**
+      - modules/**
   pull_request:
     branches:
       - main
