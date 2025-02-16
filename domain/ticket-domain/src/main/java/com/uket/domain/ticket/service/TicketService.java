@@ -8,7 +8,9 @@ import com.uket.domain.form.entity.Answer;
 import com.uket.domain.form.entity.Form;
 import com.uket.domain.form.entity.Survey;
 import com.uket.domain.form.repository.AnswerRepository;
+import com.uket.domain.ticket.dto.AdminCheckTicketDto;
 import com.uket.domain.ticket.dto.CancelTicketDto;
+import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
@@ -20,11 +22,16 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional(readOnly = true)
 public class TicketService {
 
     private final TicketRepository ticketRepository;
@@ -52,13 +59,13 @@ public class TicketService {
         }
 
         Ticket ticket = Ticket.builder()
-                .user(user)
-                .reservation(reservation)
-                .event(createTicketDto.event())
-                .show(createTicketDto.show())
-                .status(createTicketDto.status())
-                .ticketNo(UUID.randomUUID().toString())
-                .build();
+            .user(user)
+            .reservation(reservation)
+            .event(createTicketDto.event())
+            .show(createTicketDto.show())
+            .status(createTicketDto.status())
+            .ticketNo(UUID.randomUUID().toString())
+            .build();
 
         return ticketRepository.save(ticket);
     }
@@ -66,7 +73,7 @@ public class TicketService {
     @Transactional(readOnly = true)
     public Ticket findById(Long ticketId) {
         return ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.NOT_FOUND_TICKET));
     }
 
     public void checkTicketOwner(Long userId, Long ticketId) {
@@ -105,7 +112,7 @@ public class TicketService {
     @Transactional
     public CancelTicketDto cancelTicketByUserIdAndId(Long userId, Long ticketId) {
         Ticket ticket = ticketRepository.findByUserIdAndId(userId, ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
         ticket.cancel();
         ticket.updateDeletedAt();
@@ -129,10 +136,23 @@ public class TicketService {
 
     public Ticket updateTicketStatus(Long ticketId, TicketStatus ticketStatus) {
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
+            .orElseThrow(() -> new TicketException(ErrorCode.FAIL_TO_FIND_TICKET));
 
+        if(ticketStatus == TicketStatus.RESERVATION_CANCEL) {
+            this.decreaseReservedCount(ticket.getReservation().getId());
+        }
+
+        if(ticketStatus == TicketStatus.FINISH_ENTER) {
+            ticket.enter();
+            return ticketRepository.save(ticket);
+        }
         Ticket updatedTicket = ticket.updateStatus(ticketStatus);
         return ticketRepository.save(updatedTicket);
     }
 
+    @Transactional
+    public Page<AdminCheckTicketDto> searchAllTickets(Pageable pageable) {
+        Page<Ticket> tickets =  ticketRepository.findAll(pageable);
+        return tickets.map(AdminCheckTicketDto::from);
+    }
 }

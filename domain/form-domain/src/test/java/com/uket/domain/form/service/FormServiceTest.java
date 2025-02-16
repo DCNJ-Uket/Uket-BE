@@ -44,7 +44,6 @@ public class FormServiceTest {
     @Mock
     private FormRepository formRepository;
 
-
     @Test
     void Survey를_찾아_반환한다() {
         //given

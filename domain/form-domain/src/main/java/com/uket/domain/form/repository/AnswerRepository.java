@@ -15,4 +15,9 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     @Modifying
     @Query("DELETE FROM Answer a WHERE a.user.id = :userId AND a.form IN :forms")
     void deleteAnswersByUserIdAndForms(@Param("userId") Long userId, @Param("forms") List<Form> forms);
+
+    @Query(value = "SELECT * FROM answer a " +
+        "WHERE a.form_id = :formId AND a.user_id = :userId " +
+        "ORDER BY a.created_at DESC LIMIT 1", nativeQuery = true)
+    Answer findRecentAnswerByFormIdAndUserId(Long formId, Long userId);
 }
