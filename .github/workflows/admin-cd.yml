@@ -1,18 +1,23 @@
-name: Java CI/CD with Gradle
+name: Admin-App CD
 
 on:
   push:
     branches:
+      - main
       - dev
+    paths-ignore:
+      - application/ticket-app-api/**
+      - application/queue-app-api/**
 
 env:
-  DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
-  DOCKER_IMAGE_NAME: dev-uket
-  DOCKER_CONTAINER_NAME: dev-uket
+  DOCKER_REGISTRY_URL: ${{ secrets.ADMIN_DOCKER_REGISTRY_URL }}
+  DOCKER_IMAGE_NAME: admin-uket
+  DOCKER_CONTAINER_NAME: admin-uket
 
 jobs:
   build-and-push-docker-image:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -27,7 +32,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # Setting up JDK 17 for building the Java application
+      # Setting up JDK 21 for building the Java application
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
@@ -40,14 +45,14 @@ jobs:
 
       # Building the application with Gradle
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew clean build -PmainClass=com.uket.AdminApiApplication
 
       # Configuring AWS credentials for accessing AWS services
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_ADMIN }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ADMIN }}
           aws-region: ap-northeast-2
 
       # Logging in to Amazon ECR
@@ -57,7 +62,7 @@ jobs:
       # Building and pushing Docker image to ECR
       - name: Docker build and push
         run: |
-          cd ./application/ticket-app-api
+          cd ./application/admin-app-api
           docker build --platform linux/amd64 -t ${{ env.DOCKER_IMAGE_NAME }} .
           docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest
           docker push ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}:latest
@@ -71,9 +76,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ec2-user
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_HOST_ADMIN }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY_ADMIN }}
           script: |
             aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ env.DOCKER_REGISTRY_URL }}
             docker-compose down
