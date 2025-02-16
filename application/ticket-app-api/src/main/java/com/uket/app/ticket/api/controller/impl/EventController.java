@@ -62,6 +62,19 @@ public class EventController implements EventApi {
     }
 
     @Override
+    public ResponseEntity<SurveyResponse> getSurveys(Long eventId) {
+        Survey survey = eventService.findSurveyById(eventId);
+        List<FormDto> formDtos = new ArrayList<>();
+        List<Form> forms = formService.findFormsBySurveyId(survey.getId());
+        for(Form form : forms) {
+            List<OptionDto> options = formService.findOptionsByFormId(form.getId());
+            formDtos.add(FormDto.from(form, options));
+        }
+        SurveyResponse response = SurveyResponse.from(survey, formDtos);
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
     public ResponseEntity<ReservationResponse> getPossibleReservations(Long showId, String userType) {
 
         String showName = showService.findNameById(showId);
