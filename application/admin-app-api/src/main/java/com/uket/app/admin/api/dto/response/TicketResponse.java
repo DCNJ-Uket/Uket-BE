@@ -3,6 +3,7 @@ package com.uket.app.admin.api.dto.response;
 import com.uket.app.admin.api.aop.MaskingUtil;
 import com.uket.app.admin.api.enums.MaskingType;
 import com.uket.app.admin.api.aop.Mask;
+import com.uket.domain.ticket.dto.AdminCheckTicketDto;
 import com.uket.domain.ticket.dto.CheckTicketDto;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -23,7 +24,7 @@ public record TicketResponse(
 ) {
     private static final String zoneId = "Asia/Seoul";
 
-    public static TicketResponse from(CheckTicketDto checkTicketDto) {
+    public static TicketResponse from(AdminCheckTicketDto checkTicketDto) {
         return TicketResponse.builder()
             .ticketId(checkTicketDto.ticketId())
             .depositorName(checkTicketDto.userName())
