@@ -1,5 +1,6 @@
 package com.uket.modules.jwt.config;
 
+import com.uket.modules.jwt.properties.DefaultTokenProperties;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import com.uket.modules.jwt.properties.TokenProperties;
 import com.uket.modules.jwt.util.JwtTicketUtil;
@@ -7,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import java.nio.charset.StandardCharsets;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +18,7 @@ public class JwtConfig {
     private final TokenProperties tokenProperties;
     private final SecretKey secretKey;
 
-    public JwtConfig(TokenProperties tokenProperties) {
+    public JwtConfig(DefaultTokenProperties tokenProperties) {
         this.tokenProperties = tokenProperties;
 
         this.secretKey = new SecretKeySpec(

@@ -1,17 +1,10 @@
 package com.uket.modules.jwt.properties;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
+public interface TokenProperties {
+    String secretKey();
+    TokenExpirationProperties expiration();
 
-@ConfigurationProperties(prefix = "app.token")
-@ConfigurationPropertiesBinding
-public record TokenProperties(
-        String secretKey,
-        @NestedConfigurationProperty TokenExpirationProperties expiration
-) {
-    @ConfigurationPropertiesBinding
-    public record TokenExpirationProperties(
+    record TokenExpirationProperties(
             Long ticketExpiration,
             Long accessTokenExpiration,
             Long refreshTokenExpiration
@@ -27,6 +20,5 @@ public record TokenProperties(
                 throw new IllegalArgumentException("refreshTokenExpiration이 null일 수 없습니다.");
             }
         }
-
     }
 }
