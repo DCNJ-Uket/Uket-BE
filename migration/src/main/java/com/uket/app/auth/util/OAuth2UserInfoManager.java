@@ -1,0 +1,98 @@
+package com.uket.app.auth.util;
+
+import com.uket.app.auth.exception.AuthException;
+import com.uket.app.auth.properties.AppProperties;
+import com.uket.app.auth.response.token.OAuth2TokenResponse;
+import com.uket.app.auth.response.userinfo.GoogleUserInfoResponse;
+import com.uket.app.auth.response.userinfo.KakaoUserInfoResponse;
+import com.uket.app.auth.response.userinfo.OAuth2UserInfoResponse;
+import com.uket.app.domain.user.Platform;
+import com.uket.app.exception.ErrorCode;
+import java.net.URI;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.util.UriBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
+
+@Component
+@RequiredArgsConstructor
+public class OAuth2UserInfoManager extends OAuth2Manager {
+
+    private final AppProperties appProperties;
+
+    public OAuth2UserInfoResponse getUserInfo(Platform platform,
+            OAuth2TokenResponse tokenResponse) {
+        if (platform == Platform.KAKAO) {
+            return getKakaoUserInfoResponse(tokenResponse);
+        }
+
+        if (platform == Platform.GOOGLE) {
+            return getGoogleUserInfoResponse(tokenResponse);
+        }
+
+        throw new AuthException(ErrorCode.INVALID_PLATFORM);
+    }
+
+    private OAuth2UserInfoResponse getKakaoUserInfoResponse(OAuth2TokenResponse tokenResponse) {
+        RestClient restClient = createRestClient(appProperties.kakao().userInfoUri());
+        String authorization = String.join(" ", tokenResponse.getTokenType(), tokenResponse.getAccessToken());
+
+        Map<String, Object> response = requestUserInfoToKakao(restClient, authorization);
+
+        if (response != null) {
+            return new KakaoUserInfoResponse(response);
+        }
+        throw new AuthException(ErrorCode.FAIL_REQUEST_TO_OAUTH2);
+    }
+
+    private Map<String, Object> requestUserInfoToKakao(RestClient restClient, String authorization) {
+        return restClient
+                .post()
+                .uri(this::getKakaoUserInfoUri)
+                .header(HttpHeaders.AUTHORIZATION, authorization)
+                .header(HttpHeaders.CONTENT_TYPE, MEDIA_TYPE)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {
+                });
+    }
+
+    private URI getKakaoUserInfoUri(UriBuilder uriBuilder) {
+        return uriBuilder
+                .queryParam("grant_type", "authorization_code")
+                .queryParam("client_id", appProperties.kakao().clientId())
+                .queryParam("client_secret", appProperties.kakao().clientSecret())
+                .queryParam("property_keys", "[\"kakao_account.email\", \"kakao_account.name\", \"kakao_account.profile\"]")
+                .build();
+    }
+
+    private OAuth2UserInfoResponse getGoogleUserInfoResponse(OAuth2TokenResponse tokenResponse) {
+        RestClient restClient = createRestClient(appProperties.google().userInfoUri());
+        String authorization = String.join(" ", tokenResponse.getTokenType(), tokenResponse.getAccessToken());
+
+        Map<String, Object> response = requestUserInfoToGoogle(restClient, authorization);
+
+        if (response != null) {
+            return new GoogleUserInfoResponse(response);
+        }
+        throw new AuthException(ErrorCode.FAIL_REQUEST_TO_OAUTH2);
+    }
+
+    private Map<String, Object> requestUserInfoToGoogle(RestClient restClient, String authorization) {
+        return restClient
+            .get()
+            .uri(getGoogleUserInfoUri())
+            .header(HttpHeaders.AUTHORIZATION, authorization)
+            .retrieve()
+            .body(new ParameterizedTypeReference<>() {});
+    }
+
+    private URI getGoogleUserInfoUri() {
+        String baseUrl = appProperties.google().userInfoUri();
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUrl);
+        return uriBuilder.build().toUri();
+    }
+}
