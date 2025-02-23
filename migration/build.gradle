@@ -36,9 +36,6 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
     //ticket module
-    implementation project(":core")
-
-    implementation project(":domain:core-domain")
     implementation project(":domain:auth-domain")
     implementation project(":domain:user-domain")
     implementation project(":domain:university-domain")
