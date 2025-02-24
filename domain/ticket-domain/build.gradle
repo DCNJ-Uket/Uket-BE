@@ -3,7 +3,7 @@ dependencies {
     implementation project(":domain:user-domain")
     implementation project(":domain:event-domain")
     implementation project(":domain:university-domain")
-    implementation project(":modules:lock-redis")
+    implementation project(":modules:redis")
     implementation project(":domain:form-domain")
 }
 

@@ -113,9 +113,6 @@ spring:
       on-profile: dev
   data:
     redis:
-      lock:
-        host: ${REDIS_LOCK_HOST}
-        port: ${REDIS_LOCK_PORT}
       host: ${REDIS_AUTH_HOST}
       port: ${REDIS_AUTH_PORT}
   datasource:

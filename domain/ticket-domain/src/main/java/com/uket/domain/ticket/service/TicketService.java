@@ -1,23 +1,20 @@
 package com.uket.domain.ticket.service;
 
 import com.uket.core.exception.ErrorCode;
-import com.uket.domain.event.entity.Events;
 import com.uket.domain.event.entity.Reservation;
 import com.uket.domain.event.service.ReservationService;
-import com.uket.domain.form.entity.Answer;
 import com.uket.domain.form.entity.Form;
 import com.uket.domain.form.entity.Survey;
 import com.uket.domain.form.repository.AnswerRepository;
 import com.uket.domain.ticket.dto.AdminCheckTicketDto;
 import com.uket.domain.ticket.dto.CancelTicketDto;
-import com.uket.domain.ticket.dto.CheckTicketDto;
 import com.uket.domain.ticket.dto.CreateTicketDto;
 import com.uket.domain.ticket.entity.Ticket;
 import com.uket.domain.ticket.enums.TicketStatus;
 import com.uket.domain.ticket.exception.TicketException;
 import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.user.entity.Users;
-import com.uket.modules.redis.lock.aop.DistributedLock;
+import com.uket.modules.redis.aop.DistributedLock;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
