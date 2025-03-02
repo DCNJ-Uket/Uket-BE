@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class RedisUtil {
-
     private final ValueOperations<String, String> valueOperations;
 
     public void setDataExpire(String key, String value, Long duration) {
