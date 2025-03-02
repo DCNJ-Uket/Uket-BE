@@ -46,9 +46,8 @@ dependencies {
     implementation project(":modules:jwt-provider")
     implementation project(":modules:aws-s3")
     implementation project(":modules:slack")
-    implementation project(":modules:token-redis")
+    implementation project(":modules:redis")
     implementation project(":modules:qrcode-provider")
-    implementation project(":modules:lock-redis")
 
     implementation project(":domain:form-domain")
 
