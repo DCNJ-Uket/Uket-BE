@@ -5,7 +5,7 @@ import com.uket.core.exception.BaseException;
 import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.user.exception.UserException;
-import com.uket.modules.redis.dto.response.RedisErrorResponse;
+import com.uket.modules.redis.response.RedisErrorResponse;
 import com.uket.modules.redis.exception.RedisErrorCode;
 import com.uket.modules.redis.exception.RedisException;
 import com.uket.modules.slack.dto.ErrorReportDto;

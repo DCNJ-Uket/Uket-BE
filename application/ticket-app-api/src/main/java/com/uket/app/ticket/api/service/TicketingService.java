@@ -14,7 +14,7 @@ import com.uket.domain.university.entity.University;
 import com.uket.domain.university.service.UniversityService;
 import com.uket.domain.user.entity.Users;
 import com.uket.domain.user.service.UserService;
-import com.uket.modules.redis.lock.aop.DistributedLock;
+import com.uket.modules.redis.aop.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

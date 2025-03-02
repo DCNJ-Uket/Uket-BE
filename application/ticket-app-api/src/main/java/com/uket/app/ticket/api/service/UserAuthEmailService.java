@@ -6,7 +6,7 @@ import com.uket.core.exception.ErrorCode;
 import com.uket.domain.auth.exception.AuthException;
 import com.uket.domain.university.service.UniversityService;
 import com.uket.domain.user.service.UserService;
-import com.uket.modules.redis.service.RedisUtil;
+import com.uket.modules.redis.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
