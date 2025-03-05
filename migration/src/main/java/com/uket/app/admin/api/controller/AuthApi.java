@@ -8,7 +8,6 @@ import com.uket.app.admin.api.dto.response.AdminRegisterResponse;
 import com.uket.app.admin.api.dto.response.ListResponse;
 import com.uket.app.dto.response.ErrorResponse;
 import com.uket.app.admin.auth.dto.AdminAuthToken;
-import com.uket.domain.auth.config.userid.LoginUserId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
