@@ -1,5 +1,6 @@
-package com.uket.app.domain.user;
+package com.uket.app.domain.user.admin.entity;
 
+import com.uket.app.domain.user.admin.enums.AdminRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
