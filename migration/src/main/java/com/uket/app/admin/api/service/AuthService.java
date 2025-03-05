@@ -1,6 +1,7 @@
 package com.uket.app.admin.api.service;
 
 
+import com.uket.app.admin.api.exception.AdminException;
 import com.uket.app.domain.user.AdminRole;
 import com.uket.app.exception.ErrorCode;
 import com.uket.app.admin.auth.dto.AdminAuthToken;
@@ -49,8 +50,11 @@ public class AuthService {
     }
 
     @Transactional
-    public Admin registerWithoutPassword(String name, String email, University university, AdminRole role)
+    public Admin registerWithoutPassword(Long userId, String name, String email, University university, AdminRole role)
         throws MessagingException {
+        if(Boolean.FALSE.equals(adminService.checkAdministratorUser(userId))) {
+            throw new AdminException(ErrorCode.NOT_ADMINISTRATOR_REGISTER);
+        }
         Admin admin = adminService.saveWithoutPassword(name,email, university, role);
         userAuthEmailService.sendAdminAuthEmail(email);
         return admin;

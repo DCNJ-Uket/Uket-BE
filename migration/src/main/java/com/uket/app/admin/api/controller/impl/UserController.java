@@ -30,9 +30,9 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<AdminRegisterResponse> registerWithOutPassword(
+    public ResponseEntity<AdminRegisterResponse> registerWithoutPassword(Long userId,
         AdministratorRegisterRequest request) throws MessagingException {
-        Admin admin = authService.registerWithoutPassword(request.name(), request.email(), request.organization(), request.role());
+        Admin admin = authService.registerWithoutPassword(userId, request.name(), request.email(), request.organization(), request.role());
         AdminRegisterResponse response = AdminRegisterResponse.of(admin);
         return ResponseEntity.ok(response);
     }

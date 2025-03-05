@@ -44,7 +44,8 @@ public enum ErrorCode {
     NOT_MATCH_PASSWORD(400,"AD0002", "올바르지 않은 비밀번호입니다."),
     ALREADY_EXIST_ADMIN(400,"AD0003", "이미 가입된 어드민입니다."),
     NOT_REGISTERED_ADMIN(400,"AD0004", "인가되지 않은 어드민입니다."),
-    NOT_ADMINISTRATOR(400, "AD0005", "관리자가 아니면 계정을 삭제할 수 없습니다."),
+    NOT_ADMINISTRATOR_DELETE(400, "AD0005", "관리자가 아니면 계정을 삭제할 수 없습니다."),
+    NOT_ADMINISTRATOR_REGISTER(400, "AD0006", "관리자가 아니면 계정을 추가할 수 없습니다."),
 
     /**
      * User Errors

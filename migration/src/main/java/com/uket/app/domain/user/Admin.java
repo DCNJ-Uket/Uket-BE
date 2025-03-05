@@ -36,11 +36,8 @@ public class Admin {
     private String password;
     private String name;
     private Boolean isRegistered;
-<<<<<<< HEAD
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_id")
     private University university;
-=======
->>>>>>> 02d5e42f15e22928e34b04cfb2ed0ad7ba1e39d6
 }

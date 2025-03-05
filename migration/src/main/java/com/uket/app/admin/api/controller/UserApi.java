@@ -4,9 +4,13 @@ import com.uket.app.admin.api.dto.request.AdministratorRegisterRequest;
 import com.uket.app.admin.api.dto.response.ActiveOrganizationsResponse;
 import com.uket.app.admin.api.dto.response.AdminRegisterResponse;
 import com.uket.app.admin.api.dto.response.ListResponse;
+import com.uket.app.dto.response.ErrorResponse;
 import com.uket.domain.auth.config.userid.LoginUserId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,13 +36,39 @@ public interface UserApi {
 
     @Operation(summary = "관리자 어드민 계정 추가", description = "관리자가 비밀번호를 제외하고 어드민 계정을 추가 및 이메일 발송을 진행해 비밀번호를 등록할 수 있도록 합니다.")
     @PostMapping("/administrator/register")
-    ResponseEntity<AdminRegisterResponse> registerWithOutPassword(
+    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
+        mediaType = "application/json",
+        examples = {
+            @ExampleObject(name = "AD0003", description = "이미 가입된 어드민인 경우 발생합니다.",
+                value = """
+                                    {"code": "AD0003", "message": "이미 가입된 어드민입니다."}
+                                    """
+            ),
+            @ExampleObject(name = "AD0006", description = "관리자가 아닌 유저가 유저 추가를 요청할 경우 발생합니다.",
+                value = """
+                                    {"code": "AD0006", "message": "관리자가 아니면 계정을 추가할 수 없습니다."}
+                                    """
+            )
+        }, schema = @Schema(implementation = ErrorResponse.class)))
+    ResponseEntity<AdminRegisterResponse> registerWithoutPassword(
+        @Parameter(hidden = true)
+        @LoginUserId
+        Long userId,
         @Valid
         @RequestBody AdministratorRegisterRequest request
     ) throws MessagingException;
 
     @Operation(summary = "관리자 어드민 계정 삭제", description = "관리자가 어드민 계정을 삭제합니다.")
     @PostMapping("/administrator/register/{deleteUserId}")
+    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
+        mediaType = "application/json",
+        examples = {
+            @ExampleObject(name = "AD0005", description = "관리자가 아닌 유저가 삭제를 요청할 경우 발생합니다.",
+                value = """
+                                    {"code": "AD0005", "message": "관리자가 아니면 계정을 삭제할 수 없습니다."}
+                                    """
+            )
+        }, schema = @Schema(implementation = ErrorResponse.class)))
     ResponseEntity<Boolean> delete(
         @Parameter(hidden = true)
         @LoginUserId

@@ -8,6 +8,7 @@ import com.uket.app.admin.auth.repository.AdminRepository;
 import com.uket.app.exception.ErrorCode;
 import com.uket.domain.university.entity.University;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +47,7 @@ public class AdminService {
             () -> new AdminException(ErrorCode.NOT_FOUND_USER));
 
         if(admin.getRole() != AdminRole.ADMINISTRATOR) {
-            throw new AdminException(ErrorCode.NOT_ADMINISTRATOR);
+            throw new AdminException(ErrorCode.NOT_ADMINISTRATOR_DELETE);
         }
         adminRepository.deleteById(deleteUserId);
     }
@@ -66,5 +67,12 @@ public class AdminService {
             .build();
 
         return adminRepository.save(admin);
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean checkAdministratorUser(Long userId) {
+        Admin admin = adminRepository.findById(userId).orElseThrow(
+            () -> new AdminException(ErrorCode.NOT_FOUND_USER));
+        return admin.getRole() == AdminRole.ADMINISTRATOR;
     }
 }
