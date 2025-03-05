@@ -51,7 +51,7 @@ jobs:
 
       # Building the application with Gradle
       - name: Build with Gradle
-        run: ./gradlew clean build -PmainClass=com.uket.AdminApiApplication
+        run: ./gradlew clean build -PmainClass=com.uket.UketApplication
 
       # Configuring AWS credentials for accessing AWS services
       - name: Configure AWS credentials
