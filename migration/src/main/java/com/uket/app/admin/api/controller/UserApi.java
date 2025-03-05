@@ -5,7 +5,6 @@ import com.uket.app.admin.api.dto.response.ActiveOrganizationsResponse;
 import com.uket.app.admin.api.dto.response.AdminRegisterResponse;
 import com.uket.app.admin.api.dto.response.ListResponse;
 import com.uket.app.dto.response.ErrorResponse;
-import com.uket.domain.auth.config.userid.LoginUserId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,36 +42,16 @@ public interface UserApi {
                 value = """
                                     {"code": "AD0003", "message": "이미 가입된 어드민입니다."}
                                     """
-            ),
-            @ExampleObject(name = "AD0006", description = "관리자가 아닌 유저가 유저 추가를 요청할 경우 발생합니다.",
-                value = """
-                                    {"code": "AD0006", "message": "관리자가 아니면 계정을 추가할 수 없습니다."}
-                                    """
             )
         }, schema = @Schema(implementation = ErrorResponse.class)))
     ResponseEntity<AdminRegisterResponse> registerWithoutPassword(
-        @Parameter(hidden = true)
-        @LoginUserId
-        Long userId,
         @Valid
         @RequestBody AdministratorRegisterRequest request
     ) throws MessagingException;
 
     @Operation(summary = "관리자 어드민 계정 삭제", description = "관리자가 어드민 계정을 삭제합니다.")
     @PostMapping("/administrator/register/{deleteUserId}")
-    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
-        mediaType = "application/json",
-        examples = {
-            @ExampleObject(name = "AD0005", description = "관리자가 아닌 유저가 삭제를 요청할 경우 발생합니다.",
-                value = """
-                                    {"code": "AD0005", "message": "관리자가 아니면 계정을 삭제할 수 없습니다."}
-                                    """
-            )
-        }, schema = @Schema(implementation = ErrorResponse.class)))
     ResponseEntity<Boolean> delete(
-        @Parameter(hidden = true)
-        @LoginUserId
-        Long userId,
         @PathVariable("deleteUserId") Long deleteUserId
     );
 }

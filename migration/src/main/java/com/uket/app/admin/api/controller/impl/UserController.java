@@ -30,16 +30,15 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<AdminRegisterResponse> registerWithoutPassword(Long userId,
-        AdministratorRegisterRequest request) throws MessagingException {
-        Admin admin = authService.registerWithoutPassword(userId, request.name(), request.email(), request.organization(), request.role());
+    public ResponseEntity<AdminRegisterResponse> registerWithoutPassword(AdministratorRegisterRequest request) throws MessagingException {
+        Admin admin = authService.registerWithoutPassword(request.name(), request.email(), request.organization(), request.role());
         AdminRegisterResponse response = AdminRegisterResponse.of(admin);
         return ResponseEntity.ok(response);
     }
 
     @Override
-    public ResponseEntity<Boolean> delete(Long userId, Long deleteUserId)  {
-        adminService.delete(userId, deleteUserId);
+    public ResponseEntity<Boolean> delete(Long deleteUserId)  {
+        adminService.delete(deleteUserId);
         return ResponseEntity.ok(true);
     }
 }

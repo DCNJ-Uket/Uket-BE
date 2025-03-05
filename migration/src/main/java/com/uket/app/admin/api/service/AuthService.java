@@ -9,6 +9,8 @@ import com.uket.app.domain.user.Admin;
 import com.uket.app.exception.AuthException;
 import com.uket.app.admin.auth.service.AdminService;
 import com.uket.domain.university.entity.University;
+import com.uket.app.admin.api.exception.UniversityException;
+import com.uket.domain.university.service.UniversityService;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
 import jakarta.mail.MessagingException;
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final AdminService adminService;
+    private final UniversityService universityService;
     private final UserAuthEmailService userAuthEmailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
@@ -50,11 +53,9 @@ public class AuthService {
     }
 
     @Transactional
-    public Admin registerWithoutPassword(Long userId, String name, String email, University university, AdminRole role)
+    public Admin registerWithoutPassword(String name, String email, String organization, AdminRole role)
         throws MessagingException {
-        if(Boolean.FALSE.equals(adminService.checkAdministratorUser(userId))) {
-            throw new AdminException(ErrorCode.NOT_ADMINISTRATOR_REGISTER);
-        }
+        University university = universityService.findByName(organization).orElseThrow(() -> new UniversityException(ErrorCode.NOT_FOUND_UNIVERSITY));
         Admin admin = adminService.saveWithoutPassword(name,email, university, role);
         userAuthEmailService.sendAdminAuthEmail(email);
         return admin;

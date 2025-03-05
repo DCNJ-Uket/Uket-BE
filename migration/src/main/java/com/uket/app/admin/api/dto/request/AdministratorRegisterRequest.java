@@ -16,7 +16,7 @@ public record AdministratorRegisterRequest(
     String email,
     @Schema(description = "어드민 소속", example = "소리터")
     @NotNull
-    University organization,
+    String organization,
 
     @Schema(description = "어드민 권한", example = "ADMINISTRATOR")
     @NotNull

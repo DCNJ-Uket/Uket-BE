@@ -61,6 +61,6 @@ subprojects {
     }
 
     bootJar {
-        mainClass = project.getProperty('mainClass')
+        mainClass = 'com.uket.UketApplication'
     }
 }

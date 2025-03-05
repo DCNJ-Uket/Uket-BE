@@ -42,13 +42,7 @@ public class AdminService {
     }
 
     @Transactional
-    public void delete(Long userId, Long deleteUserId) {
-        Admin admin = adminRepository.findById(userId).orElseThrow(
-            () -> new AdminException(ErrorCode.NOT_FOUND_USER));
-
-        if(admin.getRole() != AdminRole.ADMINISTRATOR) {
-            throw new AdminException(ErrorCode.NOT_ADMINISTRATOR_DELETE);
-        }
+    public void delete(Long deleteUserId) {
         adminRepository.deleteById(deleteUserId);
     }
 
@@ -67,12 +61,5 @@ public class AdminService {
             .build();
 
         return adminRepository.save(admin);
-    }
-
-    @Transactional(readOnly = true)
-    public Boolean checkAdministratorUser(Long userId) {
-        Admin admin = adminRepository.findById(userId).orElseThrow(
-            () -> new AdminException(ErrorCode.NOT_FOUND_USER));
-        return admin.getRole() == AdminRole.ADMINISTRATOR;
     }
 }
