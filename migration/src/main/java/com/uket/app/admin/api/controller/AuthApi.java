@@ -2,7 +2,9 @@ package com.uket.app.admin.api.controller;
 
 import com.uket.app.admin.api.dto.request.EmailLoginRequest;
 import com.uket.app.admin.api.dto.request.EmailRegisterRequest;
+import com.uket.app.admin.api.dto.response.ActiveOrganizationsResponse;
 import com.uket.app.admin.api.dto.response.AdminRegisterResponse;
+import com.uket.app.admin.api.dto.response.ListResponse;
 import com.uket.app.dto.response.ErrorResponse;
 import com.uket.app.admin.auth.dto.AdminAuthToken;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,4 +72,17 @@ public interface AuthApi {
             @Valid
             @RequestBody EmailRegisterRequest request
     );
+
+    @Operation(summary = "어드민 계정 소속 조회", description = "어드민 계정의 소속을 조회합니다.")
+    @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
+        mediaType = "application/json",
+        examples = {
+            @ExampleObject(name = "AD0003", description = "이미 가입된 어드민인 경우 발생합니다.",
+                value = """
+                                    {"code": "AD0003", "message": "이미 가입된 어드민입니다."}
+                                    """
+            )
+        }, schema = @Schema(implementation = ErrorResponse.class)))
+    @GetMapping("/get/organizations")
+    ResponseEntity<ListResponse<ActiveOrganizationsResponse>> getOrganizations();
 }

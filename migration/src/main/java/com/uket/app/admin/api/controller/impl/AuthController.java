@@ -3,10 +3,14 @@ package com.uket.app.admin.api.controller.impl;
 import com.uket.app.admin.api.controller.AuthApi;
 import com.uket.app.admin.api.dto.request.EmailLoginRequest;
 import com.uket.app.admin.api.dto.request.EmailRegisterRequest;
+import com.uket.app.admin.api.dto.response.ActiveOrganizationsResponse;
 import com.uket.app.admin.api.dto.response.AdminRegisterResponse;
+import com.uket.app.admin.api.dto.response.ListResponse;
 import com.uket.app.admin.api.service.AuthService;
+import com.uket.app.admin.api.service.UniversityEventService;
 import com.uket.app.admin.auth.dto.AdminAuthToken;
 import com.uket.app.domain.user.Admin;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Controller;
 public class AuthController implements AuthApi {
 
     private final AuthService authService;
+    private final UniversityEventService universityEventService;
 
     @Override
     public ResponseEntity<AdminAuthToken> login(EmailLoginRequest request) {
@@ -28,6 +33,13 @@ public class AuthController implements AuthApi {
         Admin admin = authService.registerToEmail(request.email(), request.password(), request.name());
 
         AdminRegisterResponse response = AdminRegisterResponse.of(admin);
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<ListResponse<ActiveOrganizationsResponse>> getOrganizations() {
+        List<ActiveOrganizationsResponse> activeOrganizations = universityEventService.getActiveOrganizations();
+        ListResponse<ActiveOrganizationsResponse> response = ListResponse.from(activeOrganizations);
         return ResponseEntity.ok(response);
     }
 }
