@@ -38,6 +38,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
     //ticket module
+    implementation project(":domain:auth-domain")
     implementation project(":domain:user-domain")
     implementation project(":domain:university-domain")
     implementation project(":domain:event-domain")
@@ -45,7 +46,7 @@ dependencies {
     implementation project(":domain:terms-domain")
     implementation project(":domain:form-domain")
 
-    //Todo: domain 모듈 전체 패키지화 완료 후 migration 삭제 필요
+    //TODO: domain 모듈 전체 패키지화 완료 후 migration 삭제 필요
     implementation project(":domain:core-domain")
 
     implementation project(":modules:jwt-provider")

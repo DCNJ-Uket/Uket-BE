@@ -1,13 +1,16 @@
 package com.uket.app.admin.api.service;
 
 
+import com.uket.app.domain.user.AdminRole;
 import com.uket.app.exception.ErrorCode;
 import com.uket.app.admin.auth.dto.AdminAuthToken;
 import com.uket.app.domain.user.Admin;
 import com.uket.app.exception.AuthException;
 import com.uket.app.admin.auth.service.AdminService;
+import com.uket.domain.university.entity.University;
 import com.uket.domain.user.enums.UserRole;
 import com.uket.modules.jwt.util.JwtAuthTokenUtil;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final AdminService adminService;
+    private final UserAuthEmailService userAuthEmailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtAuthTokenUtil jwtAuthTokenUtil;
 
@@ -42,6 +46,14 @@ public class AuthService {
         String encodedPassword = bCryptPasswordEncoder.encode(password);
 
         return adminService.save(email, encodedPassword, name);
+    }
+
+    @Transactional
+    public Admin registerWithoutPassword(String name, String email, University university, AdminRole role)
+        throws MessagingException {
+        Admin admin = adminService.saveWithoutPassword(name,email, university, role);
+        userAuthEmailService.sendAdminAuthEmail(email);
+        return admin;
     }
 
     private void validateRegistered(Admin admin) {

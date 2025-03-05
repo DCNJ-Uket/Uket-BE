@@ -1,6 +1,7 @@
 package com.uket.app.domain.user;
 
 import com.uket.domain.event.entity.Events;
+import com.uket.domain.university.entity.University;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -38,6 +39,6 @@ public class Admin {
     private Boolean isRegistered;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
-    private Events event;
+    @JoinColumn(name = "university_id")
+    private University university;
 }
