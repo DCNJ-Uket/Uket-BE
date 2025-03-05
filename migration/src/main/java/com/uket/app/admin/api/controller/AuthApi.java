@@ -77,24 +77,4 @@ public interface AuthApi {
             @Valid
             @RequestBody EmailRegisterRequest request
     );
-
-    @Operation(summary = "어드민 계정 소속 조회", description = "어드민 계정의 소속을 조회합니다.")
-    @GetMapping("/get/organizations")
-    ResponseEntity<ListResponse<ActiveOrganizationsResponse>> getOrganizations();
-
-    @Operation(summary = "관리자 어드민 계정 추가", description = "관리자가 비밀번호를 제외하고 어드민 계정을 추가 및 이메일 발송을 진행해 비밀번호를 등록할 수 있도록 합니다.")
-    @PostMapping("/administrator/register")
-    ResponseEntity<AdminRegisterResponse> registerWithOutPassword(
-        @Valid
-        @RequestBody AdministratorRegisterRequest request
-    ) throws MessagingException;
-
-    @Operation(summary = "관리자 어드민 계정 삭제", description = "관리자가 어드민 계정을 삭제합니다.")
-    @PostMapping("/administrator/register/{deleteUserId}")
-    ResponseEntity<Boolean> delete(
-        @Parameter(hidden = true)
-        @LoginUserId
-        Long userId,
-        @PathVariable("deleteUserId") Long deleteUserId
-    );
 }

@@ -23,8 +23,6 @@ import org.springframework.stereotype.Controller;
 public class AuthController implements AuthApi {
 
     private final AuthService authService;
-    private final UniversityEventService universityEventService;
-    private final AdminService adminService;
 
     @Override
     public ResponseEntity<AdminAuthToken> login(EmailLoginRequest request) {
@@ -38,26 +36,5 @@ public class AuthController implements AuthApi {
 
         AdminRegisterResponse response = AdminRegisterResponse.of(admin);
         return ResponseEntity.ok(response);
-    }
-
-    @Override
-    public ResponseEntity<ListResponse<ActiveOrganizationsResponse>> getOrganizations() {
-        List<ActiveOrganizationsResponse> activeOrganizations = universityEventService.getActiveOrganizations();
-        ListResponse<ActiveOrganizationsResponse> response = ListResponse.from(activeOrganizations);
-        return ResponseEntity.ok(response);
-    }
-
-    @Override
-    public ResponseEntity<AdminRegisterResponse> registerWithOutPassword(
-        AdministratorRegisterRequest request) throws MessagingException {
-        Admin admin = authService.registerWithoutPassword(request.name(), request.email(), request.organization(), request.role());
-        AdminRegisterResponse response = AdminRegisterResponse.of(admin);
-        return ResponseEntity.ok(response);
-    }
-
-    @Override
-    public ResponseEntity<Boolean> delete(Long userId, Long deleteUserId)  {
-        adminService.delete(userId, deleteUserId);
-        return ResponseEntity.ok(true);
     }
 }
