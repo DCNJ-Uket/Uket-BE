@@ -7,5 +7,6 @@ public enum TicketSearchType {
     SHOW_DATE,
     RESERVATION_USER_TYPE,
     CREATED_AT,
-    MODIFIED_AT
+    MODIFIED_AT,
+    NONE
 }
