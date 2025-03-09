@@ -91,13 +91,6 @@ public interface TicketApi {
             @PathVariable("ticketStatus") TicketStatus ticketStatus
     );
 
-    @Operation(summary = "전체 티켓 페이지별 조회 API", description = "전체 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
-    @GetMapping("/search/all")
-    ResponseEntity<CustomPageResponse<TicketingResponse>> searchAllTickets(
-        @RequestParam(defaultValue = "1")int page,
-        @RequestParam(defaultValue = "10")int size
-    );
-
     @Operation(summary = "티켓 검색 API", description = "다양한 기준으로 티켓을 페이지별로 조회합니다. 페이지는 1Page부터 시작합니다.")
     @GetMapping("/search")
     ResponseEntity<CustomPageResponse<TicketingResponse>> searchTickets(
