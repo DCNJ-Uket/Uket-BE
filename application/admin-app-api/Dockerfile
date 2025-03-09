@@ -17,6 +17,10 @@ COPY docker/run-java.sh /usr/bin/run-java.sh
 RUN apt-get update && apt-get install -y wget
 # RUN wget -O dd-java-agent.jar 'https://github.com/DataDog/dd-trace-java/releases/latest/download/dd-java-agent.jar'
 
+RUN apt-get update && apt-get install -y wget dos2unix
+RUN dos2unix /usr/bin/run-java.sh
+RUN chmod +x /usr/bin/run-java.sh
+
 ENV JAVA_MAIN_CLASS org.springframework.boot.loader.launch.JarLauncher
 ENV JAVA_APP_DIR /usr/bin/app
 ENV JAVA_LIB_DIR /usr/bin/app
