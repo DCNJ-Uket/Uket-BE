@@ -2,9 +2,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     api 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'com.h2database:h2'
 
     implementation project(":domain:core-domain")
     implementation project(":domain:user-domain")
+    implementation project(":domain:university-domain")
     implementation project(":modules:jwt-provider")
 }
 
