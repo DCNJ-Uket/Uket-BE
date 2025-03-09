@@ -45,7 +45,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle (Without Deployment)
-        run: ./gradlew clean build -PmainClass=com.uket.UketApplication -x test
+        run: ./gradlew clean build -PmainClass=com.uket.AdminApiApplication -x test
 
       - name: Run Tests
-        run: ./gradlew test -PmainClass=com.uket.UketApplication
+        run: ./gradlew test -PmainClass=com.uket.AdminApiApplication
