@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class MemberController implements MemberApi {
 
-    private AdminService adminService;
+    private final AdminService adminService;
 
     @Override
     public ResponseEntity<SearchAdminsResponse> searchAllAdmins(int page, int size) {

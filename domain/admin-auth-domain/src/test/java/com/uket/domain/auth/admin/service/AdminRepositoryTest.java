@@ -55,8 +55,8 @@ public class AdminRepositoryTest {
 
     @Configuration
     @EnableAutoConfiguration
-    @EntityScan(basePackages = "com.uket")
-    @EnableJpaRepositories(basePackages = "com.uket")
+    @EntityScan(basePackages = { "com.uket.domain.auth.admin", "com.uket.domain.university" })
+    @EnableJpaRepositories(basePackages = "com.uket.domain.auth.admin")
     static class RepositoryConfigure {
     }
 }
