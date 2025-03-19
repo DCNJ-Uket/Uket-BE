@@ -30,6 +30,7 @@ import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.ticket.service.TicketService;
 import com.uket.domain.user.service.UserService;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -82,12 +83,14 @@ public class TicketController implements TicketApi {
     ) {
         PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(Direction.DESC, "createdAt"));
         Page<AdminCheckTicketDto> ticketsPage;
+        TicketSearchType ticketSearchType = Optional.ofNullable(searchType).orElse(TicketSearchType.DEFAULT);
 
-        if(searchType == TicketSearchType.NONE) {
+
+        if(ticketSearchType == TicketSearchType.NONE) {
             ticketsPage = ticketService.searchAllTickets(pageRequest);
         } else {
             ticketsPage = ticketSearchers.stream()
-                .filter(ticketSearcher -> ticketSearcher.isSupport(searchType))
+                .filter(ticketSearcher -> ticketSearcher.isSupport(ticketSearchType))
                 .findFirst().orElseThrow(() -> new AdminException(ErrorCode.INVALID_SEARCH_TYPE))
                 .search(searchRequest, pageRequest);
         }

@@ -8,5 +8,7 @@ public enum TicketSearchType {
     RESERVATION_USER_TYPE,
     CREATED_AT,
     MODIFIED_AT,
-    NONE
+    NONE;
+
+    public static final TicketSearchType DEFAULT = NONE;
 }
