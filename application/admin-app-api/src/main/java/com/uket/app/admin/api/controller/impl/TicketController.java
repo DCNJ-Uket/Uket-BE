@@ -30,6 +30,7 @@ import com.uket.domain.ticket.repository.TicketRepository;
 import com.uket.domain.ticket.service.TicketService;
 import com.uket.domain.user.service.UserService;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -74,33 +75,6 @@ public class TicketController implements TicketApi {
 
     @Override
     @ApplyMasking(typeValue = TicketingResponse.class)
-    public ResponseEntity<CustomPageResponse<TicketingResponse>> searchAllTickets(int page, int size) {
-        // 1. JWT가 유효한지 확인, 어드민 계정인지 확인 -> 생략
-        // 2. 해당 어드민 계정이 관리하는 event get -> 필드 추가 방식이 적합해보임 -> 생략 & 대체
-        // 3. ticket list get(이때 어드민 계정이 관리하는 event로 필터링 추가해야함) -> tickets
-        // 4. ticket 소유자마다, 해당 event에 대한 answer list get
-        // 5. 3, 4번의 내용을 합치기
-
-        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(Direction.DESC, "createdAt"));
-        Page<AdminCheckTicketDto> ticketsPage = ticketService.searchAllTickets(pageRequest);
-
-        List<AdminCheckTicketDto> tickets = ticketsPage.getContent();
-        List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllUserAnswersFromTickets(tickets);
-
-        CustomPageResponse<TicketingResponse> customResponse =
-                new CustomPageResponse<>(
-                        new PageImpl<>(
-                                ticketingDtos.stream().map(TicketingResponse::from).toList(),
-                                pageRequest,
-                                ticketsPage.getTotalElements()
-                        )
-                );
-
-        return ResponseEntity.ok(customResponse);
-    }
-
-    @Override
-    @ApplyMasking(typeValue = TicketingResponse.class)
     public ResponseEntity<CustomPageResponse<TicketingResponse>> searchTickets(
             TicketSearchType searchType,
             SearchRequest searchRequest,
@@ -108,11 +82,18 @@ public class TicketController implements TicketApi {
             int size
     ) {
         PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(Direction.DESC, "createdAt"));
+        Page<AdminCheckTicketDto> ticketsPage;
+        TicketSearchType ticketSearchType = Optional.ofNullable(searchType).orElse(TicketSearchType.DEFAULT);
 
-        Page<AdminCheckTicketDto> ticketsPage = ticketSearchers.stream()
-                .filter(ticketSearcher -> ticketSearcher.isSupport(searchType))
+
+        if(ticketSearchType == TicketSearchType.NONE) {
+            ticketsPage = ticketService.searchAllTickets(pageRequest);
+        } else {
+            ticketsPage = ticketSearchers.stream()
+                .filter(ticketSearcher -> ticketSearcher.isSupport(ticketSearchType))
                 .findFirst().orElseThrow(() -> new AdminException(ErrorCode.INVALID_SEARCH_TYPE))
                 .search(searchRequest, pageRequest);
+        }
 
         List<AdminCheckTicketDto> tickets = ticketsPage.getContent();
         List<CheckTicketingDto> ticketingDtos = ticketSearchService.searchAllUserAnswersFromTickets(tickets);
