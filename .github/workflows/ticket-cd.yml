@@ -87,8 +87,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ env.DOCKER_REGISTRY_URL }}
-            docker-compose down
+            docker-compose -f docker-compose-before.yml down
             docker pull ${{ env.DOCKER_REGISTRY_URL }}/${{ env.DOCKER_IMAGE_NAME }}
-            docker-compose up -d
+            docker-compose -f docker-compose-before.yml up -d
             # Cleaning up unused Docker images
             docker image prune -f
