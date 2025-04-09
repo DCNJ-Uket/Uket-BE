@@ -45,7 +45,7 @@ springdoc:
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
     path: /before/swagger-ui.html
-    url: /before/v3/api-docs
+    use-root-path: true
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: alpha
