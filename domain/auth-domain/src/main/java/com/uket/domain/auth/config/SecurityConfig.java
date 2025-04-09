@@ -81,8 +81,8 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(registry -> registry // actuator, rest docs 경로, 실무에서는 상황에 따라 적절한 접근제어 필요
                         .requestMatchers("/actuator/*").permitAll()
-                        .requestMatchers("/swagger-ui.html").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/before-swagger-ui.html").permitAll()
+                        .requestMatchers("/before-swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                 )
                 .authorizeHttpRequests(registry -> registry
