@@ -83,6 +83,7 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/*").permitAll()
                         .requestMatchers("/before/swagger-ui.html").permitAll()
                         .requestMatchers("/before/swagger-ui/**").permitAll()
+                        .requestMatchers("/before/**").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
