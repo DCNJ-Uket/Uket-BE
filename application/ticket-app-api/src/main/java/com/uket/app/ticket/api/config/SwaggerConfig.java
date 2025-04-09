@@ -15,7 +15,7 @@ import org.springframework.http.HttpHeaders;
 @OpenAPIDefinition(
         servers = @Server(url = "/", description = "Default Server URL"),
         info = @Info(
-                title = "Uket 백엔드 API 명세",
+                title = "Uket 백엔드 이전 API 명세",
                 description = "springdoc을 이용한 Swagger API 문서입니다.",
                 version = "1.0",
                 contact = @Contact(
