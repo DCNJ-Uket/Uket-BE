@@ -1,10 +1,13 @@
 package com.uket.domain.auth.admin.service;
 
 import com.uket.core.exception.ErrorCode;
+import com.uket.domain.auth.admin.dto.SearchAdminDto;
 import com.uket.domain.auth.admin.entity.Admin;
 import com.uket.domain.auth.admin.exception.AuthException;
 import com.uket.domain.auth.admin.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,5 +38,11 @@ public class AdminService {
                 .build();
 
         return adminRepository.save(admin);
+    }
+
+    @Transactional
+    public Page<SearchAdminDto> searchAllAdmins(Pageable pageable) {
+        Page<Admin> admins = adminRepository.findAll(pageable);
+        return admins.map(SearchAdminDto::from);
     }
 }
